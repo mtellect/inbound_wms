@@ -47,7 +47,7 @@ class QuickActionsCard extends StatelessWidget {
                 DialogUtils.showDialog(context: context, builder: (_) => const CreatePoModal());
               }),
               const SizedBox(height: 12),
-              _buildActionTile(context, 'Import CSV', Icons.file_upload, () {
+              _buildActionTile(context, 'Import CSV/Excel', Icons.file_upload, () {
                 context.read<PurchaseOrderProvider>().importCsvOrders(
                   onSuccess: () {
                     if (context.mounted) {
@@ -56,7 +56,7 @@ class QuickActionsCard extends StatelessWidget {
                   },
                   onError: (error) {
                     if (context.mounted) {
-                      ToastUtils.showError(context, message: 'Failed to import CSV: $error');
+                      ToastUtils.showError(context, message: 'Failed to import file: $error');
                     }
                   },
                 );

@@ -2,28 +2,41 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:csv/csv.dart';
+import 'package:excel/excel.dart';
 import 'package:uuid/uuid.dart';
 import 'package:inbound_ms/features/purchase_orders/models/purchase_order.dart';
 
-class ImportCsvService {
-  static Future<List<PurchaseOrder>?> pickAndParseCsv() async {
+class ImportOrdersService {
+  static Future<List<PurchaseOrder>?> pickAndParseOrders() async {
     try {
       FilePickerResult? result = await FilePicker.pickFiles(
         type: FileType.custom,
-        allowedExtensions: ['csv'],
+        allowedExtensions: ['csv', 'xlsx'],
         withData: true,
       );
 
       if (result == null || result.files.isEmpty) return null;
 
-      final bytes = result.files.first.bytes;
+      final file = result.files.first;
+      final bytes = file.bytes;
       if (bytes == null) throw Exception("Failed to read file bytes. Only use on supported platforms.");
 
-      final csvString = utf8.decode(bytes);
-      // Auto-detect newline, parse to list
-      final fields = Csv().decode(csvString);
+      List<List<dynamic>> fields = [];
+
+      if (file.extension?.toLowerCase() == 'xlsx') {
+        var excel = Excel.decodeBytes(bytes);
+        var table = excel.tables[excel.tables.keys.first];
+        if (table != null) {
+          for (var row in table.rows) {
+            fields.add(row.map((cell) => cell?.value?.toString() ?? '').toList());
+          }
+        }
+      } else {
+        final csvString = utf8.decode(bytes);
+        fields = Csv().decode(csvString);
+      }
       
-      if (fields.isEmpty) throw Exception("CSV file is empty");
+      if (fields.isEmpty) throw Exception("File is empty");
 
       // Assuming first row is headers
       final headers = fields[0].map((e) => e.toString().toLowerCase().trim()).toList();
@@ -32,7 +45,7 @@ class ImportCsvService {
       final blindReceivingIndex = headers.indexOf('blind_receiving');
 
       if (poNumberIndex == -1) {
-        throw Exception("CSV must contain a 'po_number' header. Found headers: $headers");
+        throw Exception("File must contain a 'po_number' header. Found headers: $headers");
       }
 
       List<PurchaseOrder> orders = [];
@@ -69,7 +82,7 @@ class ImportCsvService {
 
       return orders;
     } catch (e) {
-      debugPrint("CSV parsing error: $e");
+      debugPrint("File parsing error: $e");
       rethrow;
     }
   }

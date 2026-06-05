@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:inbound_ms/features/purchase_orders/models/purchase_order.dart';
 import 'package:inbound_ms/features/purchase_orders/services/i_purchase_order_api_service.dart';
-import 'package:inbound_ms/features/purchase_orders/services/import_csv_service.dart';
+import 'package:inbound_ms/features/purchase_orders/services/import_orders_service.dart';
 import 'package:uuid/uuid.dart';
 
 class PurchaseOrderProvider extends ChangeNotifier {
@@ -66,7 +66,7 @@ class PurchaseOrderProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final orders = await ImportCsvService.pickAndParseCsv();
+      final orders = await ImportOrdersService.pickAndParseOrders();
       if (orders == null || orders.isEmpty) return;
       
       await _purchaseOrderApiService.createPurchaseOrders(orders);
