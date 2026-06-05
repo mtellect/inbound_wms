@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 
-
 import 'table_resource.dart';
 
 class AppTableCell<T> extends StatelessWidget {
   final AdminColumn column;
   final TableRowData<T> record;
 
-  const AppTableCell({
-    super.key,
-    required this.column,
-    required this.record,
-  });
+  const AppTableCell({super.key, required this.column, required this.record});
 
   @override
   Widget build(BuildContext context) {
@@ -55,9 +50,7 @@ class AppTableCell<T> extends StatelessWidget {
                     cell.image!,
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
-                      return const Center(
-                        child: Icon(Icons.person_outline, color: Colors.black26),
-                      );
+                      return const Center(child: Icon(Icons.person_outline, color: Colors.black26));
                     },
                   )
                 : Icon(Icons.shopping_bag_outlined, color: Colors.black26),
@@ -71,11 +64,7 @@ class AppTableCell<T> extends StatelessWidget {
             children: [
               Text(
                 cell.value,
-                style: TextStyle(
-                  color: Colors.black87,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14,
-                ),
+                style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w500, fontSize: 14),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -109,19 +98,11 @@ class AppTableCell<T> extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              _getStatusIcon(statusStr),
-              size: 14,
-              color: color,
-            ),
+            Icon(_getStatusIcon(statusStr), size: 14, color: color),
             const SizedBox(width: 6),
             Text(
               statusStr,
-              style: TextStyle(
-                color: color,
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(color: color, fontSize: 12, fontWeight: FontWeight.bold),
             ),
           ],
         ),
@@ -146,10 +127,7 @@ class AppTableCell<T> extends StatelessWidget {
         color: Colors.black.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(12),
       ),
-      child: Text(
-        cell.value,
-        style: TextStyle(color: Colors.black87, fontSize: 12),
-      ),
+      child: Text(cell.value, style: TextStyle(color: Colors.black87, fontSize: 12)),
     );
   }
 
@@ -167,19 +145,12 @@ class AppTableCell<T> extends StatelessWidget {
             border: Border.all(color: Colors.black26, width: 1),
             boxShadow: [
               if (color != Colors.transparent)
-                BoxShadow(
-                  color: color.withValues(alpha: 0.3),
-                  blurRadius: 4,
-                  spreadRadius: 1,
-                ),
+                BoxShadow(color: color.withValues(alpha: 0.3), blurRadius: 4, spreadRadius: 1),
             ],
           ),
         ),
         const SizedBox(width: 12),
-        Text(
-          cell.value,
-          style: TextStyle(color: Colors.black87, fontSize: 14),
-        ),
+        Text(cell.value, style: TextStyle(color: Colors.black87, fontSize: 14)),
       ],
     );
   }
@@ -192,15 +163,11 @@ class AppTableCell<T> extends StatelessWidget {
       overflow: TextOverflow.ellipsis,
     );
   }
-  
+
   Widget _buildCurrencyCell(TableCellData cell) {
     return Text(
       '\$${(cell.price ?? 0).toStringAsFixed(2)}',
-      style: TextStyle(
-        color: Colors.black87,
-        fontWeight: FontWeight.bold,
-        fontSize: 14,
-      ),
+      style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold, fontSize: 14),
     );
   }
 }
