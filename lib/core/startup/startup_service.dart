@@ -1,6 +1,5 @@
 import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:inbound_ms/core/constants/env.dart';
 import 'package:inbound_ms/core/navigation/app_router.dart';
 import 'package:inbound_ms/core/enums/api_environment_enum.dart';
 import 'package:inbound_ms/core/services/i_environment_service.dart';
@@ -34,8 +33,10 @@ class StartUpService implements IStartUpService {
 
   @override
   Future<void> registerNetwork() async {
+    final env = getIt.get<EnvConfigurationsModel>();
+    
     // Initialize Supabase Client
-    await Supabase.initialize(url: Env.supabaseUrl, anonKey: Env.supabaseAnonKey);
+    await Supabase.initialize(url: env.supabaseUrl, anonKey: env.supabaseAnonKey);
 
     // Register the client in GetIt for easy access in our Feature Services
     getIt.registerLazySingleton<SupabaseClient>(() => Supabase.instance.client);
@@ -94,8 +95,8 @@ class StartUpService implements IStartUpService {
 
   @override
   Future<void> initializeApp({required ApiEnvironmentEnum environment}) async {
-    await registerNetwork();
     await registerServices(environment: environment);
+    await registerNetwork();
     await registerControllers();
   }
 }
