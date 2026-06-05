@@ -4,6 +4,7 @@ import 'package:inbound_ms/core/navigation/app_router.dart';
 import 'package:provider/provider.dart';
 import 'package:inbound_ms/core/startup/startup_service.dart';
 import 'package:inbound_ms/core/theme/i_theme_provider.dart';
+import 'package:toastification/toastification.dart';
 import 'package:inbound_ms/features/auth/providers/auth_provider.dart';
 import 'package:inbound_ms/features/purchase_orders/providers/purchase_order_provider.dart';
 
@@ -32,13 +33,15 @@ class App extends StatelessWidget {
       builder: (context, _) {
         return Consumer<IThemeProvider>(
           builder: (context, themeProvider, child) {
-            return MaterialApp.router(
-              title: 'Inbound MS',
-              theme: themeProvider.currentThemeLight,
-              darkTheme: themeProvider.currentThemeDark,
-              themeMode: themeProvider.themeMode,
-              routerConfig: getIt.get<AppRouter>().config(),
-              debugShowCheckedModeBanner: false,
+            return ToastificationWrapper(
+              child: MaterialApp.router(
+                title: 'Inbound MS',
+                theme: themeProvider.currentThemeLight,
+                darkTheme: themeProvider.currentThemeDark,
+                themeMode: themeProvider.themeMode,
+                routerConfig: getIt.get<AppRouter>().config(),
+                debugShowCheckedModeBanner: false,
+              ),
             );
           },
         );

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:inbound_ms/features/auth/providers/auth_provider.dart';
 import 'package:inbound_ms/core/navigation/app_router.dart';
+import 'package:inbound_ms/core/utils/toast_utils.dart';
 
 @RoutePage()
 class SignInPage extends StatefulWidget {
@@ -40,15 +41,17 @@ class _SignInPageState extends State<SignInPage> {
         if (authProvider.isAuthenticated) {
           context.router.replace(const DashboardShellRoute());
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Invalid credentials. Please try again.')),
+          ToastUtils.showError(
+            context,
+            message: 'Invalid credentials. Please try again.',
           );
         }
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e')),
+        ToastUtils.showError(
+          context,
+          message: e.toString(),
         );
       }
     }
