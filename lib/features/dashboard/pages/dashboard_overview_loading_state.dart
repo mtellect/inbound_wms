@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inbound_ms/core/widgets/app_shimmer.dart';
 import 'package:inbound_ms/features/dashboard/widgets/section_card.dart';
+import 'package:inbound_ms/features/dashboard/widgets/quick_actions_card.dart';
 
 class DashboardOverviewLoadingState extends StatelessWidget {
   const DashboardOverviewLoadingState({super.key});
@@ -19,7 +20,7 @@ class DashboardOverviewLoadingState extends StatelessWidget {
             SizedBox(width: 24),
             Expanded(
               flex: 1,
-              child: SizedBox(), // Keep QuickActions loading or just empty space
+              child: QuickActionsCard(),
             ),
           ],
         ),

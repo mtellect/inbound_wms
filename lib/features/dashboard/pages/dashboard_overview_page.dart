@@ -39,7 +39,7 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
             child: Consumer<DashboardProvider>(
               builder: (context, dashboardProvider, child) {
                 if (dashboardProvider.isLoading) {
-                  return DashboardOverviewLoadingState();
+                  return const DashboardOverviewLoadingState();
                 } else {
                   return const DashboardOverviewLoadedState();
                 }
