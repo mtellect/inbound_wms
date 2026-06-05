@@ -4,6 +4,7 @@ import 'package:inbound_ms/core/widgets/table/app_table_view.dart';
 import 'package:inbound_ms/core/widgets/table/table_resource.dart';
 import 'package:provider/provider.dart';
 import 'package:inbound_ms/features/purchase_orders/providers/purchase_order_provider.dart';
+import 'package:inbound_ms/core/utils/toast_utils.dart';
 
 @RoutePage()
 class PurchaseOrdersPage extends StatefulWidget {
@@ -76,7 +77,14 @@ class _PurchaseOrdersPageState extends State<PurchaseOrdersPage> {
                     totalRecords: records.length,
                     onAdd: () {},
                     onEdit: (record) {},
-                    onDelete: (record) {},
+                    onDelete: (record) async {
+                      try {
+                        await context.read<PurchaseOrderProvider>().deleteOrder(record.id);
+                        if (context.mounted) ToastUtils.showSuccess(context, message: 'Order deleted successfully');
+                      } catch (e) {
+                        if (context.mounted) ToastUtils.showError(context, message: 'Failed to delete order: $e');
+                      }
+                    },
                     onView: (record) {},
                   ),
                 ),

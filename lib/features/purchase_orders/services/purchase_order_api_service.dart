@@ -3,7 +3,6 @@ import 'package:inbound_ms/features/purchase_orders/models/purchase_order.dart';
 import 'package:inbound_ms/features/purchase_orders/services/dto/purchase_order_dto.dart';
 import 'package:inbound_ms/features/purchase_orders/services/mappers/purchase_order_mapper.dart';
 import 'package:inbound_ms/features/purchase_orders/models/product.dart';
-import 'package:inbound_ms/features/purchase_orders/services/dto/product_dto.dart';
 import 'i_purchase_order_api_service.dart';
 
 class PurchaseOrderApiService implements IPurchaseOrderApiService {
@@ -109,6 +108,14 @@ class PurchaseOrderApiService implements IPurchaseOrderApiService {
     await _supabaseClient
         .from('purchase_orders')
         .update({'status': status})
+        .eq('id', id);
+  }
+
+  @override
+  Future<void> deletePurchaseOrder(String id) async {
+    await _supabaseClient
+        .from('purchase_orders')
+        .delete()
         .eq('id', id);
   }
 }

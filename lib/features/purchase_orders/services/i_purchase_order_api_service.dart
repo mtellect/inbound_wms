@@ -6,4 +6,5 @@ abstract interface class IPurchaseOrderApiService {
   Future<void> createPurchaseOrder(PurchaseOrder order);
   Future<void> createPurchaseOrders(List<PurchaseOrder> orders);
   Future<void> updatePurchaseOrderStatus(String id, String status);
+  Future<void> deletePurchaseOrder(String id);
 }

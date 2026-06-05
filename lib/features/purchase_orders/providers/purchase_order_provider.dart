@@ -83,4 +83,20 @@ class PurchaseOrderProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<void> deleteOrder(String id) async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      await _purchaseOrderApiService.deletePurchaseOrder(id);
+      await loadActiveOrders();
+    } catch (e) {
+      debugPrint("Error deleting order: $e");
+      rethrow;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
 }

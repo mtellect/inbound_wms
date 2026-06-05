@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'table_resource.dart';
 import 'app_table_cell.dart';
 
-
 class AppTableBody<T> extends StatefulWidget {
   final AdminResource resource;
   final List<TableRowData<T>> records;
@@ -96,9 +95,8 @@ class _AppTableBodyState<T> extends State<AppTableBody<T>> {
             child: ListView.separated(
               controller: _verticalController,
               padding: const EdgeInsets.only(bottom: 24),
-              itemCount: widget.records.length < widget.minRows
-                  ? widget.minRows
-                  : widget.records.length,
+              itemCount:
+                  widget.records.length < widget.minRows ? widget.minRows : widget.records.length,
               separatorBuilder: (context, index) => const SizedBox(height: 12),
               itemBuilder: (context, index) {
                 if (index < widget.records.length) {
@@ -172,12 +170,12 @@ class _AppTableBodyState<T> extends State<AppTableBody<T>> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
       decoration: BoxDecoration(
-        color: isSelected
-            ? Colors.blue.withValues(alpha: 0.05)
-            : Colors.transparent,
+        color: isSelected ? Colors.blue.withValues(alpha: 0.05) : Colors.transparent,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: isSelected ? Colors.blue.withValues(alpha: 0.2) : Colors.black.withValues(alpha: 0.05),
+          color: isSelected
+              ? Colors.blue.withValues(alpha: 0.2)
+              : Colors.black.withValues(alpha: 0.05),
         ),
       ),
       child: Row(
@@ -206,7 +204,7 @@ class _AppTableBodyState<T> extends State<AppTableBody<T>> {
               alignment: Alignment.centerRight,
               child: PopupMenuButton<String>(
                 icon: Icon(Icons.more_horiz, color: Colors.grey[500]!),
-                color: const Color(0xFF1E1E2E),
+                // color: const Color(0xFF1E1E2E),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                   side: BorderSide(color: Colors.black.withValues(alpha: 0.1)),
@@ -265,7 +263,8 @@ class _AppTableBodyState<T> extends State<AppTableBody<T>> {
                           children: [
                             Icon(action.icon, color: action.iconColor ?? Colors.black87, size: 18),
                             const SizedBox(width: 12),
-                            Text(action.label, style: TextStyle(color: Colors.black87, fontSize: 13)),
+                            Text(action.label,
+                                style: TextStyle(color: Colors.black87, fontSize: 13)),
                           ],
                         ),
                       ),
