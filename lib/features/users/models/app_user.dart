@@ -12,5 +12,6 @@ abstract class AppUser with _$AppUser {
     required UserRole role,
     required String status,
     DateTime? lastLogin,
+    @Default(true) bool requiresPasswordReset,
   }) = _AppUser;
 }

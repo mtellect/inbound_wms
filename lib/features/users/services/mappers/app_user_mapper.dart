@@ -13,7 +13,8 @@ class AppUserMapper {
         orElse: () => UserRole.worker,
       ),
       status: dto.status,
-      lastLogin: dto.lastLogin != null ? DateTime.tryParse(dto.lastLogin!) : null,
+      lastLogin: dto.lastLogin,
+      requiresPasswordReset: dto.requiresPasswordReset,
     );
   }
 
@@ -24,7 +25,8 @@ class AppUserMapper {
       displayName: user.displayName,
       role: user.role.name,
       status: user.status,
-      lastLogin: user.lastLogin?.toIso8601String(),
+      lastLogin: user.lastLogin,
+      requiresPasswordReset: user.requiresPasswordReset,
     );
   }
 }

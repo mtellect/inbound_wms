@@ -32,26 +32,30 @@ class UserApiService implements IUserApiService {
   @override
   Future<void> createUser({
     required String email,
+    required String password,
     required String displayName,
     required String role,
     required String status,
+    required bool requiresPasswordReset,
   }) async {
-    // Note: In Supabase, inserting into user_roles will fail unless an auth.user exists.
-    // For a fully robust solution, an Edge Function to create the auth user is needed.
-    // Alternatively, if auth is handled via a trigger on signup, we might just invite the user here.
-    // For now, we simulate calling an edge function or just do an insert assuming they sign up.
+    // Invoke the Supabase Edge Function to securely create the user via admin API
     try {
-       await _supabaseClient.from('user_roles').insert({
-        // 'id' would typically come from auth.users, maybe we shouldn't generate it here
-        // if the FK is enforced. We will throw an error to surface it or just invite user.
-        'email': email,
-        'display_name': displayName,
-        'role': role,
-        'status': status,
-      });
+      final response = await _supabaseClient.functions.invoke(
+        'create-user',
+        body: {
+          'email': email,
+          'password': password,
+          'displayName': displayName,
+          'role': role,
+          'status': status,
+          'requiresPasswordReset': requiresPasswordReset,
+        },
+      );
+      if (response.status != 200) {
+        throw Exception('Failed to create user: ${response.data}');
+      }
     } catch(e) {
-      // Re-throw or handle the foreign key constraint issue gracefully for the demo
-      throw Exception('Creating users requires an Admin Edge Function. Real implementation pending.');
+      throw Exception('Failed to create user. Please deploy the create-user Edge Function. Error: $e');
     }
   }
 }

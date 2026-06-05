@@ -54,16 +54,20 @@ class UserProvider extends ChangeNotifier {
 
   Future<void> createUser({
     required String email,
+    required String password,
     required String displayName,
     required String role,
     required String status,
+    required bool requiresPasswordReset,
   }) async {
     try {
       await _userApiService.createUser(
         email: email,
+        password: password,
         displayName: displayName,
         role: role,
         status: status,
+        requiresPasswordReset: requiresPasswordReset,
       );
       await fetchUsers();
     } catch (e) {

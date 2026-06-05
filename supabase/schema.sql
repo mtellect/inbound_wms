@@ -8,7 +8,8 @@ create table public.user_roles (
   display_name text,
   role text check (role in ('manager', 'supervisor', 'worker')) not null,
   status text check (status in ('active', 'inactive', 'offline')) default 'active',
-  last_login timestamp with time zone
+  last_login timestamp with time zone,
+  requires_password_reset boolean default true
 );
 
 -- 2. Suppliers

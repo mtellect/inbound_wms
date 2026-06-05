@@ -11,7 +11,8 @@ abstract class AppUserDto with _$AppUserDto {
     @JsonKey(name: 'display_name') String? displayName,
     required String role,
     required String status,
-    @JsonKey(name: 'last_login') String? lastLogin,
+    @JsonKey(name: 'last_login') DateTime? lastLogin,
+    @JsonKey(name: 'requires_password_reset') @Default(true) bool requiresPasswordReset,
   }) = _AppUserDto;
 
   factory AppUserDto.fromJson(Map<String, dynamic> json) => _$AppUserDtoFromJson(json);

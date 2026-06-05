@@ -12,7 +12,10 @@ _AppUserDto _$AppUserDtoFromJson(Map<String, dynamic> json) => _AppUserDto(
   displayName: json['display_name'] as String?,
   role: json['role'] as String,
   status: json['status'] as String,
-  lastLogin: json['last_login'] as String?,
+  lastLogin: json['last_login'] == null
+      ? null
+      : DateTime.parse(json['last_login'] as String),
+  requiresPasswordReset: json['requires_password_reset'] as bool? ?? true,
 );
 
 Map<String, dynamic> _$AppUserDtoToJson(_AppUserDto instance) =>
@@ -22,5 +25,6 @@ Map<String, dynamic> _$AppUserDtoToJson(_AppUserDto instance) =>
       'display_name': instance.displayName,
       'role': instance.role,
       'status': instance.status,
-      'last_login': instance.lastLogin,
+      'last_login': instance.lastLogin?.toIso8601String(),
+      'requires_password_reset': instance.requiresPasswordReset,
     };

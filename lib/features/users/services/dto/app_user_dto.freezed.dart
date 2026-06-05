@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AppUserDto {
 
- String get id; String get email;@JsonKey(name: 'display_name') String? get displayName; String get role; String get status;@JsonKey(name: 'last_login') String? get lastLogin;
+ String get id; String get email;@JsonKey(name: 'display_name') String? get displayName; String get role; String get status;@JsonKey(name: 'last_login') DateTime? get lastLogin;@JsonKey(name: 'requires_password_reset') bool get requiresPasswordReset;
 /// Create a copy of AppUserDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $AppUserDtoCopyWith<AppUserDto> get copyWith => _$AppUserDtoCopyWithImpl<AppUser
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppUserDto&&(identical(other.id, id) || other.id == id)&&(identical(other.email, email) || other.email == email)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.role, role) || other.role == role)&&(identical(other.status, status) || other.status == status)&&(identical(other.lastLogin, lastLogin) || other.lastLogin == lastLogin));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppUserDto&&(identical(other.id, id) || other.id == id)&&(identical(other.email, email) || other.email == email)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.role, role) || other.role == role)&&(identical(other.status, status) || other.status == status)&&(identical(other.lastLogin, lastLogin) || other.lastLogin == lastLogin)&&(identical(other.requiresPasswordReset, requiresPasswordReset) || other.requiresPasswordReset == requiresPasswordReset));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,email,displayName,role,status,lastLogin);
+int get hashCode => Object.hash(runtimeType,id,email,displayName,role,status,lastLogin,requiresPasswordReset);
 
 @override
 String toString() {
-  return 'AppUserDto(id: $id, email: $email, displayName: $displayName, role: $role, status: $status, lastLogin: $lastLogin)';
+  return 'AppUserDto(id: $id, email: $email, displayName: $displayName, role: $role, status: $status, lastLogin: $lastLogin, requiresPasswordReset: $requiresPasswordReset)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $AppUserDtoCopyWith<$Res>  {
   factory $AppUserDtoCopyWith(AppUserDto value, $Res Function(AppUserDto) _then) = _$AppUserDtoCopyWithImpl;
 @useResult
 $Res call({
- String id, String email,@JsonKey(name: 'display_name') String? displayName, String role, String status,@JsonKey(name: 'last_login') String? lastLogin
+ String id, String email,@JsonKey(name: 'display_name') String? displayName, String role, String status,@JsonKey(name: 'last_login') DateTime? lastLogin,@JsonKey(name: 'requires_password_reset') bool requiresPasswordReset
 });
 
 
@@ -65,7 +65,7 @@ class _$AppUserDtoCopyWithImpl<$Res>
 
 /// Create a copy of AppUserDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? email = null,Object? displayName = freezed,Object? role = null,Object? status = null,Object? lastLogin = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? email = null,Object? displayName = freezed,Object? role = null,Object? status = null,Object? lastLogin = freezed,Object? requiresPasswordReset = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
@@ -73,7 +73,8 @@ as String,displayName: freezed == displayName ? _self.displayName : displayName 
 as String?,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
 as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as String,lastLogin: freezed == lastLogin ? _self.lastLogin : lastLogin // ignore: cast_nullable_to_non_nullable
-as String?,
+as DateTime?,requiresPasswordReset: null == requiresPasswordReset ? _self.requiresPasswordReset : requiresPasswordReset // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
@@ -158,10 +159,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String email, @JsonKey(name: 'display_name')  String? displayName,  String role,  String status, @JsonKey(name: 'last_login')  String? lastLogin)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String email, @JsonKey(name: 'display_name')  String? displayName,  String role,  String status, @JsonKey(name: 'last_login')  DateTime? lastLogin, @JsonKey(name: 'requires_password_reset')  bool requiresPasswordReset)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AppUserDto() when $default != null:
-return $default(_that.id,_that.email,_that.displayName,_that.role,_that.status,_that.lastLogin);case _:
+return $default(_that.id,_that.email,_that.displayName,_that.role,_that.status,_that.lastLogin,_that.requiresPasswordReset);case _:
   return orElse();
 
 }
@@ -179,10 +180,10 @@ return $default(_that.id,_that.email,_that.displayName,_that.role,_that.status,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String email, @JsonKey(name: 'display_name')  String? displayName,  String role,  String status, @JsonKey(name: 'last_login')  String? lastLogin)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String email, @JsonKey(name: 'display_name')  String? displayName,  String role,  String status, @JsonKey(name: 'last_login')  DateTime? lastLogin, @JsonKey(name: 'requires_password_reset')  bool requiresPasswordReset)  $default,) {final _that = this;
 switch (_that) {
 case _AppUserDto():
-return $default(_that.id,_that.email,_that.displayName,_that.role,_that.status,_that.lastLogin);case _:
+return $default(_that.id,_that.email,_that.displayName,_that.role,_that.status,_that.lastLogin,_that.requiresPasswordReset);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -199,10 +200,10 @@ return $default(_that.id,_that.email,_that.displayName,_that.role,_that.status,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String email, @JsonKey(name: 'display_name')  String? displayName,  String role,  String status, @JsonKey(name: 'last_login')  String? lastLogin)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String email, @JsonKey(name: 'display_name')  String? displayName,  String role,  String status, @JsonKey(name: 'last_login')  DateTime? lastLogin, @JsonKey(name: 'requires_password_reset')  bool requiresPasswordReset)?  $default,) {final _that = this;
 switch (_that) {
 case _AppUserDto() when $default != null:
-return $default(_that.id,_that.email,_that.displayName,_that.role,_that.status,_that.lastLogin);case _:
+return $default(_that.id,_that.email,_that.displayName,_that.role,_that.status,_that.lastLogin,_that.requiresPasswordReset);case _:
   return null;
 
 }
@@ -214,7 +215,7 @@ return $default(_that.id,_that.email,_that.displayName,_that.role,_that.status,_
 @JsonSerializable()
 
 class _AppUserDto implements AppUserDto {
-  const _AppUserDto({required this.id, required this.email, @JsonKey(name: 'display_name') this.displayName, required this.role, required this.status, @JsonKey(name: 'last_login') this.lastLogin});
+  const _AppUserDto({required this.id, required this.email, @JsonKey(name: 'display_name') this.displayName, required this.role, required this.status, @JsonKey(name: 'last_login') this.lastLogin, @JsonKey(name: 'requires_password_reset') this.requiresPasswordReset = true});
   factory _AppUserDto.fromJson(Map<String, dynamic> json) => _$AppUserDtoFromJson(json);
 
 @override final  String id;
@@ -222,7 +223,8 @@ class _AppUserDto implements AppUserDto {
 @override@JsonKey(name: 'display_name') final  String? displayName;
 @override final  String role;
 @override final  String status;
-@override@JsonKey(name: 'last_login') final  String? lastLogin;
+@override@JsonKey(name: 'last_login') final  DateTime? lastLogin;
+@override@JsonKey(name: 'requires_password_reset') final  bool requiresPasswordReset;
 
 /// Create a copy of AppUserDto
 /// with the given fields replaced by the non-null parameter values.
@@ -237,16 +239,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppUserDto&&(identical(other.id, id) || other.id == id)&&(identical(other.email, email) || other.email == email)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.role, role) || other.role == role)&&(identical(other.status, status) || other.status == status)&&(identical(other.lastLogin, lastLogin) || other.lastLogin == lastLogin));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppUserDto&&(identical(other.id, id) || other.id == id)&&(identical(other.email, email) || other.email == email)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.role, role) || other.role == role)&&(identical(other.status, status) || other.status == status)&&(identical(other.lastLogin, lastLogin) || other.lastLogin == lastLogin)&&(identical(other.requiresPasswordReset, requiresPasswordReset) || other.requiresPasswordReset == requiresPasswordReset));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,email,displayName,role,status,lastLogin);
+int get hashCode => Object.hash(runtimeType,id,email,displayName,role,status,lastLogin,requiresPasswordReset);
 
 @override
 String toString() {
-  return 'AppUserDto(id: $id, email: $email, displayName: $displayName, role: $role, status: $status, lastLogin: $lastLogin)';
+  return 'AppUserDto(id: $id, email: $email, displayName: $displayName, role: $role, status: $status, lastLogin: $lastLogin, requiresPasswordReset: $requiresPasswordReset)';
 }
 
 
@@ -257,7 +259,7 @@ abstract mixin class _$AppUserDtoCopyWith<$Res> implements $AppUserDtoCopyWith<$
   factory _$AppUserDtoCopyWith(_AppUserDto value, $Res Function(_AppUserDto) _then) = __$AppUserDtoCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String email,@JsonKey(name: 'display_name') String? displayName, String role, String status,@JsonKey(name: 'last_login') String? lastLogin
+ String id, String email,@JsonKey(name: 'display_name') String? displayName, String role, String status,@JsonKey(name: 'last_login') DateTime? lastLogin,@JsonKey(name: 'requires_password_reset') bool requiresPasswordReset
 });
 
 
@@ -274,7 +276,7 @@ class __$AppUserDtoCopyWithImpl<$Res>
 
 /// Create a copy of AppUserDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? email = null,Object? displayName = freezed,Object? role = null,Object? status = null,Object? lastLogin = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? email = null,Object? displayName = freezed,Object? role = null,Object? status = null,Object? lastLogin = freezed,Object? requiresPasswordReset = null,}) {
   return _then(_AppUserDto(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
@@ -282,7 +284,8 @@ as String,displayName: freezed == displayName ? _self.displayName : displayName 
 as String?,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
 as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as String,lastLogin: freezed == lastLogin ? _self.lastLogin : lastLogin // ignore: cast_nullable_to_non_nullable
-as String?,
+as DateTime?,requiresPasswordReset: null == requiresPasswordReset ? _self.requiresPasswordReset : requiresPasswordReset // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
