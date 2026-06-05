@@ -12,6 +12,26 @@ create table public.user_roles (
   requires_password_reset boolean default true
 );
 
+-- 1.5 Auto-create user role on Auth Signup
+create or replace function public.handle_new_user()
+returns trigger as $$
+begin
+  insert into public.user_roles (id, email, display_name, role, status)
+  values (
+    new.id,
+    new.email,
+    coalesce(new.raw_user_meta_data->>'display_name', split_part(new.email, '@', 1)),
+    coalesce(new.raw_user_meta_data->>'role', 'worker'),
+    'active'
+  );
+  return new;
+end;
+$$ language plpgsql security definer;
+
+create trigger on_auth_user_created
+  after insert on auth.users
+  for each row execute procedure public.handle_new_user();
+
 -- 2. Suppliers
 create table public.suppliers (
   id uuid primary key default uuid_generate_v4(),
