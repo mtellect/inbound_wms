@@ -43,6 +43,70 @@ class DashboardShellRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [DiscrepancyTriagePage]
+class DiscrepancyTriageRoute extends PageRouteInfo<void> {
+  const DiscrepancyTriageRoute({List<PageRouteInfo>? children})
+    : super(DiscrepancyTriageRoute.name, initialChildren: children);
+
+  static const String name = 'DiscrepancyTriageRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const DiscrepancyTriagePage();
+    },
+  );
+}
+
+/// generated route for
+/// [ProductsPage]
+class ProductsRoute extends PageRouteInfo<void> {
+  const ProductsRoute({List<PageRouteInfo>? children})
+    : super(ProductsRoute.name, initialChildren: children);
+
+  static const String name = 'ProductsRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const ProductsPage();
+    },
+  );
+}
+
+/// generated route for
+/// [PurchaseOrdersPage]
+class PurchaseOrdersRoute extends PageRouteInfo<void> {
+  const PurchaseOrdersRoute({List<PageRouteInfo>? children})
+    : super(PurchaseOrdersRoute.name, initialChildren: children);
+
+  static const String name = 'PurchaseOrdersRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const PurchaseOrdersPage();
+    },
+  );
+}
+
+/// generated route for
+/// [ShipmentsPage]
+class ShipmentsRoute extends PageRouteInfo<void> {
+  const ShipmentsRoute({List<PageRouteInfo>? children})
+    : super(ShipmentsRoute.name, initialChildren: children);
+
+  static const String name = 'ShipmentsRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const ShipmentsPage();
+    },
+  );
+}
+
+/// generated route for
 /// [SignInPage]
 class SignInRoute extends PageRouteInfo<void> {
   const SignInRoute({List<PageRouteInfo>? children})
@@ -54,6 +118,22 @@ class SignInRoute extends PageRouteInfo<void> {
     name,
     builder: (data) {
       return const SignInPage();
+    },
+  );
+}
+
+/// generated route for
+/// [SuppliersPage]
+class SuppliersRoute extends PageRouteInfo<void> {
+  const SuppliersRoute({List<PageRouteInfo>? children})
+    : super(SuppliersRoute.name, initialChildren: children);
+
+  static const String name = 'SuppliersRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const SuppliersPage();
     },
   );
 }

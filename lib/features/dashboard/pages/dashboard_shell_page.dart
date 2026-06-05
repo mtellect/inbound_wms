@@ -12,8 +12,12 @@ class DashboardShellPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AutoTabsRouter(
       routes: const [
-        // TODO: Map to actual routes when available
-        // e.g. DashboardOverviewRoute(),
+        DashboardOverviewRoute(),
+        ProductsRoute(),
+        SuppliersRoute(),
+        PurchaseOrdersRoute(),
+        ShipmentsRoute(),
+        DiscrepancyTriageRoute(),
       ],
       builder: (context, child) {
         final tabsRouter = AutoTabsRouter.of(context);
@@ -51,9 +55,24 @@ class DashboardShellPage extends StatelessWidget {
                     label: Text('Products'),
                   ),
                   NavigationRailDestination(
+                    icon: Icon(Icons.storefront_outlined),
+                    selectedIcon: Icon(Icons.storefront),
+                    label: Text('Suppliers'),
+                  ),
+                  NavigationRailDestination(
                     icon: Icon(Icons.receipt_long_outlined),
                     selectedIcon: Icon(Icons.receipt_long),
                     label: Text('POs'),
+                  ),
+                  NavigationRailDestination(
+                    icon: Icon(Icons.local_shipping_outlined),
+                    selectedIcon: Icon(Icons.local_shipping),
+                    label: Text('Shipments'),
+                  ),
+                  NavigationRailDestination(
+                    icon: Icon(Icons.report_problem_outlined),
+                    selectedIcon: Icon(Icons.report_problem),
+                    label: Text('Triage'),
                   ),
                 ],
               ),
