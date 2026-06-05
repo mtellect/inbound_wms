@@ -5,12 +5,30 @@ import 'package:inbound_ms/features/dashboard/widgets/quick_actions_card.dart';
 import 'package:inbound_ms/features/dashboard/widgets/kpi_card.dart';
 import 'package:inbound_ms/features/dashboard/widgets/recent_activity_list.dart';
 
+import 'package:provider/provider.dart';
+import 'package:inbound_ms/features/dashboard/providers/dashboard_provider.dart';
+
 @RoutePage()
-class DashboardOverviewPage extends StatelessWidget {
+class DashboardOverviewPage extends StatefulWidget {
   const DashboardOverviewPage({super.key});
 
   @override
+  State<DashboardOverviewPage> createState() => _DashboardOverviewPageState();
+}
+
+class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<DashboardProvider>().loadDashboardData();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final dashboardProvider = context.watch<DashboardProvider>();
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Column(
@@ -25,46 +43,43 @@ class DashboardOverviewPage extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 24),
               children: [
                 // KPI Cards
-                Row(
-                  children: [
-                    KpiCard(
-                      title: 'Total POs',
-                      value: '124',
-                      icon: Icons.receipt_long,
-                      colors: [Colors.blue[400]!, Colors.blue[700]!],
-                    ),
-                    const SizedBox(width: 16),
-                    KpiCard(
-                      title: 'Pending Shipments',
-                      value: '18',
-                      icon: Icons.local_shipping,
-                      colors: [Colors.orange[400]!, Colors.orange[700]!],
-                    ),
-                    const SizedBox(width: 16),
-                    KpiCard(
-                      title: 'Open Discrepancies',
-                      value: '3',
-                      icon: Icons.report_problem,
-                      colors: [Colors.red[400]!, Colors.red[700]!],
-                    ),
-                    const SizedBox(width: 16),
-                    KpiCard(
-                      title: 'Active Suppliers',
-                      value: '42',
-                      icon: Icons.storefront,
-                      colors: [Colors.teal[400]!, Colors.teal[700]!],
-                    ),
-                  ],
-                ),
+                if (dashboardProvider.isLoading)
+                  const Center(child: Padding(
+                    padding: EdgeInsets.all(32.0),
+                    child: CircularProgressIndicator(),
+                  ))
+                else if (dashboardProvider.kpis.isNotEmpty)
+                  Row(
+                    children: dashboardProvider.kpis.asMap().entries.map((entry) {
+                      final index = entry.key;
+                      final kpi = entry.value;
+                      return Expanded(
+                        child: Row(
+                          children: [
+                            KpiCard(
+                              title: kpi.title,
+                              value: kpi.value,
+                              icon: kpi.icon,
+                              colors: kpi.colors,
+                            ),
+                            if (index < dashboardProvider.kpis.length - 1)
+                              const SizedBox(width: 16),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                  ),
                 const SizedBox(height: 32),
 
                 // Recent Activity / Content
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Expanded(
+                    Expanded(
                       flex: 2,
-                      child: RecentActivityList(),
+                      child: dashboardProvider.isLoading
+                          ? const Center(child: CircularProgressIndicator())
+                          : RecentActivityList(activities: dashboardProvider.recentActivity),
                     ),
                     const SizedBox(width: 24),
                     const Expanded(flex: 1, child: QuickActionsCard()),

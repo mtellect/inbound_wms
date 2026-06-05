@@ -15,6 +15,10 @@ import 'package:inbound_ms/features/purchase_orders/services/i_purchase_order_ap
 import 'package:inbound_ms/features/purchase_orders/services/purchase_order_api_service.dart';
 import 'package:inbound_ms/features/purchase_orders/providers/purchase_order_provider.dart';
 
+import 'package:inbound_ms/features/dashboard/services/i_dashboard_api_service.dart';
+import 'package:inbound_ms/features/dashboard/services/mock_dashboard_api_service.dart';
+import 'package:inbound_ms/features/dashboard/providers/dashboard_provider.dart';
+
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:inbound_ms/core/theme/i_theme_provider.dart';
 import 'package:inbound_ms/core/theme/app_theme_provider.dart';
@@ -56,6 +60,10 @@ class StartUpService implements IStartUpService {
     getIt.registerLazySingleton<IPurchaseOrderApiService>(
       () => PurchaseOrderApiService(supabaseClient: getIt.get<SupabaseClient>()),
     );
+
+    getIt.registerLazySingleton<IDashboardApiService>(
+      () => MockDashboardApiService(),
+    );
   }
 
   @override
@@ -67,6 +75,10 @@ class StartUpService implements IStartUpService {
 
     getIt.registerLazySingleton<PurchaseOrderProvider>(
       () => PurchaseOrderProvider(purchaseOrderApiService: getIt.get<IPurchaseOrderApiService>()),
+    );
+
+    getIt.registerLazySingleton<DashboardProvider>(
+      () => DashboardProvider(dashboardApiService: getIt.get<IDashboardApiService>()),
     );
 
     getIt.registerLazySingleton<IThemeProvider>(
