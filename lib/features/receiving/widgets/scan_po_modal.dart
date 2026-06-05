@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:inbound_ms/core/utils/toast_utils.dart';
 import 'package:inbound_ms/core/resources/app_colors.dart';
 
+import 'package:inbound_ms/features/dashboard/providers/dashboard_provider.dart';
 import 'package:inbound_ms/features/purchase_orders/providers/purchase_order_provider.dart';
 import 'package:inbound_ms/features/purchase_orders/models/purchase_order.dart';
 import 'package:inbound_ms/features/purchase_orders/models/po_item.dart';
 import 'package:provider/provider.dart';
+import 'package:inbound_ms/features/receiving/providers/session_provider.dart';
 
 import 'package:inbound_ms/features/receiving/widgets/po_context_header.dart';
 import 'package:inbound_ms/features/receiving/widgets/scan_metrics_row.dart';
@@ -157,6 +159,8 @@ class _ScanPoModalState extends State<ScanPoModal> {
             if (mounted) {
               ToastUtils.showSuccess(context,
                   message: isComplete ? 'Receiving completed!' : 'Session paused.');
+              context.read<SessionProvider>().fetchSessions();
+              context.read<DashboardProvider>().loadDashboardData();
               Navigator.of(context).pop();
             }
           },

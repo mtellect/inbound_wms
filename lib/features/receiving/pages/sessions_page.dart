@@ -29,13 +29,6 @@ class _SessionsPageState extends State<SessionsPage> {
       key: 'sessions',
       tableName: 'Scan Sessions',
       subtitle: 'View active and historical receiving sessions.',
-      headerActions: [
-        OutlinedButton.icon(
-          onPressed: () {},
-          icon: const Icon(Icons.add),
-          label: const Text('New Scan'),
-        ),
-      ],
       columns: const [
         AdminColumn(key: 'session', label: 'SESSION ID', type: AdminColumnType.text, flex: 2),
         AdminColumn(key: 'shipment', label: 'SHIPMENT', type: AdminColumnType.imageText, flex: 3),
