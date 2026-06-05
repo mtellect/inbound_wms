@@ -2,6 +2,9 @@
 
 **Goal:** Initialize the unified Flutter project using your preferred feature-first architecture (`core/` & `features/`).
 
+## Strict Development Rules
+- **Always Run Dart Analysis:** Every code change MUST be followed by running `dart analyze` to ensure zero structural or typing errors before proceeding.
+
 ## Sub-tasks
 - [x] **Initialize App:**
   - Create the Flutter project directly in the `inbound_ms/` root.
@@ -29,7 +32,10 @@
     - `interceptors/`: Request mutation and logging (`authentication`, `body`, `headers`, `error`, `connectivity`).
     - `exception/`: Standard API exceptions (`api_error`, `api_cancelled`, `no_content`).
   - Create `core/startup/startup_service.dart` to handle ordered initialization (`registerNetwork`, `registerLocalDb`, `registerServices`, `registerControllers`).
-  - Implement `auto_route` in `core/navigation/app_router.dart` to properly route web users vs mobile workers.
+  - **Routing Architecture:** Adopt a strict, typed navigation structure:
+    - `core/navigation/app_routes_path_enum.dart`: Strongly-typed enum for all paths.
+    - `core/navigation/base_app_router.dart`: Extends `RootStackRouter` where `routes` are actually defined.
+    - `core/navigation/app_router.dart`: Export file pulling parts together.
 - [ ] **Feature Data Modeling & Service Approach:**
   - Implement the specific database domain models (`PurchaseOrder`, `Shipment`, `PoItem`, `ScanLog`) within their respective feature's `models/` directory using Freezed. **Domain models MUST NOT have `fromJson` or `toJson`.**
   - **Service Approach Pattern:** Every service must strictly follow this exact structure inside `features/<feature>/services/`:
