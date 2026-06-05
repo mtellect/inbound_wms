@@ -1,7 +1,5 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-@RoutePage()
 class ActiveScanPage extends StatefulWidget {
   const ActiveScanPage({super.key});
 
@@ -31,12 +29,34 @@ class _ActiveScanPageState extends State<ActiveScanPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(24.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Top Meta Data
+
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      insetPadding: const EdgeInsets.all(48),
+      child: Container(
+        width: 1100,
+        decoration: BoxDecoration(
+          color: const Color(0xFFF8FAFC),
+          borderRadius: BorderRadius.circular(24),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(32.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Header
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('Active Scanning Session', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900)),
+                  IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+              // Top Meta Data
           Row(
             children: [
               Expanded(
@@ -153,11 +173,13 @@ class _ActiveScanPageState extends State<ActiveScanPage> {
                 ],
               ),
             ),
-          ),
+          ), // Close Expanded
         ],
-      ),
-    );
-  }
+      ), // Close Column
+    ), // Close Padding
+  ), // Close Container
+); // Close Dialog
+}
 
   Widget _buildMetaField(String label, String value, {bool isDate = false}) {
     return Column(

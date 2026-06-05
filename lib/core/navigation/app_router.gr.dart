@@ -11,22 +11,6 @@
 part of 'app_router.dart';
 
 /// generated route for
-/// [ActiveScanPage]
-class ActiveScanRoute extends PageRouteInfo<void> {
-  const ActiveScanRoute({List<PageRouteInfo>? children})
-    : super(ActiveScanRoute.name, initialChildren: children);
-
-  static const String name = 'ActiveScanRoute';
-
-  static PageInfo page = PageInfo(
-    name,
-    builder: (data) {
-      return const ActiveScanPage();
-    },
-  );
-}
-
-/// generated route for
 /// [DashboardOverviewPage]
 class DashboardOverviewRoute extends PageRouteInfo<void> {
   const DashboardOverviewRoute({List<PageRouteInfo>? children})

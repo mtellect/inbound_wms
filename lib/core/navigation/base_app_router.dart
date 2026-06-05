@@ -31,10 +31,5 @@ class AppRouter extends RootStackRouter {
         AutoRoute(page: SessionsRoute.page),
       ]
     ),
-    TransitionRoute.fadeIn(
-      page: ActiveScanRoute.page,
-      path: '/scan',
-      guards: [AuthGuard(authProvider: authProvider)],
-    ),
   ];
 }
