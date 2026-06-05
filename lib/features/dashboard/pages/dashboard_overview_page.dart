@@ -4,8 +4,10 @@ import 'package:inbound_ms/core/widgets/page_header.dart';
 import 'package:inbound_ms/core/utils/toast_utils.dart';
 import 'package:inbound_ms/core/utils/dialog_utils.dart';
 import 'package:inbound_ms/features/receiving/pages/scan_po_page.dart';
-import 'package:provider/provider.dart';
 import 'package:inbound_ms/features/auth/providers/auth_provider.dart';
+import 'package:inbound_ms/features/purchase_orders/providers/purchase_order_provider.dart';
+import 'package:inbound_ms/features/purchase_orders/widgets/create_po_modal.dart';
+import 'package:provider/provider.dart';
 
 @RoutePage()
 class DashboardOverviewPage extends StatelessWidget {
@@ -286,11 +288,16 @@ class DashboardOverviewPage extends StatelessWidget {
             const SizedBox(height: 24),
             if (isManager) ...[
               _buildActionTile(context, 'Create PO', Icons.add, () {
-                ToastUtils.showInfo(context, message: 'PO Creation Form not yet implemented');
+                DialogUtils.showDialog(context: context, builder: (_) => const CreatePoModal());
               }),
               const SizedBox(height: 12),
               _buildActionTile(context, 'Import CSV', Icons.file_upload, () {
-                ToastUtils.showInfo(context, message: 'CSV Importer not yet implemented');
+                context.read<PurchaseOrderProvider>().importCsvOrders(
+                  onSuccess: () =>
+                      ToastUtils.showSuccess(context, message: 'Imported orders successfully'),
+                  onError: (error) =>
+                      ToastUtils.showError(context, message: 'Failed to import CSV: $error'),
+                );
               }),
               const SizedBox(height: 12),
             ],

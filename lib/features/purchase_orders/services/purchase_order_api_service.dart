@@ -36,6 +36,24 @@ class PurchaseOrderApiService implements IPurchaseOrderApiService {
   }
 
   @override
+  Future<void> createPurchaseOrder(PurchaseOrder order) async {
+    final dto = PurchaseOrderMapper.toDto(order);
+    final json = dto.toJson();
+    json.removeWhere((key, value) => value == null);
+    await _supabaseClient.from('purchase_orders').insert(json);
+  }
+
+  @override
+  Future<void> createPurchaseOrders(List<PurchaseOrder> orders) async {
+    final dtos = orders.map((o) {
+      final json = PurchaseOrderMapper.toDto(o).toJson();
+      json.removeWhere((key, value) => value == null);
+      return json;
+    }).toList();
+    await _supabaseClient.from('purchase_orders').insert(dtos);
+  }
+
+  @override
   Future<void> updatePurchaseOrderStatus(String id, String status) async {
     await _supabaseClient
         .from('purchase_orders')
