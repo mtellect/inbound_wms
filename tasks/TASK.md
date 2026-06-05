@@ -1,86 +1,135 @@
 # Inbound MS - Universal Project Rebuild Blueprint
 
-This document serves as a comprehensive, framework-agnostic template outlining the architecture, folder structure, core modules, and features required to recreate the "Inbound MS" (Inbound Management System) project from scratch in **any framework** (e.g., Flutter, React, Next.js, Vue, Angular, Svelte).
+This document serves as a comprehensive, framework-agnostic template outlining the architecture, folder structure, core modules, and detailed features required to recreate the "Inbound MS" (Inbound Management System) project from scratch.
 
 ## 1. Project Scaffolding & Setup
 - `[ ]` Initialize project repository and package manager.
 - `[ ]` Configure Environment Variables (`SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`).
-- `[ ]` Configure code formatters and linters (ESLint, Prettier, Dart Analysis, etc.).
+- `[ ]` Setup Core Entry Points (`main.dart` / `index.js` / `App.vue`) and basic wrapper structure.
+- `[ ]` Configure code formatters and linters.
 - `[ ]` Setup CI/CD pipeline for deployment.
 
 ## 2. Architectural Pattern: Feature-First (Domain-Driven)
-The project MUST adhere to a **Feature-First Architecture** rather than grouping files by type. The source code (`src/` or `lib/`) should be split into two main directories:
+The codebase must be split into two main layers:
 - `core/`: Application-wide constants, global utilities, global widgets, and infrastructure.
-- `features/`: Isolated domains of the application (e.g., auth, dashboard, users, products). Each feature encapsulates its own models, services, state, pages, and components.
+- `features/`: Isolated domains (e.g., auth, dashboard). Each feature strictly encapsulates its own layers.
 
-## 3. The `core/` Layer Implementation
-The core layer acts as the backbone of the application.
-- `[ ]` **`core/api/`**: 
-  - Base API Client wrapper (Axios, Fetch, Dio).
-  - Global Interceptors (Authentication token injection, 401 unauthenticated redirect handling, Error message extraction).
-- `[ ]` **`core/routing/`**:
-  - Global route definitions.
-  - Route Guards (protecting routes based on auth state and user roles).
-- `[ ]` **`core/resources/` or `core/theme/`**:
-  - `app_colors`: Brand hex codes (Primary Teal, Slate Dark, Backgrounds, Status Colors).
-  - `app_theme`: Global typography, input decorations, and button styles.
-- `[ ]` **`core/widgets/` (Global Design System)**:
-  - `[ ]` `AppButton`: Standardized primary/secondary buttons with built-in loading states.
-  - `[ ]` `AppInputField`: Standardized text input fields with validation.
-  - `[ ]` `AppDropdown`: Standardized select dropdowns.
-  - `[ ]` `AppModal`: Standardized dialog/modal/sheet wrappers.
-  - `[ ]` `AppShimmer`: Loading skeleton animations (sweeping animations for loading states).
-- `[ ]` **`core/utils/`**:
-  - `ToastUtils`: Global snackbar/toast notifications for success and error handling.
-- `[ ]` **`core/startup/` (or DI layer)**:
-  - Dependency Injection container setup or global Context providers initialization.
+---
 
-## 4. The `features/` Modules implementation
-For each feature, follow the internal structure: `models/`, `services/` (API calls), `providers/` (State Management), `pages/` (Screens), `widgets/` (Feature-specific components).
+## 3. Data Flow Architecture (Models, DTOs, Mappers, Services, Enums)
+To ensure separation of concerns between the API layer and the UI layer, every feature MUST implement the following layers:
 
-### Feature 1: Authentication & Authorization (`features/auth`)
-- `[ ]` Service: Auth API integration (Supabase/Firebase auth).
-- `[ ]` State: Manage user session persistence and active user roles.
-- `[ ]` Pages: Sign In Page (Email/Password).
-- `[ ]` Logic: Role Management (Admin, Manager, Supervisor, Worker).
+### 3.1. Enums (`enums/`)
+- `[ ]` Define strict typings for bounded values.
+  - Examples: `ApiEnvironmentEnum`, `UserRole` (admin, manager, supervisor, worker).
 
-### Feature 2: Dashboard Overview (`features/dashboard`)
-- `[ ]` Pages: Dashboard Shell (Sidebar Layout + Main Content Area).
-- `[ ]` Pages: Overview Dashboard with Loading/Loaded states.
-- `[ ]` Widgets: KPI Cards (Total POs, Received, Pending, Discrepancies).
-- `[ ]` Widgets: Recent Activity Feed (List of latest scans or system events).
-- `[ ]` Widgets: Quick Actions Panel (e.g., "Scan Barcode", "New PO").
+### 3.2. Models (`models/`)
+- `[ ]` Define clean, UI-facing domain entities. These models should NOT contain JSON serialization logic.
+  - Examples: `AppUser`, `Product`, `PurchaseOrder`, `POItem`, `Shipment`, `ScanSession`, `ScanLog`, `Discrepancy`, `Supplier`, `DashboardKpi`, `DashboardActivity`.
 
-### Feature 3: User Management (`features/users` - Admin Only)
-- `[ ]` Service/State: Fetch users list and manage mutations.
-- `[ ]` Pages: Users List Data Table (Name, Email, Role, Status, Last Login).
-- `[ ]` Widgets: "Add User" Modal Flow (Direct API creation via secure admin endpoint or `service_role` key).
-- `[ ]` Forms: Fields for Display Name, Email, Temporary Password, Role, Status, Requires Password Reset.
-- `[ ]` Logic: Edit User Details (Update roles and status).
+### 3.3. DTOs (Data Transfer Objects) (`services/dto/`)
+- `[ ]` Define API-facing network models. These models handle exactly what the backend JSON expects/returns.
+  - Examples: `AppUserDto`, `ProductDto`, `PurchaseOrderDto`, `POItemDto`, `ShipmentDto`, `ScanSessionDto`, `ScanLogDto`.
 
-### Feature 4: Purchase Orders (`features/purchase_orders`)
-- `[ ]` Pages: Purchase Orders List Data Table.
-- `[ ]` Widgets: Import POs Modal (CSV/Excel file parsing and uploading logic).
-- `[ ]` Widgets: Create PO Modal (Manual data entry).
-- `[ ]` Pages: PO Details View (Line items, expected quantities, SKU, Status).
+### 3.4. Mappers (`services/mappers/`)
+- `[ ]` Implement mapper functions to convert between pure `Models` (UI layer) and `DTOs` (Network layer).
+  - Examples: `AppUserMapper`, `ProductMapper`, `PurchaseOrderMapper`, `POItemMapper`, `ShipmentMapper`, `ScanSessionMapper`, `ScanLogMapper`.
 
-### Feature 5: Receiving Operations (`features/receiving`)
-- `[ ]` Pages: Active Receiving Sessions List.
-- `[ ]` Widgets: "Scan PO" Modal (Auto-select PO via barcode scanner input).
-- `[ ]` Pages: Session Manifest Table (Tracking expected vs. scanned quantities).
-- `[ ]` Logic: Real-time Barcode Scanning Input (Rapid entry for updating received counts).
-- `[ ]` Logic: Complete/Finalize Session flow.
+### 3.5. Services (`services/`)
+- `[ ]` Define abstract interfaces (`IUserApiService`, `IPurchaseOrderApiService`, `ISessionApiService`, `IDashboardApiService`, `IAuthenticationApiService`).
+- `[ ]` Implement concrete Service classes that use the API Client to fetch JSON, parse into DTOs, and map into Models using the Mappers.
 
-### Feature 6: Discrepancies & Triage (`features/discrepancies`)
-- `[ ]` Pages: Triage Dashboard (List of under-received, over-received, or damaged goods).
-- `[ ]` Widgets: Resolve Discrepancy Flow (Approve, Reject, or Request Supplier Credit).
+---
 
-### Feature 7: Master Data Management
-- `[ ]` **Products (`features/products`)**: Product catalog, SKU lookup, descriptions, unit of measure.
-- `[ ]` **Suppliers (`features/suppliers`)**: Supplier directory, contact info, associated POs.
-- `[ ]` **Shipments (`features/shipments`)**: Tracking inbound shipments and ASN (Advance Shipping Notice) data.
+## 4. The `core/` Layer Implementation
 
-## 5. Polish & Finalization
+### 4.1. Infrastructure & API (`core/api/`)
+- `[ ]` **Base API Client**: Abstract HTTP client wrapper (Axios/Dio/Fetch).
+- `[ ]` **API URLs & Functions**: Centralized URL endpoints and function names.
+- `[ ]` **Custom Exceptions**: `ApiCancelledException`, `ApiErrorException`, `NoContentException`, `NoDataException`, `UnsuccessfulApiStatusException`.
+- `[ ]` **API Interceptors**: 
+  - `AuthenticationInterceptor`: Injects bearer tokens into headers.
+  - `HeadersInterceptor`: Adds standard content-type and platform headers.
+  - `ErrorInterceptor`: Catches 401s to force logout, parses backend error shapes.
+  - `BodyInterceptor` & `ConnectivityInterceptor`: Data normalization and offline-check.
+
+### 4.2. Routing & Navigation (`core/navigation/`)
+- `[ ]` **App Router**: Centralized route tree setup.
+- `[ ]` **Route Paths Enum**: Strongly typed routing paths.
+- `[ ]` **Auth Guard**: Middleware to bounce unauthenticated users to `/sign-in` and authenticated users away from `/sign-in`.
+
+### 4.3. Application Services & State (`core/services/` & `core/startup/`)
+- `[ ]` **Startup Service (DI Container)**: Register all singleton services and factories (`GetIt` or Context setup).
+- `[ ]` **Environment Service**: Manages switching between dev/staging/prod variables.
+
+### 4.4. Theme & Resources (`core/resources/` & `core/theme/`)
+- `[ ]` **App Colors**: Brand hex codes (Primary Teal, Slate Dark, Status colors).
+- `[ ]` **App Theme**: Global typography, input decorations, button styles.
+- `[ ]` **Theme Provider**: Handles switching themes if applicable.
+
+### 4.5. Global Utilities & Extensions (`core/utils/` & `core/extensions/`)
+- `[ ]` **Extensions**: Context helpers, DateTime formatting, Number parsing, Base generic extensions.
+- `[ ]` **Utils**: `DialogUtils` (for global dialogs), `ToastUtils` (for success/error snacks), `UuidUtils` (for local ID generation), `DateFormatter`.
+
+### 4.6. Global Design System (`core/widgets/`)
+- `[ ]` **Inputs & Buttons**: `AppButton`, `AppInputField`, `AppDropdownButton`.
+- `[ ]` **Visual Effects**: `AppShimmer` (sweeping loading skeletons), `DashPainter`, `DashedSeparator`, `DottedBorder`.
+- `[ ]` **Layout & Feedback**: `PageHeader`, `DeleteConfirmationDialog`.
+- `[ ]` **App Table System (`core/widgets/table/`)**: Fully reusable data table system with `AppTableView`, `AppTableHeader`, `AppTableBody`, `AppTableCell`, `AppTableEmptyState`, and `BulkActionToolbar`.
+
+---
+
+## 5. The `features/` Modules Implementation
+
+### 5.1. Authentication (`features/auth`)
+- `[ ]` **State/Provider**: `AuthProvider` (managing session state).
+- `[ ]` **Pages**: `SignInPage`.
+
+### 5.2. Local Storage (`features/local_db`)
+- `[ ]` **Service**: `LocalDbService` (wrapper for SharedPrefs/LocalStorage to cache settings or tokens).
+
+### 5.3. Dashboard (`features/dashboard`)
+- `[ ]` **State/Provider**: `DashboardProvider`.
+- `[ ]` **Pages**: `DashboardShellPage` (layout with Sidebar), `DashboardOverviewPage`.
+- `[ ]` **Widgets**: `DashboardSideNavigation`, `KpiCard`, `QuickActionsCard`, `RecentActivityList`, `SectionCard`.
+- `[ ]` **States**: `DashboardOverviewLoadingState`, `DashboardOverviewLoadedState`.
+
+### 5.4. Users Administration (`features/users`)
+- `[ ]` **State/Provider**: `UserProvider`.
+- `[ ]` **Pages**: `UsersPage` (list of internal users).
+- `[ ]` **Widgets**: `UserDetailsModal` (Create/Edit user flow).
+
+### 5.5. Master Data: Products (`features/products`)
+- `[ ]` **Pages**: `ProductsPage`.
+
+### 5.6. Master Data: Suppliers (`features/suppliers`)
+- `[ ]` **Pages**: `SuppliersPage`.
+
+### 5.7. Master Data: Shipments (`features/shipments`)
+- `[ ]` **Pages**: `ShipmentsPage` (tracking inbound logistics and ASNs).
+
+### 5.8. Purchase Orders (`features/purchase_orders`)
+- `[ ]` **State/Provider**: `PurchaseOrderProvider`.
+- `[ ]` **Specialized Services**: `ImportOrdersService` (handling CSV/Excel parsing).
+- `[ ]` **Pages**: `PurchaseOrdersPage`.
+- `[ ]` **Widgets**: `CreatePoModal` (manual), `ImportOrdersModal` (bulk file upload), `PurchaseOrderDetailsModal`, `PoImportView`.
+
+### 5.9. Receiving Operations (`features/receiving`)
+- `[ ]` **State/Provider**: `SessionProvider`.
+- `[ ]` **Pages**: `SessionsPage` (active receiving tasks).
+- `[ ]` **Widgets**: 
+  - `ScanPoModal` (barcode scanning or manual select).
+  - `SessionDetailsModal` (Receiving UI).
+  - `SessionManifestTable` (Expected vs Actual counts).
+  - `ScanMetricsRow`, `MetricCard`, `PoContextHeader`, `MetaField`.
+
+### 5.10. Discrepancies & Triage (`features/discrepancies`)
+- `[ ]` **Pages**: `DiscrepancyTriagePage` (List of anomalies).
+
+---
+
+## 6. Polish & Finalization
 - `[ ]` Cross-browser/Cross-device responsive design checks (Desktop, Tablet, Mobile).
-- `[ ]` Error boundary handling for fatal application crashes.
+- `[ ]` Verify interceptors handle 401 Unauthorized globally.
+- `[ ]` Verify empty states and loading states (AppShimmer) are bound to all tables.
 - `[ ]` Performance optimization (lazy loading, asset minification/caching).
