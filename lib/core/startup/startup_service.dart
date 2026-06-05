@@ -5,6 +5,7 @@ import 'package:inbound_ms/core/navigation/app_router.dart';
 import 'package:inbound_ms/core/enums/api_environment_enum.dart';
 import 'package:inbound_ms/core/services/i_environment_service.dart';
 import 'package:inbound_ms/core/services/environment_service.dart';
+import 'package:inbound_ms/core/api/base_api.dart';
 
 import 'package:inbound_ms/features/auth/services/i_authentication_api_service.dart';
 import 'package:inbound_ms/features/auth/services/authentication_api_service.dart';
@@ -39,6 +40,10 @@ class StartUpService implements IStartUpService {
   @override
   Future<void> registerServices({required ApiEnvironmentEnum environment}) async {
     // 0. Environment
+    getIt.registerLazySingleton<EnvConfigurationsModel>(
+      () => EnvConfigurationsModel(env: environment),
+    );
+
     getIt.registerLazySingleton<IEnvironmentService>(
       () => EnvironmentService(environment: environment),
     );
