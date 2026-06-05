@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:inbound_ms/features/suppliers/models/supplier.dart';
-import 'package:inbound_ms/core/widgets/page_header.dart';
 import 'package:inbound_ms/core/widgets/table/app_table_view.dart';
 import 'package:inbound_ms/core/widgets/table/table_resource.dart';
 

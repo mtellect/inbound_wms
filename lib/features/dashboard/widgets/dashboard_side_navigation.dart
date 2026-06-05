@@ -3,12 +3,13 @@ import 'package:provider/provider.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:inbound_ms/features/auth/providers/auth_provider.dart';
 import 'package:inbound_ms/core/navigation/app_router.dart';
+import 'package:inbound_ms/core/extensions/base_extension.dart';
 
-class DashboardNavigationRail extends StatelessWidget {
+class DashboardSideNavigation extends StatelessWidget {
   final int activeIndex;
   final ValueChanged<int> onDestinationSelected;
 
-  const DashboardNavigationRail({
+  const DashboardSideNavigation({
     super.key,
     required this.activeIndex,
     required this.onDestinationSelected,
@@ -17,9 +18,10 @@ class DashboardNavigationRail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return NavigationRail(
+      extended: context.isDesktop,
       selectedIndex: activeIndex,
       onDestinationSelected: onDestinationSelected,
-      labelType: NavigationRailLabelType.all,
+      labelType: context.isDesktop ? NavigationRailLabelType.none : NavigationRailLabelType.all,
       leading: Padding(
         padding: const EdgeInsets.symmetric(vertical: 24.0),
         child: Column(

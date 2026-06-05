@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'table_resource.dart';
 import 'app_table_body.dart';
 import 'app_table_header.dart';

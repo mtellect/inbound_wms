@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:inbound_ms/core/resources/app_colors.dart';
 
 class BulkActionToolbar extends StatelessWidget {
   final int selectedCount;

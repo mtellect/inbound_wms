@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:inbound_ms/core/resources/app_colors.dart';
 
 import 'table_resource.dart';
 

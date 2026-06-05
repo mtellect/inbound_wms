@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:inbound_ms/core/navigation/app_router.dart';
-import 'package:inbound_ms/features/dashboard/widgets/dashboard_navigation_rail.dart';
+import 'package:inbound_ms/features/dashboard/widgets/dashboard_side_navigation.dart';
 
 @RoutePage()
 class DashboardShellPage extends StatelessWidget {
@@ -22,10 +22,10 @@ class DashboardShellPage extends StatelessWidget {
         final tabsRouter = AutoTabsRouter.of(context);
         
         return Scaffold(
-          backgroundColor: const Color(0xFFF1F5F9), // Slate 100
+          backgroundColor: const Color(0xFFF1F5F9),
           body: Row(
             children: [
-              DashboardNavigationRail(
+              DashboardSideNavigation(
                 activeIndex: tabsRouter.activeIndex,
                 onDestinationSelected: tabsRouter.setActiveIndex,
               ),

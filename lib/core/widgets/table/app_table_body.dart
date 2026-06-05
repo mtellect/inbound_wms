@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'table_resource.dart';
-import 'package:inbound_ms/core/resources/app_colors.dart';
 import 'app_table_cell.dart';
 
 
