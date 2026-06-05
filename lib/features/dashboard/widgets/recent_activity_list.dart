@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:inbound_ms/features/dashboard/providers/dashboard_provider.dart';
 import 'package:inbound_ms/features/dashboard/widgets/section_card.dart';
-import 'package:inbound_ms/features/dashboard/models/dashboard_activity.dart';
+import 'package:provider/provider.dart';
 
 class RecentActivityList extends StatelessWidget {
-  final List<DashboardActivity> activities;
-
-  const RecentActivityList({
-    super.key,
-    required this.activities,
-  });
+  const RecentActivityList({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final dashboardProvider = context.watch<DashboardProvider>();
+    final recentActivity = dashboardProvider.recentActivity;
+
     return SectionCard(
       title: 'Recent Activity',
-      child: activities.isEmpty
+      child: recentActivity.isEmpty
           ? _buildEmptyState(context)
           : Column(
-              children: activities.map((activity) {
+              children: recentActivity.map((activity) {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Material(
@@ -39,11 +38,7 @@ class RecentActivityList extends StatelessWidget {
                                 color: activity.iconColor.withValues(alpha: 0.1),
                                 shape: BoxShape.circle,
                               ),
-                              child: Icon(
-                                activity.icon,
-                                color: activity.iconColor,
-                                size: 20,
-                              ),
+                              child: Icon(activity.icon, color: activity.iconColor, size: 20),
                             ),
                             const SizedBox(width: 16),
                             Expanded(
@@ -60,10 +55,7 @@ class RecentActivityList extends StatelessWidget {
                                   const SizedBox(height: 4),
                                   Text(
                                     activity.timeAgo,
-                                    style: TextStyle(
-                                      color: Colors.grey[600],
-                                      fontSize: 13,
-                                    ),
+                                    style: TextStyle(color: Colors.grey[600], fontSize: 13),
                                   ),
                                 ],
                               ),
@@ -87,26 +79,19 @@ class RecentActivityList extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.history_toggle_off,
-            size: 64,
-            color: Colors.grey[300],
-          ),
+          Icon(Icons.history_toggle_off, size: 64, color: Colors.grey[300]),
           const SizedBox(height: 16),
           Text(
             'No Recent Activity',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: Colors.grey[600],
-                  fontWeight: FontWeight.bold,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(color: Colors.grey[600], fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
           Text(
             'Activities will appear here once you\nstart receiving or managing POs.',
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.grey[500],
-                ),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey[500]),
           ),
         ],
       ),

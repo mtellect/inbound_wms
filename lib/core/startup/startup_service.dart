@@ -16,7 +16,7 @@ import 'package:inbound_ms/features/purchase_orders/services/purchase_order_api_
 import 'package:inbound_ms/features/purchase_orders/providers/purchase_order_provider.dart';
 
 import 'package:inbound_ms/features/dashboard/services/i_dashboard_api_service.dart';
-import 'package:inbound_ms/features/dashboard/services/mock_dashboard_api_service.dart';
+import 'package:inbound_ms/features/dashboard/services/dashboard_api_service.dart';
 import 'package:inbound_ms/features/dashboard/providers/dashboard_provider.dart';
 
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -62,7 +62,7 @@ class StartUpService implements IStartUpService {
     );
 
     getIt.registerLazySingleton<IDashboardApiService>(
-      () => MockDashboardApiService(),
+      () => DashboardApiService(supabaseClient: getIt.get<SupabaseClient>()),
     );
   }
 

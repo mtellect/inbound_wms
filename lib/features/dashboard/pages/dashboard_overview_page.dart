@@ -79,7 +79,7 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
                       flex: 2,
                       child: dashboardProvider.isLoading
                           ? const Center(child: CircularProgressIndicator())
-                          : RecentActivityList(activities: dashboardProvider.recentActivity),
+                          : RecentActivityList(),
                     ),
                     const SizedBox(width: 24),
                     const Expanded(flex: 1, child: QuickActionsCard()),
