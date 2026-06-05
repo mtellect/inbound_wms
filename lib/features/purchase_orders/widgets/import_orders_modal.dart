@@ -60,19 +60,19 @@ class _ImportOrdersModalState extends State<ImportOrdersModal> {
     try {
       final bytes = await _selectedFile!.readAsBytes();
       final ext = _selectedFile!.name.split('.').last;
-      
+
       final vendorName = _vendorController.text.trim();
       String fallbackVendorName = vendorName;
       if (fallbackVendorName.isEmpty) {
         final lastDotIndex = _selectedFile!.name.lastIndexOf('.');
-        fallbackVendorName = lastDotIndex != -1 
-            ? _selectedFile!.name.substring(0, lastDotIndex) 
+        fallbackVendorName = lastDotIndex != -1
+            ? _selectedFile!.name.substring(0, lastDotIndex)
             : _selectedFile!.name;
       }
 
       final orders = ImportOrdersService.parseOrdersBytes(
-        bytes,
-        ext,
+        bytes: bytes,
+        extension: ext,
         defaultSupplierId: fallbackVendorName,
       );
 
@@ -84,19 +84,20 @@ class _ImportOrdersModalState extends State<ImportOrdersModal> {
         }
 
         await context.read<PurchaseOrderProvider>().importCsvOrders(
-          orders,
-          onSuccess: () {
-            if (mounted) {
-              context.router.maybePop();
-              ToastUtils.showSuccess(context, message: 'Imported ${orders.length} orders successfully');
-            }
-          },
-          onError: (error) {
-            if (mounted) {
-              ToastUtils.showError(context, message: 'Failed to import orders: $error');
-            }
-          },
-        );
+              orders: orders,
+              onSuccess: () {
+                if (mounted) {
+                  context.router.maybePop();
+                  ToastUtils.showSuccess(context,
+                      message: 'Imported ${orders.length} orders successfully');
+                }
+              },
+              onError: (error) {
+                if (mounted) {
+                  ToastUtils.showError(context, message: 'Failed to import orders: $error');
+                }
+              },
+            );
       }
     } catch (e) {
       if (mounted) {
@@ -123,13 +124,14 @@ class _ImportOrdersModalState extends State<ImportOrdersModal> {
             children: [
               Text(
                 'Import Purchase Orders',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                style:
+                    Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 24),
               AppInputField(
                 controller: _vendorController,
                 labelText: 'Vendor Name (Optional)',
-                hintText: 'Will be used if file is missing supplier ID',
+                hintText: 'Will be used to generate Supplier ID if missing',
               ),
               const SizedBox(height: 24),
               DropTarget(
@@ -140,7 +142,8 @@ class _ImportOrdersModalState extends State<ImportOrdersModal> {
                     if (ext == 'csv' || ext == 'xlsx') {
                       setState(() => _selectedFile = file);
                     } else {
-                      ToastUtils.showError(context, message: 'Only .csv and .xlsx files are supported');
+                      ToastUtils.showError(context,
+                          message: 'Only .csv and .xlsx files are supported');
                     }
                   }
                 },
@@ -159,35 +162,40 @@ class _ImportOrdersModalState extends State<ImportOrdersModal> {
                       height: 150,
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        color: _isDragging ? Theme.of(context).primaryColor.withOpacity(0.1) : Colors.transparent,
+                        color: _isDragging
+                            ? Theme.of(context).primaryColor.withOpacity(0.1)
+                            : Colors.transparent,
                         borderRadius: BorderRadius.circular(12),
                       ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          _selectedFile != null ? Icons.insert_drive_file : Icons.cloud_upload,
-                          size: 48,
-                          color: _selectedFile != null ? Theme.of(context).primaryColor : Colors.grey.shade500,
-                        ),
-                        const SizedBox(height: 12),
-                        Text(
-                          _selectedFile != null 
-                              ? _selectedFile!.name 
-                              : 'Drag & Drop CSV or Excel file here\nor click to browse',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.grey.shade700,
-                            fontWeight: _selectedFile != null ? FontWeight.bold : FontWeight.normal,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            _selectedFile != null ? Icons.insert_drive_file : Icons.cloud_upload,
+                            size: 48,
+                            color: _selectedFile != null
+                                ? Theme.of(context).primaryColor
+                                : Colors.grey.shade500,
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 12),
+                          Text(
+                            _selectedFile != null
+                                ? _selectedFile!.name
+                                : 'Drag & Drop CSV or Excel file here\nor click to browse',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.grey.shade700,
+                              fontWeight:
+                                  _selectedFile != null ? FontWeight.bold : FontWeight.normal,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 32),
+              const SizedBox(height: 32),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [

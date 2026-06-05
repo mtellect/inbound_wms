@@ -46,9 +46,17 @@ class PurchaseOrderApiService implements IPurchaseOrderApiService {
 
   @override
   Future<void> createPurchaseOrders(List<PurchaseOrder> orders) async {
-    // 1. Extract unique products
+    // 1. Extract unique products and suppliers
     final Map<String, Product> uniqueProducts = {};
+    final Map<String, Map<String, dynamic>> uniqueSuppliers = {};
+    
     for (var order in orders) {
+      if (order.supplierId != null && order.supplierName != null) {
+        uniqueSuppliers[order.supplierId!] = {
+          'id': order.supplierId!,
+          'name': order.supplierName!
+        };
+      }
       for (var item in order.items) {
         if (item.product != null) {
           uniqueProducts[item.product!.sku] = item.product!;
@@ -56,7 +64,14 @@ class PurchaseOrderApiService implements IPurchaseOrderApiService {
       }
     }
 
-    // 2. Upsert Products & Get DB IDs
+    // 2. Upsert Suppliers
+    if (uniqueSuppliers.isNotEmpty) {
+      await _supabaseClient
+          .from('suppliers')
+          .upsert(uniqueSuppliers.values.toList(), onConflict: 'id');
+    }
+
+    // 3. Upsert Products & Get DB IDs
     Map<String, String> skuToDbId = {};
     if (uniqueProducts.isNotEmpty) {
       final productDtos = uniqueProducts.values.map((p) {
@@ -75,7 +90,7 @@ class PurchaseOrderApiService implements IPurchaseOrderApiService {
       }
     }
 
-    // 3. Insert Purchase Orders
+    // 4. Insert Purchase Orders
     final poDtos = orders.map((o) {
       final json = PurchaseOrderMapper.toDto(o).toJson();
       json.remove('po_items'); // Remove nested items to avoid relation errors
@@ -86,7 +101,7 @@ class PurchaseOrderApiService implements IPurchaseOrderApiService {
       await _supabaseClient.from('purchase_orders').insert(poDtos);
     }
 
-    // 4. Insert PO Items
+    // 5. Insert PO Items
     List<Map<String, dynamic>> poItemDtos = [];
     for (var order in orders) {
       for (var item in order.items) {

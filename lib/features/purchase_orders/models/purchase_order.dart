@@ -9,6 +9,7 @@ abstract class PurchaseOrder with _$PurchaseOrder {
     required String id,
     required String poNumber,
     String? supplierId,
+    String? supplierName,
     @Default('pending') String status,
     @Default(false) bool blindReceiving,
     DateTime? createdAt,

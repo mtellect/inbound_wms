@@ -11,6 +11,7 @@ class PurchaseOrderMapper {
       id: dto.id,
       poNumber: dto.poNumber,
       supplierId: dto.supplierId,
+      supplierName: null, // Fetched differently or ignored after import
       status: dto.status,
       blindReceiving: dto.blindReceiving,
       createdAt: dto.createdAt,

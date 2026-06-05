@@ -3,13 +3,14 @@ import 'package:flutter/foundation.dart';
 
 import 'package:csv/csv.dart';
 import 'package:excel/excel.dart';
-import 'package:uuid/uuid.dart';
 import 'package:inbound_ms/features/purchase_orders/models/purchase_order.dart';
 import 'package:inbound_ms/features/purchase_orders/models/po_item.dart';
 import 'package:inbound_ms/features/purchase_orders/models/product.dart';
+import 'package:inbound_ms/core/utils/uuid_utils.dart';
 
 class ImportOrdersService {
-  static List<PurchaseOrder> parseOrdersBytes(Uint8List bytes, String extension, {String? defaultSupplierId}) {
+  static List<PurchaseOrder> parseOrdersBytes(
+      {required Uint8List bytes, required String extension, String? defaultSupplierId}) {
     try {
       List<List<dynamic>> fields = [];
 
@@ -25,12 +26,12 @@ class ImportOrdersService {
         final csvString = utf8.decode(bytes);
         fields = Csv().decode(csvString);
       }
-      
+
       if (fields.isEmpty) throw Exception("File is empty");
 
       // Assuming first row is headers
       final headers = fields[0].map((e) => e.toString().toLowerCase().trim()).toList();
-      
+
       int poNumberIndex = headers.indexOf('po number (foc)');
       if (poNumberIndex == -1) poNumberIndex = headers.indexOf('po_number');
       if (poNumberIndex == -1) poNumberIndex = headers.indexOf('po number');
@@ -65,7 +66,7 @@ class ImportOrdersService {
       }
 
       Map<String, PurchaseOrder> uniqueOrders = {};
-      
+
       for (int i = 1; i < fields.length; i++) {
         final row = fields[i];
         if (row.isEmpty || row.every((e) => e.toString().trim().isEmpty)) continue;
@@ -84,6 +85,12 @@ class ImportOrdersService {
           }
         }
 
+        // Ensure supplierId is a valid UUID, otherwise generate one from the string
+        String? originalSupplierStr = supplierId;
+        supplierId = UuidUtils.ensureValidOrGenerate(supplierId);
+        String? supplierName = (supplierId != null && originalSupplierStr != supplierId) ? originalSupplierStr : 'Unknown Supplier';
+        if (originalSupplierStr == null || originalSupplierStr.isEmpty) supplierName = null;
+
         bool blindReceiving = false;
         if (blindReceivingIndex != -1 && blindReceivingIndex < row.length) {
           final val = row[blindReceivingIndex].toString().trim().toLowerCase();
@@ -93,9 +100,10 @@ class ImportOrdersService {
         // Create PO if not exists
         if (!uniqueOrders.containsKey(poNumber)) {
           uniqueOrders[poNumber] = PurchaseOrder(
-            id: const Uuid().v4(),
+            id: UuidUtils.generate(),
             poNumber: poNumber,
             supplierId: supplierId,
+            supplierName: supplierName,
             blindReceiving: blindReceiving,
             status: 'pending',
             items: [],
@@ -109,32 +117,32 @@ class ImportOrdersService {
         if (sku.isNotEmpty) {
           String name = sku; // Fallback to SKU if name is empty
           if (productNameIndex != -1 && productNameIndex < row.length) {
-             final rowName = row[productNameIndex].toString().trim();
-             if (rowName.isNotEmpty) name = rowName;
+            final rowName = row[productNameIndex].toString().trim();
+            if (rowName.isNotEmpty) name = rowName;
           }
 
           int expectedQty = 1; // Default to 1 if missing
           if (quantityIndex != -1 && quantityIndex < row.length) {
-             expectedQty = int.tryParse(row[quantityIndex].toString().trim()) ?? 1;
+            expectedQty = int.tryParse(row[quantityIndex].toString().trim()) ?? 1;
           }
 
           int? lineNum;
           if (lineIndex != -1 && lineIndex < row.length) {
-             lineNum = int.tryParse(row[lineIndex].toString().trim());
+            lineNum = int.tryParse(row[lineIndex].toString().trim());
           }
 
           String? category;
           if (categoryIndex != -1 && categoryIndex < row.length) {
-             category = row[categoryIndex].toString().trim();
+            category = row[categoryIndex].toString().trim();
           }
 
           String? unit;
           if (unitIndex != -1 && unitIndex < row.length) {
-             unit = row[unitIndex].toString().trim();
+            unit = row[unitIndex].toString().trim();
           }
 
           final product = Product(
-            id: const Uuid().v4(),
+            id: UuidUtils.generate(),
             sku: sku,
             name: name,
             category: category,
@@ -143,7 +151,7 @@ class ImportOrdersService {
 
           final poId = uniqueOrders[poNumber]!.id;
           final item = PoItem(
-            id: const Uuid().v4(),
+            id: UuidUtils.generate(),
             poId: poId,
             productId: product.id,
             expectedQuantity: expectedQty,

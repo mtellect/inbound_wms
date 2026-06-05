@@ -17,6 +17,7 @@ mixin _$PurchaseOrder {
   String get id;
   String get poNumber;
   String? get supplierId;
+  String? get supplierName;
   String get status;
   bool get blindReceiving;
   DateTime? get createdAt;
@@ -40,6 +41,8 @@ mixin _$PurchaseOrder {
                 other.poNumber == poNumber) &&
             (identical(other.supplierId, supplierId) ||
                 other.supplierId == supplierId) &&
+            (identical(other.supplierName, supplierName) ||
+                other.supplierName == supplierName) &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.blindReceiving, blindReceiving) ||
                 other.blindReceiving == blindReceiving) &&
@@ -49,12 +52,20 @@ mixin _$PurchaseOrder {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, poNumber, supplierId, status,
-      blindReceiving, createdAt, const DeepCollectionEquality().hash(items));
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      poNumber,
+      supplierId,
+      supplierName,
+      status,
+      blindReceiving,
+      createdAt,
+      const DeepCollectionEquality().hash(items));
 
   @override
   String toString() {
-    return 'PurchaseOrder(id: $id, poNumber: $poNumber, supplierId: $supplierId, status: $status, blindReceiving: $blindReceiving, createdAt: $createdAt, items: $items)';
+    return 'PurchaseOrder(id: $id, poNumber: $poNumber, supplierId: $supplierId, supplierName: $supplierName, status: $status, blindReceiving: $blindReceiving, createdAt: $createdAt, items: $items)';
   }
 }
 
@@ -68,6 +79,7 @@ abstract mixin class $PurchaseOrderCopyWith<$Res> {
       {String id,
       String poNumber,
       String? supplierId,
+      String? supplierName,
       String status,
       bool blindReceiving,
       DateTime? createdAt,
@@ -90,6 +102,7 @@ class _$PurchaseOrderCopyWithImpl<$Res>
     Object? id = null,
     Object? poNumber = null,
     Object? supplierId = freezed,
+    Object? supplierName = freezed,
     Object? status = null,
     Object? blindReceiving = null,
     Object? createdAt = freezed,
@@ -107,6 +120,10 @@ class _$PurchaseOrderCopyWithImpl<$Res>
       supplierId: freezed == supplierId
           ? _self.supplierId
           : supplierId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      supplierName: freezed == supplierName
+          ? _self.supplierName
+          : supplierName // ignore: cast_nullable_to_non_nullable
               as String?,
       status: null == status
           ? _self.status
@@ -225,6 +242,7 @@ extension PurchaseOrderPatterns on PurchaseOrder {
             String id,
             String poNumber,
             String? supplierId,
+            String? supplierName,
             String status,
             bool blindReceiving,
             DateTime? createdAt,
@@ -235,8 +253,15 @@ extension PurchaseOrderPatterns on PurchaseOrder {
     final _that = this;
     switch (_that) {
       case _PurchaseOrder() when $default != null:
-        return $default(_that.id, _that.poNumber, _that.supplierId,
-            _that.status, _that.blindReceiving, _that.createdAt, _that.items);
+        return $default(
+            _that.id,
+            _that.poNumber,
+            _that.supplierId,
+            _that.supplierName,
+            _that.status,
+            _that.blindReceiving,
+            _that.createdAt,
+            _that.items);
       case _:
         return orElse();
     }
@@ -261,6 +286,7 @@ extension PurchaseOrderPatterns on PurchaseOrder {
             String id,
             String poNumber,
             String? supplierId,
+            String? supplierName,
             String status,
             bool blindReceiving,
             DateTime? createdAt,
@@ -270,8 +296,15 @@ extension PurchaseOrderPatterns on PurchaseOrder {
     final _that = this;
     switch (_that) {
       case _PurchaseOrder():
-        return $default(_that.id, _that.poNumber, _that.supplierId,
-            _that.status, _that.blindReceiving, _that.createdAt, _that.items);
+        return $default(
+            _that.id,
+            _that.poNumber,
+            _that.supplierId,
+            _that.supplierName,
+            _that.status,
+            _that.blindReceiving,
+            _that.createdAt,
+            _that.items);
       case _:
         throw StateError('Unexpected subclass');
     }
@@ -295,6 +328,7 @@ extension PurchaseOrderPatterns on PurchaseOrder {
             String id,
             String poNumber,
             String? supplierId,
+            String? supplierName,
             String status,
             bool blindReceiving,
             DateTime? createdAt,
@@ -304,8 +338,15 @@ extension PurchaseOrderPatterns on PurchaseOrder {
     final _that = this;
     switch (_that) {
       case _PurchaseOrder() when $default != null:
-        return $default(_that.id, _that.poNumber, _that.supplierId,
-            _that.status, _that.blindReceiving, _that.createdAt, _that.items);
+        return $default(
+            _that.id,
+            _that.poNumber,
+            _that.supplierId,
+            _that.supplierName,
+            _that.status,
+            _that.blindReceiving,
+            _that.createdAt,
+            _that.items);
       case _:
         return null;
     }
@@ -319,6 +360,7 @@ class _PurchaseOrder implements PurchaseOrder {
       {required this.id,
       required this.poNumber,
       this.supplierId,
+      this.supplierName,
       this.status = 'pending',
       this.blindReceiving = false,
       this.createdAt,
@@ -331,6 +373,8 @@ class _PurchaseOrder implements PurchaseOrder {
   final String poNumber;
   @override
   final String? supplierId;
+  @override
+  final String? supplierName;
   @override
   @JsonKey()
   final String status;
@@ -366,6 +410,8 @@ class _PurchaseOrder implements PurchaseOrder {
                 other.poNumber == poNumber) &&
             (identical(other.supplierId, supplierId) ||
                 other.supplierId == supplierId) &&
+            (identical(other.supplierName, supplierName) ||
+                other.supplierName == supplierName) &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.blindReceiving, blindReceiving) ||
                 other.blindReceiving == blindReceiving) &&
@@ -375,12 +421,20 @@ class _PurchaseOrder implements PurchaseOrder {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, poNumber, supplierId, status,
-      blindReceiving, createdAt, const DeepCollectionEquality().hash(_items));
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      poNumber,
+      supplierId,
+      supplierName,
+      status,
+      blindReceiving,
+      createdAt,
+      const DeepCollectionEquality().hash(_items));
 
   @override
   String toString() {
-    return 'PurchaseOrder(id: $id, poNumber: $poNumber, supplierId: $supplierId, status: $status, blindReceiving: $blindReceiving, createdAt: $createdAt, items: $items)';
+    return 'PurchaseOrder(id: $id, poNumber: $poNumber, supplierId: $supplierId, supplierName: $supplierName, status: $status, blindReceiving: $blindReceiving, createdAt: $createdAt, items: $items)';
   }
 }
 
@@ -396,6 +450,7 @@ abstract mixin class _$PurchaseOrderCopyWith<$Res>
       {String id,
       String poNumber,
       String? supplierId,
+      String? supplierName,
       String status,
       bool blindReceiving,
       DateTime? createdAt,
@@ -418,6 +473,7 @@ class __$PurchaseOrderCopyWithImpl<$Res>
     Object? id = null,
     Object? poNumber = null,
     Object? supplierId = freezed,
+    Object? supplierName = freezed,
     Object? status = null,
     Object? blindReceiving = null,
     Object? createdAt = freezed,
@@ -435,6 +491,10 @@ class __$PurchaseOrderCopyWithImpl<$Res>
       supplierId: freezed == supplierId
           ? _self.supplierId
           : supplierId // ignore: cast_nullable_to_non_nullable
+              as String?,
+      supplierName: freezed == supplierName
+          ? _self.supplierName
+          : supplierName // ignore: cast_nullable_to_non_nullable
               as String?,
       status: null == status
           ? _self.status
