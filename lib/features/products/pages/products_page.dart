@@ -2,7 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:inbound_ms/features/products/models/product.dart';
 import 'package:inbound_ms/core/widgets/page_header.dart';
-import 'package:inbound_ms/core/widgets/app_data_table.dart';
+import 'package:inbound_ms/core/widgets/table/app_table_view.dart';
+import 'package:inbound_ms/core/widgets/table/table_resource.dart';
 
 @RoutePage()
 class ProductsPage extends StatefulWidget {
@@ -19,83 +20,60 @@ class _ProductsPageState extends State<ProductsPage> {
     const Product(id: '3', sku: 'SKU-003', name: 'Thing C', category: 'Things'),
   ];
 
+  final AdminResource _resource = const AdminResource(
+    key: 'products',
+    tableName: 'Products',
+    singularName: 'Product',
+    columns: [
+      AdminColumn(key: 'sku', label: 'SKU', flex: 2),
+      AdminColumn(key: 'name', label: 'Name', flex: 3),
+      AdminColumn(key: 'category', label: 'Category', flex: 2),
+      AdminColumn(key: 'tracking', label: 'Tracking', flex: 2, type: AdminColumnType.pill),
+    ],
+  );
+
   @override
   Widget build(BuildContext context) {
+    final records = _products.map((p) {
+      final tracking = [
+        if (p.requiresLot) 'Lot',
+        if (p.requiresSerial) 'Serial',
+        if (p.requiresExpiry) 'Expiry'
+      ].join(', ');
+
+      return TableRowData<String>(
+        id: p.id,
+        uid: p.id,
+        cells: {
+          'sku': TableCellData(value: p.sku),
+          'name': TableCellData(value: p.name),
+          'category': TableCellData(value: p.category ?? '-'),
+          'tracking': TableCellData(
+            value: tracking.isEmpty ? 'None' : tracking,
+            type: AdminColumnType.pill,
+          ),
+        },
+      );
+    }).toList();
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          PageHeader(
-            title: 'Products Master',
-            subtitle: 'Manage your product catalog and tracking requirements.',
-            actions: [
-              OutlinedButton.icon(
-                onPressed: () {},
-                icon: const Icon(Icons.upload_file),
-                label: const Text('Import CSV'),
-              ),
-              const SizedBox(width: 12),
-              FilledButton.icon(
-                onPressed: () {},
-                icon: const Icon(Icons.add),
-                label: const Text('Add Product'),
-              ),
-            ],
-          ),
           Expanded(
-            child: AppDataTable(
-              columns: const [
-                AppDataColumn(label: 'SKU', flex: 2),
-                AppDataColumn(label: 'Name', flex: 3),
-                AppDataColumn(label: 'Category', flex: 2),
-                AppDataColumn(label: 'Tracking', flex: 2),
-                AppDataColumn(label: 'Actions', flex: 1),
-              ],
-              rows: _products.map((p) {
-                final tracking = [
-                  if (p.requiresLot) 'Lot',
-                  if (p.requiresSerial) 'Serial',
-                  if (p.requiresExpiry) 'Expiry'
-                ].join(', ');
-                
-                return AppDataRow(
-                  id: p.id,
-                  cells: [
-                    Text(p.sku, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
-                    Text(p.name, style: const TextStyle(fontSize: 14)),
-                    Text(p.category ?? '-', style: const TextStyle(fontSize: 14)),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: tracking.isEmpty ? Colors.grey.withValues(alpha: 0.1) : Colors.blue.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Text(
-                        tracking.isEmpty ? 'None' : tracking,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: tracking.isEmpty ? Colors.grey[700] : Colors.blue[700],
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.edit_outlined, size: 20, color: Colors.grey[600]),
-                          onPressed: () {},
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.delete_outline, size: 20, color: Colors.red),
-                          onPressed: () {},
-                        ),
-                      ],
-                    ),
-                  ],
-                );
-              }).toList(),
+            child: Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: AppTableView<String>(
+                resource: _resource,
+                records: records,
+                isLoading: false,
+                totalRecords: records.length,
+                onAdd: () {},
+                onEdit: (record) {},
+                onDelete: (record) {},
+                onView: (record) {},
+              ),
             ),
           ),
         ],

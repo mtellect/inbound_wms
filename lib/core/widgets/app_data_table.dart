@@ -52,15 +52,15 @@ class AppDataTable extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
+                color: Theme.of(context).primaryColor.withValues(alpha: 0.05),
                 shape: BoxShape.circle,
               ),
-              child: Icon(Icons.search_off, size: 64, color: Theme.of(context).primaryColor),
+              child: Icon(Icons.table_rows_outlined, size: 64, color: Theme.of(context).primaryColor.withValues(alpha: 0.5)),
             ),
             const SizedBox(height: 24),
             Text(
               emptyMessage!,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.grey),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.grey),
             ),
           ],
         ),
@@ -69,13 +69,13 @@ class AppDataTable extends StatelessWidget {
 
     return Column(
       children: [
-        _buildHeader(),
+        _buildHeader(context),
         const SizedBox(height: 12),
         Expanded(
           child: ListView.separated(
-            padding: const EdgeInsets.only(bottom: 24),
+            padding: const EdgeInsets.only(bottom: 32),
             itemCount: rows.length,
-            separatorBuilder: (context, index) => const SizedBox(height: 12),
+            separatorBuilder: (context, index) => const SizedBox(height: 8),
             itemBuilder: (context, index) {
               return _buildRow(context, rows[index]);
             },
@@ -85,19 +85,26 @@ class AppDataTable extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
+  Widget _buildHeader(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 24),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF8FAFC), // Slate 50
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFFE2E8F0)), // Slate 200
+      ),
       child: Row(
         children: columns.map((col) {
           return Expanded(
             flex: col.flex,
             child: Text(
-              col.label,
-              style: TextStyle(
-                color: Colors.grey[600],
-                fontSize: 13,
-                fontWeight: FontWeight.bold,
+              col.label.toUpperCase(),
+              style: const TextStyle(
+                color: Color(0xFF64748B), // Slate 500
+                fontSize: 12,
+                letterSpacing: 0.5,
+                fontWeight: FontWeight.w700,
               ),
             ),
           );
@@ -107,39 +114,44 @@ class AppDataTable extends StatelessWidget {
   }
 
   Widget _buildRow(BuildContext context, AppDataRow row) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: row.onTap,
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 24),
+      decoration: BoxDecoration(
+        color: row.isSelected
+            ? Theme.of(context).primaryColor.withValues(alpha: 0.05)
+            : Colors.white,
         borderRadius: BorderRadius.circular(16),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-          decoration: BoxDecoration(
-            color: row.isSelected
-                ? Theme.of(context).primaryColor.withValues(alpha: 0.1)
-                : Colors.white,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: row.isSelected 
-                ? Theme.of(context).primaryColor.withValues(alpha: 0.3) 
-                : Colors.grey.withValues(alpha: 0.1),
+        border: Border.all(
+          color: row.isSelected 
+            ? Theme.of(context).primaryColor.withValues(alpha: 0.3) 
+            : const Color(0xFFF1F5F9), // Slate 100
+        ),
+        boxShadow: [
+          if (!row.isSelected)
+            BoxShadow(
+              color: const Color(0xFF0F172A).withValues(alpha: 0.03), // Slate 900
+              blurRadius: 16,
+              offset: const Offset(0, 4),
             ),
-            boxShadow: [
-              if (!row.isSelected)
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.02),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-            ],
-          ),
-          child: Row(
-            children: List.generate(columns.length, (index) {
-              return Expanded(
-                flex: columns[index].flex,
-                child: index < row.cells.length ? row.cells[index] : const SizedBox.shrink(),
-              );
-            }),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: row.onTap,
+          borderRadius: BorderRadius.circular(16),
+          splashColor: Theme.of(context).primaryColor.withValues(alpha: 0.05),
+          highlightColor: Theme.of(context).primaryColor.withValues(alpha: 0.02),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+            child: Row(
+              children: List.generate(columns.length, (index) {
+                return Expanded(
+                  flex: columns[index].flex,
+                  child: index < row.cells.length ? row.cells[index] : const SizedBox.shrink(),
+                );
+              }),
+            ),
           ),
         ),
       ),
