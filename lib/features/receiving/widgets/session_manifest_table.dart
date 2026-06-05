@@ -47,22 +47,20 @@ class SessionManifestTable extends StatelessWidget {
                         TextButton.icon(
                           onPressed: selectedPo != null
                               ? () {
-                                  ToastUtils.showSuccess(context,
-                                      message: 'Session paused.');
+                                  ToastUtils.showSuccess(context, message: 'Session paused.');
                                   Navigator.of(context).pop();
                                 }
                               : null,
                           icon: const Icon(Icons.pause),
                           label: const Text('Pause'),
-                          style: TextButton.styleFrom(
-                              foregroundColor: AppColors.textSecondaryLight),
+                          style:
+                              TextButton.styleFrom(foregroundColor: AppColors.textSecondaryLight),
                         ),
                         const SizedBox(width: 8),
                         ElevatedButton.icon(
                           onPressed: selectedPo != null
                               ? () {
-                                  ToastUtils.showSuccess(context,
-                                      message: 'Receiving completed.');
+                                  ToastUtils.showSuccess(context, message: 'Receiving completed.');
                                   Navigator.of(context).pop();
                                 }
                               : null,
@@ -85,8 +83,7 @@ class SessionManifestTable extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.assignment,
-                              size: 48, color: AppColors.separatorColor),
+                          Icon(Icons.assignment, size: 48, color: AppColors.separatorColor),
                           SizedBox(height: 16),
                           Text('Select a PO to view manifest',
                               style: TextStyle(color: AppColors.textSecondaryLight)),
@@ -96,13 +93,11 @@ class SessionManifestTable extends StatelessWidget {
                   : ListView.separated(
                       padding: const EdgeInsets.all(16),
                       itemCount: currentManifest.length,
-                      separatorBuilder: (_, __) =>
-                          const Divider(color: AppColors.separatorColor),
+                      separatorBuilder: (_, __) => const Divider(color: AppColors.separatorColor),
                       itemBuilder: (context, index) {
                         final item = currentManifest[index];
-                        final scanned = scannedQuantities[
-                                (item.product?.sku ?? '').toUpperCase()] ??
-                            0;
+                        final scanned =
+                            scannedQuantities[(item.product?.sku ?? '').toUpperCase()] ?? 0;
                         final variance = scanned - item.expectedQuantity;
 
                         Color statusColor = AppColors.separatorColor;
@@ -136,15 +131,13 @@ class SessionManifestTable extends StatelessWidget {
                                           color: AppColors.textPrimaryLight)),
                                   Text(item.product?.name ?? 'Unknown Product',
                                       style: const TextStyle(
-                                          color: AppColors.textSecondaryLight,
-                                          fontSize: 12)),
+                                          color: AppColors.textSecondaryLight, fontSize: 12)),
                                 ],
                               ),
                             ),
                             Expanded(
                               child: Text('Expected: ${item.expectedQuantity}',
-                                  style: const TextStyle(
-                                      color: AppColors.textSecondaryLight)),
+                                  style: const TextStyle(color: AppColors.textSecondaryLight)),
                             ),
                             Expanded(
                               child: Text('Scanned: $scanned',
@@ -179,8 +172,7 @@ class SessionManifestTable extends StatelessWidget {
                                     onPressed: scanned > 0
                                         ? () {
                                             onUpdateQuantity?.call(
-                                                item.product!.sku.toUpperCase(),
-                                                scanned - 1);
+                                                item.product!.sku.toUpperCase(), scanned - 1);
                                           }
                                         : null,
                                   ),
@@ -190,8 +182,7 @@ class SessionManifestTable extends StatelessWidget {
                                     tooltip: 'Manual entry',
                                     onPressed: () {
                                       onUpdateQuantity?.call(
-                                          item.product!.sku.toUpperCase(),
-                                          scanned + 1);
+                                          item.product!.sku.toUpperCase(), scanned + 1);
                                     },
                                   ),
                                 ],
