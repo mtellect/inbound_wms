@@ -54,6 +54,13 @@ class AppTableHeader extends StatelessWidget {
             color: Colors.black87,
           ),
         ),
+        if (resource.subtitle != null) ...[
+          const SizedBox(height: 4),
+          Text(
+            resource.subtitle!,
+            style: TextStyle(color: Colors.grey[600], fontSize: 14),
+          ),
+        ],
         const SizedBox(height: 8),
         _buildRecordsCountChip(),
       ],
@@ -93,6 +100,10 @@ class AppTableHeader extends StatelessWidget {
   Widget _buildActionButtons(BuildContext context) {
     return Row(
       children: [
+        if (resource.headerActions != null) ...[
+          ...resource.headerActions!,
+          const SizedBox(width: 16),
+        ],
         if (filters != null) ...[
           ...filters!,
           const SizedBox(width: 16),

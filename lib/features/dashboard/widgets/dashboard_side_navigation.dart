@@ -22,6 +22,7 @@ class DashboardSideNavigation extends StatelessWidget {
       selectedIndex: activeIndex,
       onDestinationSelected: onDestinationSelected,
       labelType: context.isDesktop ? NavigationRailLabelType.none : NavigationRailLabelType.all,
+      
       leading: Padding(
         padding: const EdgeInsets.symmetric(vertical: 24.0),
         child: Column(

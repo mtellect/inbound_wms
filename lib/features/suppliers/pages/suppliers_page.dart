@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:inbound_ms/features/suppliers/models/supplier.dart';
-import 'package:inbound_ms/core/widgets/page_header.dart';
 import 'package:inbound_ms/core/widgets/table/app_table_view.dart';
 import 'package:inbound_ms/core/widgets/table/table_resource.dart';
 
@@ -15,21 +14,40 @@ class SuppliersPage extends StatefulWidget {
 
 class _SuppliersPageState extends State<SuppliersPage> {
   final List<Supplier> _suppliers = [
-    const Supplier(id: '1', code: 'SUP-001', name: 'Acme Corp', contactName: 'John Doe', email: 'john@acme.com'),
-    const Supplier(id: '2', code: 'SUP-002', name: 'Global Tech', contactName: 'Jane Smith', email: 'jane@globaltech.com'),
+    const Supplier(id: '1', code: 'SUP-001', name: 'Acme Corp Electronics', contactName: 'John Doe', email: 'john@acmecorp.com'),
+    const Supplier(id: '2', code: 'SUP-002', name: 'Global Tech Imports', contactName: 'Jane Smith', email: 'jane@globaltech.com'),
+    const Supplier(id: '3', code: 'SUP-003', name: 'Nature Valley Foods', contactName: 'Michael Chen', email: 'mchen@naturevalley.com'),
+    const Supplier(id: '4', code: 'SUP-004', name: 'Apex Furniture Co', contactName: 'Sarah Williams', email: 'swilliams@apexfurniture.com'),
+    const Supplier(id: '5', code: 'SUP-005', name: 'HealthPlus Supplements', contactName: 'David Miller', email: 'dmiller@healthplus.com'),
+    const Supplier(id: '6', code: 'SUP-006', name: 'Stellar Accessories', contactName: 'Emily Davis', email: 'edavis@stellar.com'),
+    const Supplier(id: '7', code: 'SUP-007', name: 'Quantum Computing Supplies', contactName: 'Robert Wilson', email: 'rwilson@quantum.com'),
   ];
 
-  final AdminResource _resource = const AdminResource(
-    key: 'suppliers',
-    tableName: 'Suppliers Master',
-    singularName: 'Supplier',
-    columns: [
-      AdminColumn(key: 'code', label: 'Code', flex: 1),
-      AdminColumn(key: 'name', label: 'Name', flex: 2),
-      AdminColumn(key: 'contact', label: 'Contact', flex: 2),
-      AdminColumn(key: 'email', label: 'Email', flex: 2),
-    ],
-  );
+  late final AdminResource _resource;
+
+  @override
+  void initState() {
+    super.initState();
+    _resource = AdminResource(
+      key: 'suppliers',
+      tableName: 'Suppliers Master',
+      subtitle: 'Manage your vendors and supplier contacts.',
+      singularName: 'Supplier',
+      columns: const [
+        AdminColumn(key: 'code', label: 'Code', flex: 1),
+        AdminColumn(key: 'name', label: 'Name', flex: 2),
+        AdminColumn(key: 'contact', label: 'Contact', flex: 2),
+        AdminColumn(key: 'email', label: 'Email', flex: 2),
+      ],
+      headerActions: [
+        OutlinedButton.icon(
+          onPressed: () {},
+          icon: const Icon(Icons.upload_file),
+          label: const Text('Import CSV'),
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,17 +69,6 @@ class _SuppliersPageState extends State<SuppliersPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          PageHeader(
-            title: 'Suppliers Master',
-            subtitle: 'Manage your vendors and supplier contacts.',
-            actions: [
-              FilledButton.icon(
-                onPressed: () {},
-                icon: const Icon(Icons.add),
-                label: const Text('Add Supplier'),
-              ),
-            ],
-          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(24.0),

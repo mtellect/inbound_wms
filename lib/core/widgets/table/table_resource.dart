@@ -40,16 +40,20 @@ class TableRowData<T> {
 class AdminResource {
   final String key;
   final String tableName;
+  final String? subtitle;
   final String? singularName;
   final List<AdminColumn> columns;
   final bool selectable;
+  final List<Widget>? headerActions;
 
   const AdminResource({
     required this.key,
     required this.tableName,
+    this.subtitle,
     this.singularName,
     required this.columns,
     this.selectable = false,
+    this.headerActions,
   });
 }
 
