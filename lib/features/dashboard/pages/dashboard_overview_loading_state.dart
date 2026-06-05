@@ -97,21 +97,21 @@ class DashboardQuickActionsLoadingState extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.05),
+        color: Colors.white,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(color: Colors.grey.withValues(alpha: 0.1)),
       ),
       child: Padding(
         padding: const EdgeInsets.all(32.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const AppShimmerChild(height: 24, width: 150, radius: 4),
-            const SizedBox(height: 24),
-            ...List.generate(3, (index) {
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 12.0),
-                child: AppShimmerParent(
+        child: AppShimmerParent(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const AppShimmerChild(height: 24, width: 150, radius: 4),
+              const SizedBox(height: 24),
+              ...List.generate(3, (index) {
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 12.0),
                   child: Container(
                     padding: const EdgeInsets.all(16.0),
                     decoration: BoxDecoration(
@@ -127,10 +127,10 @@ class DashboardQuickActionsLoadingState extends StatelessWidget {
                       ],
                     ),
                   ),
-                ),
-              );
-            }),
-          ],
+                );
+              }),
+            ],
+          ),
         ),
       ),
     );

@@ -1,6 +1,5 @@
-
-
 import 'package:flutter/material.dart';
+import 'package:inbound_ms/core/resources/app_colors.dart';
 import 'package:shimmer/shimmer.dart';
 
 ///
@@ -9,20 +8,15 @@ import 'package:shimmer/shimmer.dart';
 /// Based on [Shimmer]
 ///
 class AppShimmerParent extends StatelessWidget {
-  const AppShimmerParent({
-    super.key,
-    required this.child,
-  });
+  const AppShimmerParent({super.key, required this.child});
 
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
-      baseColor: Colors.grey[200]!,
-      highlightColor: Colors.grey[100]!,
-      // baseColor: AppColors.primary.withOpacity(0.05),
-      //   highlightColor: AppColors.primary.withOpacity(0.1),
+      baseColor: AppColors.primary.withValues(alpha: 0.05),
+      highlightColor: AppColors.primary.withValues(alpha: 0.1),
       child: child,
     );
   }
@@ -54,10 +48,7 @@ class AppShimmerChild extends StatelessWidget {
       width: width,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(radius),
-        child: Container(
-          decoration: decoration,
-          color: decoration != null ? null : Colors.white,
-        ),
+        child: Container(decoration: decoration, color: decoration != null ? null : Colors.white),
       ),
     );
   }
