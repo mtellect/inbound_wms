@@ -5,12 +5,14 @@ class DashboardActivity {
   final DateTime timestamp;
   final IconData icon;
   final Color iconColor;
+  final String? poNumber;
 
   const DashboardActivity({
     required this.title,
     required this.timestamp,
     required this.icon,
     required this.iconColor,
+    this.poNumber,
   });
 
   String get timeAgo {

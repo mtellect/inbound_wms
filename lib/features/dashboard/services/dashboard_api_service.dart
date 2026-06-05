@@ -63,6 +63,7 @@ class DashboardApiService implements IDashboardApiService {
         timestamp: createdAt,
         icon: Icons.history,
         iconColor: Colors.blue,
+        poNumber: e['po_number'],
       );
     }).toList();
   }
