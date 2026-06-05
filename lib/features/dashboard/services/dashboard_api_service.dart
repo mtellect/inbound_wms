@@ -6,8 +6,7 @@ import 'package:inbound_ms/features/dashboard/services/i_dashboard_api_service.d
 class DashboardApiService implements IDashboardApiService {
   final SupabaseClient _supabaseClient;
 
-  DashboardApiService({required SupabaseClient supabaseClient})
-      : _supabaseClient = supabaseClient;
+  DashboardApiService({required this._supabaseClient});
 
   @override
   Future<List<DashboardKpi>> fetchOtherKpis() async {
@@ -21,7 +20,7 @@ class DashboardApiService implements IDashboardApiService {
       ),
       DashboardKpi(
         title: 'Active Suppliers',
-        value: 'N/A', // Placeholder
+        value: '0', // Placeholder
         icon: Icons.storefront,
         colors: [Colors.teal[400]!, Colors.teal[700]!],
       ),
