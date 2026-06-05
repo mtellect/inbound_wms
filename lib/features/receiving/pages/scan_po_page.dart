@@ -3,21 +3,16 @@ import 'package:inbound_ms/core/widgets/app_dropdown_button.dart';
 import 'package:inbound_ms/core/utils/toast_utils.dart';
 import 'package:inbound_ms/core/resources/app_colors.dart';
 
+import 'package:inbound_ms/features/purchase_orders/providers/purchase_order_provider.dart';
+import 'package:inbound_ms/features/purchase_orders/models/purchase_order.dart';
+import 'package:provider/provider.dart';
+
 class PoLineItem {
   final String sku;
   final String name;
   final int expectedQty;
 
   PoLineItem({required this.sku, required this.name, required this.expectedQty});
-}
-
-class PurchaseOrderMock {
-  final String id;
-  final String supplier;
-  final String date;
-  final List<PoLineItem> manifest;
-
-  PurchaseOrderMock({required this.id, required this.supplier, required this.date, required this.manifest});
 }
 
 class ScanPoPage extends StatefulWidget {
@@ -31,21 +26,18 @@ class _ScanPoPageState extends State<ScanPoPage> {
   final TextEditingController _scanController = TextEditingController();
   final FocusNode _scanFocusNode = FocusNode();
 
-  final List<PurchaseOrderMock> _mockPos = [
-    PurchaseOrderMock(id: 'PO-2026-001', supplier: 'Tech Solutions Inc', date: '04/06/2026', manifest: [
-      PoLineItem(sku: 'SKU-A100', name: 'Wireless Mouse', expectedQty: 50),
-      PoLineItem(sku: 'SKU-B200', name: 'Mechanical Keyboard', expectedQty: 20),
-    ]),
-    PurchaseOrderMock(id: 'PO-2026-002', supplier: 'Global Imports', date: '05/06/2026', manifest: [
-      PoLineItem(sku: 'SKU-C300', name: 'USB-C Cable 2m', expectedQty: 200),
-      PoLineItem(sku: 'SKU-D400', name: 'Power Adapter 65W', expectedQty: 100),
-      PoLineItem(sku: 'SKU-E500', name: 'Laptop Stand', expectedQty: 15),
-    ]),
-  ];
-
-  PurchaseOrderMock? _selectedPo;
+  PurchaseOrder? _selectedPo;
+  List<PoLineItem> _currentManifest = [];
   final Map<String, int> _scannedQuantities = {};
   int _unexpectedScans = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<PurchaseOrderProvider>().loadActiveOrders();
+    });
+  }
 
   @override
   void dispose() {
@@ -56,12 +48,20 @@ class _ScanPoPageState extends State<ScanPoPage> {
 
   void _onPoSelected(String? poId) {
     if (poId == null) return;
+    final provider = context.read<PurchaseOrderProvider>();
     setState(() {
-      _selectedPo = _mockPos.firstWhere((po) => po.id == poId);
+      _selectedPo = provider.activeOrders.firstWhere((po) => po.id == poId);
+      
+      // Generate a dummy manifest since real PO items aren't fetched yet
+      _currentManifest = [
+        PoLineItem(sku: 'SKU-A100', name: 'Wireless Mouse (Mock)', expectedQty: 50),
+        PoLineItem(sku: 'SKU-B200', name: 'Keyboard (Mock)', expectedQty: 20),
+      ];
+
       _scannedQuantities.clear();
       _unexpectedScans = 0;
       // Initialize scan counts
-      for (var item in _selectedPo!.manifest) {
+      for (var item in _currentManifest) {
         _scannedQuantities[item.sku] = 0;
       }
     });
@@ -90,7 +90,7 @@ class _ScanPoPageState extends State<ScanPoPage> {
 
   int get _totalExpected {
     if (_selectedPo == null) return 0;
-    return _selectedPo!.manifest.fold(0, (sum, item) => sum + item.expectedQty);
+    return _currentManifest.fold(0, (sum, item) => sum + item.expectedQty);
   }
 
   int get _totalScanned {
@@ -100,7 +100,7 @@ class _ScanPoPageState extends State<ScanPoPage> {
   int get _mismatches {
     if (_selectedPo == null) return 0;
     int overages = 0;
-    for (var item in _selectedPo!.manifest) {
+    for (var item in _currentManifest) {
       final scanned = _scannedQuantities[item.sku] ?? 0;
       if (scanned > item.expectedQty) {
         overages += (scanned - item.expectedQty);
@@ -116,10 +116,12 @@ class _ScanPoPageState extends State<ScanPoPage> {
       onTap: () {
         if (_selectedPo != null) _scanFocusNode.requestFocus();
       },
-      child: Dialog(
-        backgroundColor: Colors.transparent,
-        insetPadding: const EdgeInsets.all(48),
-        child: Container(
+      child: Consumer<PurchaseOrderProvider>(
+        builder: (context, provider, child) {
+          return Dialog(
+            backgroundColor: Colors.transparent,
+            insetPadding: const EdgeInsets.all(48),
+            child: Container(
           width: 1100,
           decoration: BoxDecoration(
             color: AppColors.backgroundLight,
@@ -159,9 +161,9 @@ class _ScanPoPageState extends State<ScanPoPage> {
                             hint: const Text('Select a Purchase Order'),
                             isSearchable: true,
                             searchHint: 'Search PO...',
-                            items: _mockPos.map((po) => DropdownMenuItem(
+                            items: provider.activeOrders.map((po) => DropdownMenuItem(
                               value: po.id,
-                              child: Text(po.id),
+                              child: Text(po.poNumber),
                             )).toList(),
                             onChanged: _onPoSelected,
                           ),
@@ -171,12 +173,12 @@ class _ScanPoPageState extends State<ScanPoPage> {
                     const SizedBox(width: 16),
                     Expanded(
                       flex: 2,
-                      child: _buildMetaField('SUPPLIER', _selectedPo?.supplier ?? '---'),
+                      child: _buildMetaField('SUPPLIER', _selectedPo?.supplierId ?? '---'),
                     ),
                     const SizedBox(width: 16),
                     Expanded(
                       flex: 1,
-                      child: _buildMetaField('DATE', _selectedPo?.date ?? '---', isDate: true),
+                      child: _buildMetaField('DATE', _selectedPo?.createdAt?.toIso8601String().split('T')[0] ?? '---', isDate: true),
                     ),
                   ],
                 ),
@@ -293,10 +295,10 @@ class _ScanPoPageState extends State<ScanPoPage> {
                               )
                             : ListView.separated(
                                 padding: const EdgeInsets.all(16),
-                                itemCount: _selectedPo!.manifest.length,
+                                itemCount: _currentManifest.length,
                                 separatorBuilder: (_, __) => const Divider(color: AppColors.separatorColor),
                                 itemBuilder: (context, index) {
-                                  final item = _selectedPo!.manifest[index];
+                                  final item = _currentManifest[index];
                                   final scanned = _scannedQuantities[item.sku] ?? 0;
                                   final variance = scanned - item.expectedQty;
                                   
@@ -379,8 +381,10 @@ class _ScanPoPageState extends State<ScanPoPage> {
                 ),
               ],
             ),
+            ),
           ),
-        ),
+        );
+      },
       ),
     );
   }
