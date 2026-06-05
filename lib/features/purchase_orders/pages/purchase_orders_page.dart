@@ -4,6 +4,7 @@ import 'package:inbound_ms/core/widgets/table/app_table_view.dart';
 import 'package:inbound_ms/core/widgets/table/table_resource.dart';
 import 'package:provider/provider.dart';
 import 'package:inbound_ms/features/purchase_orders/providers/purchase_order_provider.dart';
+import 'package:inbound_ms/features/dashboard/providers/dashboard_provider.dart';
 import 'package:inbound_ms/core/utils/toast_utils.dart';
 import 'package:inbound_ms/core/widgets/delete_confirmation_dialog.dart';
 
@@ -88,8 +89,13 @@ class _PurchaseOrdersPageState extends State<PurchaseOrdersPage> {
                         onDelete: () {
                           context.read<PurchaseOrderProvider>().deleteOrder(
                                 id: record.id,
-                                onSuccess: () => ToastUtils.showSuccess(context,
-                                    message: 'Order deleted successfully'),
+                                onSuccess: () {
+                                  if (mounted) {
+                                    ToastUtils.showSuccess(context,
+                                        message: 'Order deleted successfully');
+                                    context.read<DashboardProvider>().loadDashboardData();
+                                  }
+                                },
                                 onError: (error) => ToastUtils.showError(context,
                                     message: 'Failed to delete order: $error'),
                               );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
+import 'package:inbound_ms/features/dashboard/providers/dashboard_provider.dart';
 import 'package:inbound_ms/core/widgets/dotted_border.dart';
 import 'package:desktop_drop/desktop_drop.dart';
 import 'package:file_picker/file_picker.dart';
@@ -88,6 +89,7 @@ class _ImportOrdersModalState extends State<ImportOrdersModal> {
               onSuccess: () {
                 if (mounted) {
                   context.router.maybePop();
+                  context.read<DashboardProvider>().loadDashboardData();
                   ToastUtils.showSuccess(context,
                       message: 'Imported ${orders.length} orders successfully');
                 }
