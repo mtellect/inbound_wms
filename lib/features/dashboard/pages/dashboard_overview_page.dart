@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:inbound_ms/core/widgets/page_header.dart';
 import 'package:inbound_ms/core/utils/toast_utils.dart';
 import 'package:inbound_ms/core/utils/dialog_utils.dart';
-import 'package:inbound_ms/features/receiving/pages/active_scan_page.dart';
+import 'package:inbound_ms/features/receiving/pages/scan_po_page.dart';
 
 @RoutePage()
 class DashboardOverviewPage extends StatelessWidget {
@@ -289,7 +289,10 @@ class DashboardOverviewPage extends StatelessWidget {
             }),
             const SizedBox(height: 12),
             _buildActionTile(context, 'Scan Label', Icons.document_scanner, () {
-              DialogUtils.showDialog(context: context, builder: (_) => const ActiveScanPage());
+              DialogUtils.showDialog(
+                context: context,
+                builder: (_) => const ScanPoPage(),
+              );
             }),
           ],
         ),

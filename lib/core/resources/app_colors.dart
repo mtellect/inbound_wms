@@ -21,6 +21,10 @@ class AppColors {
   static const Color textPrimaryDark = Color(0xFFF8FAFC);
   static const Color textSecondaryDark = Color(0xFF94A3B8);
 
+  // Border & Separator Colors
+  static const Color separatorColor = Color(0xFFE2E8F0); // Light grey/slate
+
+
   // Status Colors
   static const Color success = Color(0xFF10B981);
   static const Color warning = Color(0xFFF59E0B);
