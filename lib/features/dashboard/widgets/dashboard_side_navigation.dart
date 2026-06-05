@@ -17,77 +17,82 @@ class DashboardSideNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return NavigationRail(
-      extended: context.isDesktop,
-      selectedIndex: activeIndex,
-      onDestinationSelected: onDestinationSelected,
-      labelType: context.isDesktop ? NavigationRailLabelType.none : NavigationRailLabelType.all,
-      
-      leading: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 24.0),
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Icon(Icons.warehouse, color: Theme.of(context).primaryColor, size: 32),
-            ),
-          ],
-        ),
+    return Theme(
+      data: Theme.of(context).copyWith(
+        dividerColor: Colors.transparent,
       ),
-      trailing: Expanded(
-        child: Align(
-          alignment: Alignment.bottomCenter,
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 24.0),
-            child: IconButton(
-              icon: const Icon(Icons.logout),
-              tooltip: 'Sign Out',
-              onPressed: () async {
-                await context.read<AuthProvider>().signOut();
-                if (context.mounted) {
-                  context.router.replaceAll([const SignInRoute()]);
-                }
-              },
+      child: NavigationRail(
+        extended: context.isDesktop,
+        selectedIndex: activeIndex,
+        onDestinationSelected: onDestinationSelected,
+        labelType: context.isDesktop ? NavigationRailLabelType.none : NavigationRailLabelType.all,
+        
+        leading: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 24.0),
+          child: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(Icons.warehouse, color: Theme.of(context).primaryColor, size: 32),
+              ),
+            ],
+          ),
+        ),
+        trailing: Expanded(
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 24.0),
+              child: IconButton(
+                icon: const Icon(Icons.logout),
+                tooltip: 'Sign Out',
+                onPressed: () async {
+                  await context.read<AuthProvider>().signOut();
+                  if (context.mounted) {
+                    context.router.replaceAll([const SignInRoute()]);
+                  }
+                },
+              ),
             ),
           ),
         ),
+        destinations: const [
+          NavigationRailDestination(
+            icon: Icon(Icons.dashboard_outlined),
+            selectedIcon: Icon(Icons.dashboard),
+            label: Text('Overview'),
+          ),
+          NavigationRailDestination(
+            icon: Icon(Icons.inventory_2_outlined),
+            selectedIcon: Icon(Icons.inventory_2),
+            label: Text('Products'),
+          ),
+          NavigationRailDestination(
+            icon: Icon(Icons.storefront_outlined),
+            selectedIcon: Icon(Icons.storefront),
+            label: Text('Suppliers'),
+          ),
+          NavigationRailDestination(
+            icon: Icon(Icons.receipt_long_outlined),
+            selectedIcon: Icon(Icons.receipt_long),
+            label: Text('POs'),
+          ),
+          NavigationRailDestination(
+            icon: Icon(Icons.local_shipping_outlined),
+            selectedIcon: Icon(Icons.local_shipping),
+            label: Text('Shipments'),
+          ),
+          NavigationRailDestination(
+            icon: Icon(Icons.report_problem_outlined),
+            selectedIcon: Icon(Icons.report_problem),
+            label: Text('Triage'),
+          ),
+        ],
       ),
-      destinations: const [
-        NavigationRailDestination(
-          icon: Icon(Icons.dashboard_outlined),
-          selectedIcon: Icon(Icons.dashboard),
-          label: Text('Overview'),
-        ),
-        NavigationRailDestination(
-          icon: Icon(Icons.inventory_2_outlined),
-          selectedIcon: Icon(Icons.inventory_2),
-          label: Text('Products'),
-        ),
-        NavigationRailDestination(
-          icon: Icon(Icons.storefront_outlined),
-          selectedIcon: Icon(Icons.storefront),
-          label: Text('Suppliers'),
-        ),
-        NavigationRailDestination(
-          icon: Icon(Icons.receipt_long_outlined),
-          selectedIcon: Icon(Icons.receipt_long),
-          label: Text('POs'),
-        ),
-        NavigationRailDestination(
-          icon: Icon(Icons.local_shipping_outlined),
-          selectedIcon: Icon(Icons.local_shipping),
-          label: Text('Shipments'),
-        ),
-        NavigationRailDestination(
-          icon: Icon(Icons.report_problem_outlined),
-          selectedIcon: Icon(Icons.report_problem),
-          label: Text('Triage'),
-        ),
-      ],
     );
   }
 }

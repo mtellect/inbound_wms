@@ -173,11 +173,11 @@ class _AppTableBodyState<T> extends State<AppTableBody<T>> {
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
       decoration: BoxDecoration(
         color: isSelected
-            ? Colors.blue.withValues(alpha: 0.1)
-            : Colors.black.withValues(alpha: 0.3),
+            ? Colors.blue.withValues(alpha: 0.05)
+            : Colors.transparent,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: isSelected ? Colors.blue.withValues(alpha: 0.3) : Colors.black.withValues(alpha: 0.05),
+          color: isSelected ? Colors.blue.withValues(alpha: 0.2) : Colors.black.withValues(alpha: 0.05),
         ),
       ),
       child: Row(
@@ -284,7 +284,7 @@ class _AppTableBodyState<T> extends State<AppTableBody<T>> {
       height: 72, // Average height of a row
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
       decoration: BoxDecoration(
-        color: Colors.black.withValues(alpha: 0.1),
+        color: Colors.transparent,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: Colors.black.withValues(alpha: 0.02)),
       ),
