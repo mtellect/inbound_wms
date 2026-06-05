@@ -7,8 +7,10 @@ import 'package:inbound_ms/core/theme/i_theme_provider.dart';
 import 'package:toastification/toastification.dart';
 import 'package:inbound_ms/features/auth/providers/auth_provider.dart';
 import 'package:inbound_ms/features/purchase_orders/providers/purchase_order_provider.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 
 Future<void> runApplication({required ApiEnvironmentEnum environment}) async {
+  usePathUrlStrategy();
   WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize all dependencies and services via GetIt & Supabase
