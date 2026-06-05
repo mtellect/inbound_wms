@@ -20,6 +20,14 @@
   - Inside each feature, create the standard subdirectories: `models`, `pages`, `providers`, `services` (with `dtos` and `mappers` if needed), and `widgets`.
 - [ ] **Core Architecture Implementation:**
   - Implement **Dependency Injection** using `get_it`.
+  - Implement a robust `core/api/` network client structure as a reusable template, incorporating:
+    - `base_api.dart`: Central export file organizing parts.
+    - `api_client.dart` & `api_functions.dart`: Core HTTP request handling and error parsing via Dio.
+    - `api_urls.dart`: Centralized endpoint management.
+    - `api_response.dart`: Standardized wrapper models.
+    - `env_configurations_model.dart`: Environment configuration injection.
+    - `interceptors/`: Request mutation and logging (`authentication`, `body`, `headers`, `error`, `connectivity`).
+    - `exception/`: Standard API exceptions (`api_error`, `api_cancelled`, `no_content`).
   - Create `core/startup/startup_service.dart` to handle ordered initialization (`registerNetwork`, `registerLocalDb`, `registerServices`, `registerControllers`).
   - Implement `auto_route` in `core/navigation/app_router.dart` to properly route web users vs mobile workers.
 - [ ] **Feature Data Modeling & Service Approach:**
