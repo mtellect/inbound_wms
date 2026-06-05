@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:inbound_ms/features/receiving/models/scan_session.dart';
 import 'package:inbound_ms/core/widgets/table/app_table_view.dart';
 import 'package:inbound_ms/core/widgets/table/table_resource.dart';
-import 'package:inbound_ms/core/widgets/page_header.dart';
+
 
 @RoutePage()
 class SessionsPage extends StatefulWidget {
@@ -27,8 +27,16 @@ class _SessionsPageState extends State<SessionsPage> {
     super.initState();
     _resource = AdminResource(
       key: 'sessions',
-      tableName: 'Sessions',
-      columns: [
+      tableName: 'Scan Sessions',
+      subtitle: 'View active and historical receiving sessions.',
+      headerActions: [
+        OutlinedButton.icon(
+          onPressed: () {},
+          icon: const Icon(Icons.add),
+          label: const Text('New Scan'),
+        ),
+      ],
+      columns: const [
         AdminColumn(key: 'session', label: 'SESSION ID', type: AdminColumnType.text, flex: 2),
         AdminColumn(key: 'shipment', label: 'SHIPMENT', type: AdminColumnType.imageText, flex: 3),
         AdminColumn(key: 'operator', label: 'OPERATOR', type: AdminColumnType.text, flex: 2),
@@ -56,30 +64,21 @@ class _SessionsPageState extends State<SessionsPage> {
       );
     }).toList();
 
-    return Padding(
-      padding: const EdgeInsets.all(24.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          PageHeader(
-            title: 'Scan Sessions',
-            subtitle: 'View active and historical receiving sessions.',
-            actions: [
-              ElevatedButton.icon(
-                onPressed: () {},
-                icon: const Icon(Icons.add),
-                label: const Text('New Scan'),
-              ),
-            ],
-          ),
-          const SizedBox(height: 24),
           Expanded(
-            child: AppTableView<String>(
-              resource: _resource,
-              records: records,
-              isLoading: false,
-              totalRecords: records.length,
-              onView: (record) {},
+            child: Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: AppTableView<String>(
+                resource: _resource,
+                records: records,
+                isLoading: false,
+                totalRecords: records.length,
+                onView: (record) {},
+              ),
             ),
           ),
         ],

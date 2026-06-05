@@ -1,8 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:inbound_ms/features/discrepancies/models/discrepancy.dart';
-import 'package:inbound_ms/core/widgets/page_header.dart';
-import 'package:inbound_ms/core/widgets/app_data_table.dart';
+import 'package:inbound_ms/core/widgets/table/app_table_view.dart';
+import 'package:inbound_ms/core/widgets/table/table_resource.dart';
 
 @RoutePage()
 class DiscrepancyTriagePage extends StatefulWidget {
@@ -18,80 +18,72 @@ class _DiscrepancyTriagePageState extends State<DiscrepancyTriagePage> {
     Discrepancy(id: '2', poId: 'PO-2024-002', productId: 'SKU-002', expectedQty: 50, actualQty: 52, reason: 'Overage', status: 'investigating', createdAt: DateTime.now().subtract(const Duration(days: 1))),
   ];
 
+  late final AdminResource _resource;
+
+  @override
+  void initState() {
+    super.initState();
+    _resource = AdminResource(
+      key: 'discrepancies',
+      tableName: 'Discrepancy Triage',
+      subtitle: 'Resolve overages, shortages, and damages from inbound shipments.',
+      singularName: 'Discrepancy',
+      columns: const [
+        AdminColumn(key: 'poId', label: 'PO / Ref', flex: 2),
+        AdminColumn(key: 'productId', label: 'SKU', flex: 2),
+        AdminColumn(key: 'variance', label: 'Variance', flex: 1),
+        AdminColumn(key: 'reason', label: 'Reason', flex: 2),
+        AdminColumn(key: 'status', label: 'Status', flex: 2, type: AdminColumnType.pill),
+      ],
+      headerActions: [
+        OutlinedButton.icon(
+          onPressed: () {},
+          icon: const Icon(Icons.filter_list),
+          label: const Text('Filter'),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final records = _discrepancies.map((d) {
+      final variance = d.actualQty - d.expectedQty;
+
+      return TableRowData<String>(
+        id: d.id,
+        uid: d.id,
+        cells: {
+          'poId': TableCellData(value: d.poId),
+          'productId': TableCellData(value: d.productId),
+          'variance': TableCellData(
+            value: variance > 0 ? '+$variance' : '$variance',
+          ),
+          'reason': TableCellData(value: d.reason),
+          'status': TableCellData(
+            value: d.status, 
+            type: AdminColumnType.pill,
+          ),
+        },
+      );
+    }).toList();
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          PageHeader(
-            title: 'Discrepancy Triage',
-            subtitle: 'Resolve overages, shortages, and damages from inbound shipments.',
-            actions: [
-              OutlinedButton.icon(
-                onPressed: () {},
-                icon: const Icon(Icons.filter_list),
-                label: const Text('Filter'),
-              ),
-            ],
-          ),
           Expanded(
-            child: AppDataTable(
-              columns: const [
-                AppDataColumn(label: 'PO / Ref', flex: 2),
-                AppDataColumn(label: 'SKU', flex: 2),
-                AppDataColumn(label: 'Variance', flex: 1),
-                AppDataColumn(label: 'Reason', flex: 2),
-                AppDataColumn(label: 'Status', flex: 2),
-                AppDataColumn(label: 'Actions', flex: 2),
-              ],
-              rows: _discrepancies.map((d) {
-                return AppDataRow(
-                  id: d.id,
-                  cells: [
-                    Text(d.poId, style: TextStyle(color: Colors.grey[600], fontSize: 14, fontWeight: FontWeight.w600)),
-                    Text(d.productId, style: const TextStyle(fontSize: 14)),
-                    Text(
-                      '${d.actualQty - d.expectedQty}',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: (d.actualQty - d.expectedQty) > 0 ? Colors.green[700] : Colors.red[700],
-                      ),
-                    ),
-                    Text(d.reason, style: const TextStyle(fontSize: 14)),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: d.status == 'unresolved' ? Colors.red.withValues(alpha: 0.1) : Colors.blue.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Text(
-                        d.status.toUpperCase(),
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: d.status == 'unresolved' ? Colors.red[800] : Colors.blue[800],
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        FilledButton.tonal(
-                          onPressed: () {},
-                          child: const Text('Triage'),
-                        ),
-                        const SizedBox(width: 8),
-                        IconButton(
-                          icon: Icon(Icons.more_vert, size: 20, color: Colors.grey[600]),
-                          onPressed: () {},
-                        ),
-                      ],
-                    ),
-                  ],
-                );
-              }).toList(),
+            child: Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: AppTableView<String>(
+                resource: _resource,
+                records: records,
+                isLoading: false,
+                totalRecords: records.length,
+                onView: (record) {},
+                onEdit: (record) {},
+              ),
             ),
           ),
         ],

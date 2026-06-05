@@ -12,14 +12,13 @@ class DashboardShellPage extends StatelessWidget {
     return AutoTabsRouter(
       routes: const [
         DashboardOverviewRoute(),
-        ProductsRoute(),
-        SuppliersRoute(),
         PurchaseOrdersRoute(),
         ShipmentsRoute(),
         DiscrepancyTriageRoute(),
+        ProductsRoute(),
+        SuppliersRoute(),
         UsersRoute(),
         SessionsRoute(),
-        ActiveScanRoute(),
       ],
       builder: (context, child) {
         final tabsRouter = AutoTabsRouter.of(context);

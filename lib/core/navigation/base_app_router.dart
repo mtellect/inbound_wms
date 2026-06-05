@@ -22,15 +22,19 @@ class AppRouter extends RootStackRouter {
       guards: [AuthGuard(authProvider: authProvider)],
       children: [
         AutoRoute(page: DashboardOverviewRoute.page, initial: true),
-        AutoRoute(page: ProductsRoute.page),
-        AutoRoute(page: SuppliersRoute.page),
         AutoRoute(page: PurchaseOrdersRoute.page),
         AutoRoute(page: ShipmentsRoute.page),
         AutoRoute(page: DiscrepancyTriageRoute.page),
+        AutoRoute(page: ProductsRoute.page),
+        AutoRoute(page: SuppliersRoute.page),
         AutoRoute(page: UsersRoute.page),
         AutoRoute(page: SessionsRoute.page),
-        AutoRoute(page: ActiveScanRoute.page),
       ]
+    ),
+    TransitionRoute.fadeIn(
+      page: ActiveScanRoute.page,
+      path: '/scan',
+      guards: [AuthGuard(authProvider: authProvider)],
     ),
   ];
 }
