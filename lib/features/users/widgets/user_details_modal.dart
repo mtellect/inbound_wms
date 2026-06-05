@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:inbound_ms/core/resources/app_colors.dart';
+import 'package:inbound_ms/core/utils/toast_utils.dart';
+import 'package:inbound_ms/core/widgets/app_button.dart';
 import 'package:inbound_ms/core/widgets/app_dropdown_button.dart';
+import 'package:inbound_ms/core/widgets/app_input_field.dart';
 import 'package:inbound_ms/features/auth/models/user_role.dart';
 import 'package:inbound_ms/features/users/models/app_user.dart';
 import 'package:inbound_ms/features/users/providers/user_provider.dart';
@@ -68,9 +71,7 @@ class _UserDetailsModalState extends State<UserDetailsModal> {
       if (mounted) Navigator.of(context).pop();
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.toString()), backgroundColor: Colors.red),
-        );
+        ToastUtils.showError(context, message: e.toString());
       }
     } finally {
       if (mounted) setState(() => _isLoading = false);
@@ -80,7 +81,7 @@ class _UserDetailsModalState extends State<UserDetailsModal> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: Colors.transparent,
+      backgroundColor: Colors.white,
       insetPadding: const EdgeInsets.all(48),
       child: Container(
         width: 600,
@@ -97,11 +98,14 @@ class _UserDetailsModalState extends State<UserDetailsModal> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(widget.user == null ? 'Add User' : 'User Details',
-                      style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w900,
-                          color: AppColors.textPrimaryLight)),
+                  Text(
+                    widget.user == null ? 'Add User' : 'User Details',
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w900,
+                      color: AppColors.textPrimaryLight,
+                    ),
+                  ),
                   IconButton(
                     icon: const Icon(Icons.close, color: AppColors.textSecondaryLight),
                     onPressed: _isLoading ? null : () => Navigator.of(context).pop(),
@@ -109,39 +113,24 @@ class _UserDetailsModalState extends State<UserDetailsModal> {
                 ],
               ),
               const SizedBox(height: 24),
-              const Text('Display Name', style: TextStyle(fontWeight: FontWeight.bold)),
-              const SizedBox(height: 8),
-              TextFormField(
+              AppInputField(
                 controller: _nameController,
-                decoration: InputDecoration(
-                  hintText: 'Enter full name',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                ),
+                labelText: 'Display Name',
+                hintText: 'Enter full name',
               ),
               const SizedBox(height: 16),
-              const Text('Email Address', style: TextStyle(fontWeight: FontWeight.bold)),
-              const SizedBox(height: 8),
-              TextFormField(
+              AppInputField(
                 controller: _emailController,
+                labelText: 'Email Address',
+                hintText: 'Enter email address',
                 enabled: widget.user == null,
-                decoration: InputDecoration(
-                  hintText: 'Enter email address',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                ),
               ),
               const SizedBox(height: 16),
               if (widget.user == null) ...[
-                const Text('Temporary Password', style: TextStyle(fontWeight: FontWeight.bold)),
-                const SizedBox(height: 8),
-                TextFormField(
+                AppInputField(
                   controller: _passwordController,
-                  decoration: InputDecoration(
-                    hintText: 'Enter password',
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  ),
+                  labelText: 'Temporary Password',
+                  hintText: 'Enter password',
                 ),
                 const SizedBox(height: 16),
               ],
@@ -149,10 +138,9 @@ class _UserDetailsModalState extends State<UserDetailsModal> {
               const SizedBox(height: 8),
               AppDropDownButton<UserRole>(
                 value: _selectedRole,
-                items: UserRole.values.map((r) => DropdownItem<UserRole>(
-                  value: r,
-                  child: Text(r.displayName),
-                )).toList(),
+                items: UserRole.values
+                    .map((r) => DropdownItem<UserRole>(value: r, child: Text(r.displayName)))
+                    .toList(),
                 onChanged: (val) {
                   if (val != null) setState(() => _selectedRole = val);
                 },
@@ -163,10 +151,11 @@ class _UserDetailsModalState extends State<UserDetailsModal> {
               const SizedBox(height: 8),
               AppDropDownButton<String>(
                 value: _selectedStatus,
-                items: ['active', 'inactive', 'offline'].map((s) => DropdownItem<String>(
-                  value: s,
-                  child: Text(s.toUpperCase()),
-                )).toList(),
+                items: [
+                  'active',
+                  'inactive',
+                  'offline',
+                ].map((s) => DropdownItem<String>(value: s, child: Text(s.toUpperCase()))).toList(),
                 onChanged: (val) {
                   if (val != null) setState(() => _selectedStatus = val);
                 },
@@ -176,7 +165,10 @@ class _UserDetailsModalState extends State<UserDetailsModal> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('Requires Password Reset', style: TextStyle(fontWeight: FontWeight.bold)),
+                  const Text(
+                    'Requires Password Reset',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                   Switch(
                     value: _requiresPasswordReset,
                     onChanged: (val) => setState(() => _requiresPasswordReset = val),
@@ -193,22 +185,11 @@ class _UserDetailsModalState extends State<UserDetailsModal> {
                     child: const Text('Cancel'),
                   ),
                   const SizedBox(width: 16),
-                  ElevatedButton(
-                    onPressed: _isLoading ? null : _save,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
-                      foregroundColor: AppColors.textPrimaryDark,
-                    ),
-                    child: _isLoading 
-                        ? const SizedBox(
-                            width: 20, 
-                            height: 20, 
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2, 
-                              valueColor: AlwaysStoppedAnimation<Color>(AppColors.textPrimaryDark)
-                            )
-                          )
-                        : const Text('Save Changes'),
+                  AppButton(
+                    label: 'Save Changes',
+                    onPressed: _save,
+                    isLoading: _isLoading,
+                    backgroundColor: AppColors.primary,
                   ),
                 ],
               ),

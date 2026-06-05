@@ -9,6 +9,7 @@ class AppInputField extends StatelessWidget {
   final bool obscureText;
   final TextInputType? keyboardType;
   final String? Function(String?)? validator;
+  final bool enabled;
 
   const AppInputField({
     super.key,
@@ -20,6 +21,7 @@ class AppInputField extends StatelessWidget {
     this.obscureText = false,
     this.keyboardType,
     this.validator,
+    this.enabled = true,
   });
 
   @override
@@ -28,6 +30,7 @@ class AppInputField extends StatelessWidget {
       controller: controller,
       obscureText: obscureText,
       keyboardType: keyboardType,
+      enabled: enabled,
       style: const TextStyle(fontWeight: FontWeight.w500),
       decoration: InputDecoration(
         labelText: labelText,
