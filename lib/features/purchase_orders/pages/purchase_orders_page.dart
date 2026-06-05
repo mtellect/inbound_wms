@@ -4,6 +4,8 @@ import 'package:inbound_ms/core/widgets/table/app_table_view.dart';
 import 'package:inbound_ms/core/widgets/table/table_resource.dart';
 import 'package:provider/provider.dart';
 import 'package:inbound_ms/features/purchase_orders/providers/purchase_order_provider.dart';
+import 'package:inbound_ms/features/purchase_orders/widgets/purchase_order_details_modal.dart';
+import 'package:inbound_ms/core/utils/dialog_utils.dart';
 import 'package:inbound_ms/features/dashboard/providers/dashboard_provider.dart';
 import 'package:inbound_ms/core/utils/toast_utils.dart';
 import 'package:inbound_ms/core/widgets/delete_confirmation_dialog.dart';
@@ -102,7 +104,13 @@ class _PurchaseOrdersPageState extends State<PurchaseOrdersPage> {
                         },
                       );
                     },
-                    onView: (record) {},
+                    onView: (record) {
+                      final po = provider.activeOrders.firstWhere((o) => o.id == record.id);
+                      DialogUtils.showDialog(
+                        context: context,
+                        builder: (_) => PurchaseOrderDetailsModal(po: po),
+                      );
+                    },
                   ),
                 ),
               ),
