@@ -172,7 +172,7 @@ class _UserDetailsModalState extends State<UserDetailsModal> {
                   Switch(
                     value: _requiresPasswordReset,
                     onChanged: (val) => setState(() => _requiresPasswordReset = val),
-                    activeColor: AppColors.primary,
+                    activeThumbColor: AppColors.primary,
                   ),
                 ],
               ),

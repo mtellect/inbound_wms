@@ -66,7 +66,7 @@ class _AppTableBodyState<T> extends State<AppTableBody<T>> {
   @override
   Widget build(BuildContext context) {
     if (widget.isLoading) {
-      return const Center(child: CircularProgressIndicator(color: Colors.blue));
+      return const Center(child: CircularProgressIndicator());
     }
 
     if (widget.errorMessage != null) {
@@ -97,8 +97,9 @@ class _AppTableBodyState<T> extends State<AppTableBody<T>> {
             child: ListView.separated(
               controller: _verticalController,
               padding: const EdgeInsets.only(bottom: 24),
-              itemCount:
-                  widget.records.length < widget.minRows ? widget.minRows : widget.records.length,
+              itemCount: widget.records.length < widget.minRows
+                  ? widget.minRows
+                  : widget.records.length,
               separatorBuilder: (context, index) => const SizedBox(height: 12),
               itemBuilder: (context, index) {
                 if (index < widget.records.length) {
@@ -116,7 +117,8 @@ class _AppTableBodyState<T> extends State<AppTableBody<T>> {
   }
 
   Widget _buildTableHeader() {
-    final allSelected = widget.records.isNotEmpty &&
+    final allSelected =
+        widget.records.isNotEmpty &&
         widget.selectedIds != null &&
         widget.records.every((r) => widget.selectedIds!.contains(r.id));
 
@@ -154,11 +156,7 @@ class _AppTableBodyState<T> extends State<AppTableBody<T>> {
             child: Text(
               'Actions',
               textAlign: TextAlign.right,
-              style: TextStyle(
-                color: Colors.grey[500]!,
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-              ),
+              style: TextStyle(color: Colors.grey[500]!, fontSize: 12, fontWeight: FontWeight.w500),
             ),
           ),
         ],
@@ -185,110 +183,131 @@ class _AppTableBodyState<T> extends State<AppTableBody<T>> {
         opacity: isRowLoading ? 0.5 : 1.0,
         child: Row(
           children: [
-          if (widget.resource.selectable)
+            if (widget.resource.selectable)
+              SizedBox(
+                width: 40,
+                child: Theme(
+                  data: ThemeData(unselectedWidgetColor: Colors.grey[500]!),
+                  child: Checkbox(
+                    value: isSelected,
+                    activeColor: Colors.blue,
+                    onChanged: (val) => _onToggleSelect(record.id, val ?? false),
+                  ),
+                ),
+              ),
+            ...widget.resource.columns.map((col) {
+              return Expanded(
+                flex: col.flex,
+                child: AppTableCell<T>(column: col, record: record),
+              );
+            }),
             SizedBox(
-              width: 40,
-              child: Theme(
-                data: ThemeData(unselectedWidgetColor: Colors.grey[500]!),
-                child: Checkbox(
-                  value: isSelected,
-                  activeColor: Colors.blue,
-                  onChanged: (val) => _onToggleSelect(record.id, val ?? false),
-                ),
-              ),
-            ),
-          ...widget.resource.columns.map((col) {
-            return Expanded(
-              flex: col.flex,
-              child: AppTableCell<T>(column: col, record: record),
-            );
-          }),
-          SizedBox(
-            width: 80,
-            child: Align(
-              alignment: Alignment.centerRight,
-              child: isRowLoading
-                  ? const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2, color: Colors.blue),
-                    )
-                  : PopupMenuButton<String>(
-                      icon: Icon(Icons.more_horiz, color: Colors.grey[500]!),
-                      // color: const Color(0xFF1E1E2E),
-                      shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  side: BorderSide(color: Colors.black.withValues(alpha: 0.1)),
-                ),
-                onSelected: (val) {
-                  if (val == 'view') {
-                    widget.onView?.call(record);
-                  } else if (val == 'edit') {
-                    widget.onEdit?.call(record);
-                  } else if (val == 'delete') {
-                    widget.onDelete?.call(record);
-                  } else {
-                    final action = widget.additionalActions?.firstWhere((a) => a.value == val);
-                    action?.onTap(record);
-                  }
-                },
-                itemBuilder: (context) => [
-                  if (widget.onView != null)
-                    PopupMenuItem(
-                      value: 'view',
-                      child: Row(
-                        children: [
-                          Icon(Icons.visibility_outlined, color: Colors.green.shade300, size: 18),
-                          const SizedBox(width: 12),
-                          Text('View', style: TextStyle(color: Colors.black87, fontSize: 13)),
-                        ],
-                      ),
-                    ),
-                  if (widget.onEdit != null)
-                    PopupMenuItem(
-                      value: 'edit',
-                      child: Row(
-                        children: [
-                          Icon(Icons.edit_outlined, color: Colors.blue.shade300, size: 18),
-                          const SizedBox(width: 12),
-                          Text('Edit', style: TextStyle(color: Colors.black87, fontSize: 13)),
-                        ],
-                      ),
-                    ),
-                  if (widget.onDelete != null)
-                    PopupMenuItem(
-                      value: 'delete',
-                      child: Row(
-                        children: [
-                          Icon(Icons.delete_outline, color: Colors.red.shade300, size: 18),
-                          const SizedBox(width: 12),
-                          Text('Delete', style: TextStyle(color: Colors.black87, fontSize: 13)),
-                        ],
-                      ),
-                    ),
-                  if (widget.additionalActions != null)
-                    ...widget.additionalActions!.map(
-                      (action) => PopupMenuItem(
-                        value: action.value,
-                        child: Row(
-                          children: [
-                            Icon(action.icon, color: action.iconColor ?? Colors.black87, size: 18),
-                            const SizedBox(width: 12),
-                            Text(action.label,
-                                style: TextStyle(color: Colors.black87, fontSize: 13)),
-                          ],
+              width: 80,
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: isRowLoading
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2, color: Colors.blue),
+                      )
+                    : PopupMenuButton<String>(
+                        icon: Icon(Icons.more_horiz, color: Colors.grey[500]!),
+                        // color: const Color(0xFF1E1E2E),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          side: BorderSide(color: Colors.black.withValues(alpha: 0.1)),
                         ),
+                        onSelected: (val) {
+                          if (val == 'view') {
+                            widget.onView?.call(record);
+                          } else if (val == 'edit') {
+                            widget.onEdit?.call(record);
+                          } else if (val == 'delete') {
+                            widget.onDelete?.call(record);
+                          } else {
+                            final action = widget.additionalActions?.firstWhere(
+                              (a) => a.value == val,
+                            );
+                            action?.onTap(record);
+                          }
+                        },
+                        itemBuilder: (context) => [
+                          if (widget.onView != null)
+                            PopupMenuItem(
+                              value: 'view',
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.visibility_outlined,
+                                    color: Colors.green.shade300,
+                                    size: 18,
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Text(
+                                    'View',
+                                    style: TextStyle(color: Colors.black87, fontSize: 13),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          if (widget.onEdit != null)
+                            PopupMenuItem(
+                              value: 'edit',
+                              child: Row(
+                                children: [
+                                  Icon(Icons.edit_outlined, color: Colors.blue.shade300, size: 18),
+                                  const SizedBox(width: 12),
+                                  Text(
+                                    'Edit',
+                                    style: TextStyle(color: Colors.black87, fontSize: 13),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          if (widget.onDelete != null)
+                            PopupMenuItem(
+                              value: 'delete',
+                              child: Row(
+                                children: [
+                                  Icon(Icons.delete_outline, color: Colors.red.shade300, size: 18),
+                                  const SizedBox(width: 12),
+                                  Text(
+                                    'Delete',
+                                    style: TextStyle(color: Colors.black87, fontSize: 13),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          if (widget.additionalActions != null)
+                            ...widget.additionalActions!.map(
+                              (action) => PopupMenuItem(
+                                value: action.value,
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      action.icon,
+                                      color: action.iconColor ?? Colors.black87,
+                                      size: 18,
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Text(
+                                      action.label,
+                                      style: TextStyle(color: Colors.black87, fontSize: 13),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                        ],
                       ),
-                    ),
-                ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 
   Widget _buildEmptyRow() {
     return Container(
