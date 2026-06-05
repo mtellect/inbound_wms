@@ -71,7 +71,11 @@ class _ScanPoPageState extends State<ScanPoPage> {
     _scanFocusNode.requestFocus();
 
     // 1. Try to auto-select PO
-    if (_tryAutoSelectPo(barcode)) return;
+    debugPrint("--- SCAN ATTEMPT: $barcode ---");
+    if (_tryAutoSelectPo(barcode)) {
+      debugPrint("Matched as PO number!");
+      return;
+    }
 
     // 2. Validate session
     if (_selectedPo == null) {
@@ -86,10 +90,13 @@ class _ScanPoPageState extends State<ScanPoPage> {
   bool _tryAutoSelectPo(String barcode) {
     final poProvider = context.read<PurchaseOrderProvider>();
     try {
-      final matchedPo = poProvider.activeOrders.firstWhere((p) => p.poNumber.toUpperCase() == barcode);
+      final matchedPo =
+          poProvider.activeOrders.firstWhere((p) => p.poNumber.toUpperCase() == barcode);
       if (_selectedPo?.id != matchedPo.id) {
         _onPoSelected(matchedPo.id);
         ToastUtils.showSuccess(context, message: 'Auto-selected PO: ${matchedPo.poNumber}');
+      } else {
+        ToastUtils.showSuccess(context, message: 'PO already selected: ${matchedPo.poNumber}');
       }
       return true;
     } catch (_) {
@@ -101,9 +108,11 @@ class _ScanPoPageState extends State<ScanPoPage> {
     setState(() {
       if (_scannedQuantities.containsKey(barcode)) {
         _scannedQuantities[barcode] = (_scannedQuantities[barcode] ?? 0) + 1;
+        debugPrint("Success: Incremented quantity for $barcode");
         ToastUtils.showSuccess(context, message: 'Scanned 1x $barcode');
       } else {
         _unexpectedScans++;
+        debugPrint("Error: Unexpected SKU $barcode");
         ToastUtils.showError(context, message: 'Unexpected SKU: $barcode not on PO!');
       }
     });
@@ -443,8 +452,8 @@ class _ScanPoPageState extends State<ScanPoPage> {
                                                   onPressed: scanned > 0
                                                       ? () {
                                                           setState(() {
-                                                            _scannedQuantities[item.product!.sku.toUpperCase()] =
-                                                                scanned - 1;
+                                                            _scannedQuantities[item.product!.sku
+                                                                .toUpperCase()] = scanned - 1;
                                                           });
                                                         }
                                                       : null,
