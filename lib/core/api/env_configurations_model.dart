@@ -2,6 +2,7 @@ part of 'base_api.dart';
 
 class EnvConfigurationsModel {
   final ApiEnvironmentEnum envType;
+  final String baseUrl;
   final String flavor;
   final String supabaseUrl;
   final String supabaseAnonKey;
@@ -9,6 +10,7 @@ class EnvConfigurationsModel {
 
   const EnvConfigurationsModel._internal({
     required this.envType,
+    required this.baseUrl,
     required this.flavor,
     required this.supabaseUrl,
     required this.supabaseAnonKey,
@@ -17,6 +19,7 @@ class EnvConfigurationsModel {
 
   static const EnvConfigurationsModel _env = EnvConfigurationsModel._internal(
     envType: InboundWebEnvironmentEnum.staging,
+    baseUrl: String.fromEnvironment('BASE_URL'),
     flavor: String.fromEnvironment('FLAVOR'),
     supabaseUrl: String.fromEnvironment('SUPABASE_URL'),
     supabaseAnonKey: String.fromEnvironment('SUPABASE_ANON_KEY'),
@@ -34,6 +37,7 @@ class EnvConfigurationsModel {
 
   EnvConfigurationsModel copyWith({
     final ApiEnvironmentEnum? envType,
+    final String? baseUrl,
     final String? flavor,
     final String? supabaseUrl,
     final String? supabaseAnonKey,
@@ -41,6 +45,7 @@ class EnvConfigurationsModel {
   }) {
     return EnvConfigurationsModel._internal(
       envType: envType ?? this.envType,
+      baseUrl: baseUrl ?? this.baseUrl,
       flavor: flavor ?? this.flavor,
       supabaseUrl: supabaseUrl ?? this.supabaseUrl,
       supabaseAnonKey: supabaseAnonKey ?? this.supabaseAnonKey,
