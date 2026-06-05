@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:inbound_ms/features/auth/providers/auth_provider.dart';
 import 'package:inbound_ms/core/navigation/app_router.dart';
 import 'package:inbound_ms/core/utils/toast_utils.dart';
+import 'package:inbound_ms/core/widgets/app_button.dart';
+import 'package:inbound_ms/core/widgets/app_input_field.dart';
 
 @RoutePage()
 class SignInPage extends StatefulWidget {
@@ -148,20 +150,12 @@ class _SignInPageState extends State<SignInPage> {
                               ),
                         ),
                         const SizedBox(height: 48),
-                        TextFormField(
+                        AppInputField(
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
-                          style: const TextStyle(fontWeight: FontWeight.w500),
-                          decoration: InputDecoration(
-                            labelText: 'Email Address',
-                            hintText: 'name@company.com',
-                            prefixIcon: const Icon(Icons.email_outlined),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            filled: true,
-                            fillColor: Colors.grey[50],
-                          ),
+                          labelText: 'Email Address',
+                          hintText: 'name@company.com',
+                          prefixIcon: Icons.email_outlined,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your email';
@@ -173,29 +167,21 @@ class _SignInPageState extends State<SignInPage> {
                           },
                         ),
                         const SizedBox(height: 20),
-                        TextFormField(
+                        AppInputField(
                           controller: _passwordController,
                           obscureText: _obscurePassword,
-                          style: const TextStyle(fontWeight: FontWeight.w500),
-                          decoration: InputDecoration(
-                            labelText: 'Password',
-                            prefixIcon: const Icon(Icons.lock_outline),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
+                          labelText: 'Password',
+                          prefixIcon: Icons.lock_outline,
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                              color: Colors.grey[600],
                             ),
-                            filled: true,
-                            fillColor: Colors.grey[50],
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                _obscurePassword ? Icons.visibility_off : Icons.visibility,
-                                color: Colors.grey[600],
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  _obscurePassword = !_obscurePassword;
-                                });
-                              },
-                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscurePassword = !_obscurePassword;
+                              });
+                            },
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -217,32 +203,11 @@ class _SignInPageState extends State<SignInPage> {
                         const SizedBox(height: 32),
                         Consumer<AuthProvider>(
                           builder: (context, auth, child) {
-                            return FilledButton(
-                              onPressed: auth.isLoading ? null : _handleSignIn,
-                              style: FilledButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(vertical: 20),
-                                backgroundColor: const Color(0xFF203A43),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                              ),
-                              child: auth.isLoading
-                                  ? const SizedBox(
-                                      height: 24,
-                                      width: 24,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                        color: Colors.white,
-                                      ),
-                                    )
-                                  : const Text(
-                                      'Sign In',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        letterSpacing: 1,
-                                      ),
-                                    ),
+                            return AppButton(
+                              label: 'Sign In',
+                              onPressed: _handleSignIn,
+                              isLoading: auth.isLoading,
+                              backgroundColor: const Color(0xFF203A43),
                             );
                           },
                         ),
