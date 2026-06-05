@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:inbound_ms/core/resources/app_colors.dart';
 import 'package:inbound_ms/features/purchase_orders/models/purchase_order.dart';
 import 'package:inbound_ms/features/receiving/widgets/meta_field.dart';
+import 'package:inbound_ms/features/receiving/widgets/session_manifest_table.dart';
 
 class PurchaseOrderDetailsModal extends StatelessWidget {
   final PurchaseOrder po;
@@ -115,77 +116,15 @@ class PurchaseOrderDetailsModal extends StatelessWidget {
               const SizedBox(height: 32),
 
               // Manifest List
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: AppColors.surfaceLight,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: AppColors.separatorColor),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: Text('Item Manifest',
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.textPrimaryLight)),
-                      ),
-                      const Divider(height: 1, color: AppColors.separatorColor),
-                      Expanded(
-                        child: po.items.isEmpty
-                            ? const Center(
-                                child: Text('No items in this purchase order.',
-                                    style: TextStyle(color: AppColors.textSecondaryLight)),
-                              )
-                            : ListView.separated(
-                                padding: const EdgeInsets.all(16),
-                                itemCount: po.items.length,
-                                separatorBuilder: (_, __) =>
-                                    const Divider(color: AppColors.separatorColor),
-                                itemBuilder: (context, index) {
-                                  final item = po.items[index];
-                                  return Row(
-                                    children: [
-                                      Expanded(
-                                        flex: 2,
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(item.product?.sku ?? 'Unknown SKU',
-                                                style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: AppColors.textPrimaryLight)),
-                                            Text(item.product?.name ?? 'Unknown Product',
-                                                style: const TextStyle(
-                                                    color: AppColors.textSecondaryLight,
-                                                    fontSize: 12)),
-                                          ],
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Text('Expected: ${item.expectedQuantity}',
-                                            style: const TextStyle(
-                                                color: AppColors.textSecondaryLight)),
-                                      ),
-                                      Expanded(
-                                        child: Text('Received: ${item.receivedQuantity}',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: item.receivedQuantity > 0
-                                                    ? AppColors.success
-                                                    : AppColors.textSecondaryLight)),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              ),
-                      ),
-                    ],
-                  ),
-                ),
+              SessionManifestTable(
+                selectedPo: po,
+                currentManifest: po.items,
+                isReadOnly: true,
+                scannedQuantities: {
+                  for (var item in po.items)
+                    if (item.product != null)
+                      item.product!.sku.toUpperCase(): item.receivedQuantity
+                },
               ),
             ],
           ),

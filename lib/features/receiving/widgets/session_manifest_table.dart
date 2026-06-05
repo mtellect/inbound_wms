@@ -8,14 +8,16 @@ class SessionManifestTable extends StatelessWidget {
   final PurchaseOrder? selectedPo;
   final List<PoItem> currentManifest;
   final Map<String, int> scannedQuantities;
-  final void Function(String sku, int newQuantity) onUpdateQuantity;
+  final void Function(String sku, int newQuantity)? onUpdateQuantity;
+  final bool isReadOnly;
 
   const SessionManifestTable({
     super.key,
     required this.selectedPo,
     required this.currentManifest,
     required this.scannedQuantities,
-    required this.onUpdateQuantity,
+    this.onUpdateQuantity,
+    this.isReadOnly = false,
   });
 
   @override
@@ -39,39 +41,40 @@ class SessionManifestTable extends StatelessWidget {
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                           color: AppColors.textPrimaryLight)),
-                  Row(
-                    children: [
-                      TextButton.icon(
-                        onPressed: selectedPo != null
-                            ? () {
-                                ToastUtils.showSuccess(context,
-                                    message: 'Session paused.');
-                                Navigator.of(context).pop();
-                              }
-                            : null,
-                        icon: const Icon(Icons.pause),
-                        label: const Text('Pause'),
-                        style: TextButton.styleFrom(
-                            foregroundColor: AppColors.textSecondaryLight),
-                      ),
-                      const SizedBox(width: 8),
-                      ElevatedButton.icon(
-                        onPressed: selectedPo != null
-                            ? () {
-                                ToastUtils.showSuccess(context,
-                                    message: 'Receiving completed.');
-                                Navigator.of(context).pop();
-                              }
-                            : null,
-                        icon: const Icon(Icons.check_circle),
-                        label: const Text('Complete Receiving'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primary,
-                          foregroundColor: AppColors.textPrimaryDark,
+                  if (!isReadOnly)
+                    Row(
+                      children: [
+                        TextButton.icon(
+                          onPressed: selectedPo != null
+                              ? () {
+                                  ToastUtils.showSuccess(context,
+                                      message: 'Session paused.');
+                                  Navigator.of(context).pop();
+                                }
+                              : null,
+                          icon: const Icon(Icons.pause),
+                          label: const Text('Pause'),
+                          style: TextButton.styleFrom(
+                              foregroundColor: AppColors.textSecondaryLight),
                         ),
-                      ),
-                    ],
-                  )
+                        const SizedBox(width: 8),
+                        ElevatedButton.icon(
+                          onPressed: selectedPo != null
+                              ? () {
+                                  ToastUtils.showSuccess(context,
+                                      message: 'Receiving completed.');
+                                  Navigator.of(context).pop();
+                                }
+                              : null,
+                          icon: const Icon(Icons.check_circle),
+                          label: const Text('Complete Receiving'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primary,
+                            foregroundColor: AppColors.textPrimaryDark,
+                          ),
+                        ),
+                      ],
+                    )
                 ],
               ),
             ),
@@ -165,33 +168,34 @@ class SessionManifestTable extends StatelessWidget {
                                     fontWeight: FontWeight.bold,
                                   )),
                             ),
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                  icon: const Icon(Icons.remove_circle_outline,
-                                      color: AppColors.textSecondaryLight),
-                                  tooltip: 'Undo last scan',
-                                  onPressed: scanned > 0
-                                      ? () {
-                                          onUpdateQuantity(
-                                              item.product!.sku.toUpperCase(),
-                                              scanned - 1);
-                                        }
-                                      : null,
-                                ),
-                                IconButton(
-                                  icon: const Icon(Icons.add_circle_outline,
-                                      color: AppColors.textSecondaryLight),
-                                  tooltip: 'Manual entry',
-                                  onPressed: () {
-                                    onUpdateQuantity(
-                                        item.product!.sku.toUpperCase(),
-                                        scanned + 1);
-                                  },
-                                ),
-                              ],
-                            )
+                            if (!isReadOnly)
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(Icons.remove_circle_outline,
+                                        color: AppColors.textSecondaryLight),
+                                    tooltip: 'Undo last scan',
+                                    onPressed: scanned > 0
+                                        ? () {
+                                            onUpdateQuantity?.call(
+                                                item.product!.sku.toUpperCase(),
+                                                scanned - 1);
+                                          }
+                                        : null,
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.add_circle_outline,
+                                        color: AppColors.textSecondaryLight),
+                                    tooltip: 'Manual entry',
+                                    onPressed: () {
+                                      onUpdateQuantity?.call(
+                                          item.product!.sku.toUpperCase(),
+                                          scanned + 1);
+                                    },
+                                  ),
+                                ],
+                              )
                           ],
                         );
                       },
