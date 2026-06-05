@@ -109,3 +109,33 @@ create table public.goods_received_notes (
 alter publication supabase_realtime add table po_items;
 alter publication supabase_realtime add table shipments;
 alter publication supabase_realtime add table scan_logs;
+
+-- 11. Dashboard RPC
+CREATE OR REPLACE FUNCTION get_dashboard_stats()
+RETURNS json AS $$
+DECLARE
+  total_pos int;
+  pending_shipments int;
+  open_discrepancies int;
+  active_suppliers int;
+BEGIN
+  -- Count total POs
+  SELECT count(*) INTO total_pos FROM purchase_orders;
+  
+  -- Count pending shipments
+  SELECT count(*) INTO pending_shipments FROM purchase_orders WHERE status = 'pending';
+  
+  -- Open discrepancies
+  SELECT count(*) INTO open_discrepancies FROM discrepancies WHERE status = 'pending_review';
+  
+  -- Active suppliers
+  SELECT count(*) INTO active_suppliers FROM suppliers;
+
+  RETURN json_build_object(
+    'total_pos', total_pos,
+    'pending_shipments', pending_shipments,
+    'open_discrepancies', open_discrepancies,
+    'active_suppliers', active_suppliers
+  );
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
