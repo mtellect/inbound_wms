@@ -19,7 +19,8 @@ class ImportOrdersService {
 
       final file = result.files.first;
       final bytes = file.bytes;
-      if (bytes == null) throw Exception("Failed to read file bytes. Only use on supported platforms.");
+      if (bytes == null)
+        throw Exception("Failed to read file bytes. Only use on supported platforms.");
 
       List<List<dynamic>> fields = [];
 
@@ -35,20 +36,30 @@ class ImportOrdersService {
         final csvString = utf8.decode(bytes);
         fields = Csv().decode(csvString);
       }
-      
+
       if (fields.isEmpty) throw Exception("File is empty");
 
       // Assuming first row is headers
       final headers = fields[0].map((e) => e.toString().toLowerCase().trim()).toList();
-      final poNumberIndex = headers.indexOf('po_number');
-      final supplierIdIndex = headers.indexOf('supplier_id');
-      final blindReceivingIndex = headers.indexOf('blind_receiving');
 
+      int poNumberIndex = headers.indexOf('po_number');
+      if (poNumberIndex == -1) poNumberIndex = headers.indexOf('po number');
       if (poNumberIndex == -1) {
-        throw Exception("File must contain a 'po_number' header. Found headers: $headers");
+        poNumberIndex = headers.indexWhere((h) => h.contains('po number'));
       }
 
-      List<PurchaseOrder> orders = [];
+      int supplierIdIndex = headers.indexOf('supplier_id');
+      if (supplierIdIndex == -1) supplierIdIndex = headers.indexOf('supplier id');
+
+      int blindReceivingIndex = headers.indexOf('blind_receiving');
+      if (blindReceivingIndex == -1) blindReceivingIndex = headers.indexOf('blind receiving');
+
+      if (poNumberIndex == -1) {
+        throw Exception("File must contain a 'PO Number' header. Found headers: $headers");
+      }
+
+      Map<String, PurchaseOrder> uniqueOrders = {};
+
       for (int i = 1; i < fields.length; i++) {
         final row = fields[i];
         if (row.isEmpty || row.every((e) => e.toString().trim().isEmpty)) continue;
@@ -58,6 +69,8 @@ class ImportOrdersService {
 
         final poNumber = row[poNumberIndex].toString().trim();
         if (poNumber.isEmpty) continue;
+
+        if (uniqueOrders.containsKey(poNumber)) continue;
 
         String? supplierId;
         if (supplierIdIndex != -1 && supplierIdIndex < row.length) {
@@ -71,16 +84,16 @@ class ImportOrdersService {
           blindReceiving = val == 'true' || val == '1' || val == 'yes';
         }
 
-        orders.add(PurchaseOrder(
+        uniqueOrders[poNumber] = PurchaseOrder(
           id: const Uuid().v4(),
           poNumber: poNumber,
           supplierId: supplierId,
           blindReceiving: blindReceiving,
           status: 'pending',
-        ));
+        );
       }
 
-      return orders;
+      return uniqueOrders.values.toList();
     } catch (e) {
       debugPrint("File parsing error: $e");
       rethrow;
