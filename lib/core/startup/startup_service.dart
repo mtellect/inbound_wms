@@ -79,7 +79,10 @@ class StartUpService implements IStartUpService {
     );
 
     getIt.registerLazySingleton<DashboardProvider>(
-      () => DashboardProvider(dashboardApiService: getIt.get<IDashboardApiService>()),
+      () => DashboardProvider(
+        dashboardApiService: getIt.get<IDashboardApiService>(),
+        purchaseOrderProvider: getIt.get<PurchaseOrderProvider>(),
+      ),
     );
 
     getIt.registerLazySingleton<IThemeProvider>(
