@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:inbound_ms/features/purchase_orders/providers/purchase_order_provider.dart';
 import 'package:inbound_ms/core/utils/toast_utils.dart';
+import 'package:inbound_ms/core/widgets/app_input_field.dart';
+import 'package:inbound_ms/core/widgets/app_button.dart';
 import 'package:auto_route/auto_route.dart';
 
 class CreatePoModal extends StatefulWidget {
@@ -54,55 +56,65 @@ class _CreatePoModalState extends State<CreatePoModal> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: const Text('Create Purchase Order'),
-      content: SizedBox(
-        width: 400,
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextFormField(
-                controller: _poNumberController,
-                decoration: const InputDecoration(
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: SizedBox(
+          width: 400,
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Create Purchase Order',
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 24),
+                AppInputField(
+                  controller: _poNumberController,
                   labelText: 'PO Number *',
-                  border: OutlineInputBorder(),
+                  validator: (val) => val == null || val.trim().isEmpty ? 'PO Number is required' : null,
                 ),
-                validator: (val) => val == null || val.trim().isEmpty ? 'PO Number is required' : null,
-              ),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _supplierIdController,
-                decoration: const InputDecoration(
+                const SizedBox(height: 16),
+                AppInputField(
+                  controller: _supplierIdController,
                   labelText: 'Supplier ID (Optional)',
-                  border: OutlineInputBorder(),
                 ),
-              ),
-              const SizedBox(height: 16),
-              SwitchListTile(
-                title: const Text('Blind Receiving'),
-                subtitle: const Text('Receive without seeing expected quantities'),
-                value: _blindReceiving,
-                onChanged: (val) => setState(() => _blindReceiving = val),
-                contentPadding: EdgeInsets.zero,
-              ),
-            ],
+                const SizedBox(height: 16),
+                SwitchListTile(
+                  title: const Text('Blind Receiving'),
+                  subtitle: const Text('Receive without seeing expected quantities'),
+                  value: _blindReceiving,
+                  onChanged: (val) => setState(() => _blindReceiving = val),
+                  contentPadding: EdgeInsets.zero,
+                ),
+                const SizedBox(height: 32),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: _isSubmitting ? null : () => context.router.maybePop(),
+                      child: const Text('Cancel'),
+                    ),
+                    const SizedBox(width: 16),
+                    SizedBox(
+                      width: 120,
+                      child: AppButton(
+                        label: 'Create',
+                        onPressed: _submit,
+                        isLoading: _isSubmitting,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
-      actions: [
-        TextButton(
-          onPressed: _isSubmitting ? null : () => context.router.maybePop(),
-          child: const Text('Cancel'),
-        ),
-        ElevatedButton(
-          onPressed: _isSubmitting ? null : _submit,
-          child: _isSubmitting 
-              ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2)) 
-              : const Text('Create'),
-        ),
-      ],
     );
   }
 }
