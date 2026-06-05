@@ -1,7 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'product.freezed.dart';
-part 'product.g.dart';
 
 @freezed
 abstract class Product with _$Product {
@@ -12,10 +11,8 @@ abstract class Product with _$Product {
     required String name,
     String? category,
     String? unit,
-    @Default(false) @JsonKey(name: 'requires_lot') bool requiresLot,
-    @Default(false) @JsonKey(name: 'requires_serial') bool requiresSerial,
-    @Default(false) @JsonKey(name: 'requires_expiry') bool requiresExpiry,
+    @Default(false) bool requiresLot,
+    @Default(false) bool requiresSerial,
+    @Default(false) bool requiresExpiry,
   }) = _Product;
-
-  factory Product.fromJson(Map<String, dynamic> json) => _$ProductFromJson(json);
 }

@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'purchase_order.dart';
+part of 'purchase_order_dto.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_PurchaseOrder _$PurchaseOrderFromJson(Map<String, dynamic> json) =>
-    _PurchaseOrder(
+_PurchaseOrderDto _$PurchaseOrderDtoFromJson(Map<String, dynamic> json) =>
+    _PurchaseOrderDto(
       id: json['id'] as String,
       poNumber: json['po_number'] as String,
       supplierId: json['supplier_id'] as String?,
@@ -18,7 +18,7 @@ _PurchaseOrder _$PurchaseOrderFromJson(Map<String, dynamic> json) =>
           : DateTime.parse(json['created_at'] as String),
     );
 
-Map<String, dynamic> _$PurchaseOrderToJson(_PurchaseOrder instance) =>
+Map<String, dynamic> _$PurchaseOrderDtoToJson(_PurchaseOrderDto instance) =>
     <String, dynamic>{
       'id': instance.id,
       'po_number': instance.poNumber,

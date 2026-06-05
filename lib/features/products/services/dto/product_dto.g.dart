@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'product.dart';
+part of 'product_dto.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_Product _$ProductFromJson(Map<String, dynamic> json) => _Product(
+_ProductDto _$ProductDtoFromJson(Map<String, dynamic> json) => _ProductDto(
   id: json['id'] as String,
   sku: json['sku'] as String,
   barcode: json['barcode'] as String?,
@@ -18,14 +18,15 @@ _Product _$ProductFromJson(Map<String, dynamic> json) => _Product(
   requiresExpiry: json['requires_expiry'] as bool? ?? false,
 );
 
-Map<String, dynamic> _$ProductToJson(_Product instance) => <String, dynamic>{
-  'id': instance.id,
-  'sku': instance.sku,
-  'barcode': instance.barcode,
-  'name': instance.name,
-  'category': instance.category,
-  'unit': instance.unit,
-  'requires_lot': instance.requiresLot,
-  'requires_serial': instance.requiresSerial,
-  'requires_expiry': instance.requiresExpiry,
-};
+Map<String, dynamic> _$ProductDtoToJson(_ProductDto instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'sku': instance.sku,
+      'barcode': instance.barcode,
+      'name': instance.name,
+      'category': instance.category,
+      'unit': instance.unit,
+      'requires_lot': instance.requiresLot,
+      'requires_serial': instance.requiresSerial,
+      'requires_expiry': instance.requiresExpiry,
+    };

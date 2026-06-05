@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'product.dart';
+part of 'product_dto.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -11,41 +11,44 @@ part of 'product.dart';
 
 // dart format off
 T _$identity<T>(T value) => value;
-/// @nodoc
-mixin _$Product {
 
- String get id; String get sku; String? get barcode; String get name; String? get category; String? get unit; bool get requiresLot; bool get requiresSerial; bool get requiresExpiry;
-/// Create a copy of Product
+/// @nodoc
+mixin _$ProductDto {
+
+ String get id; String get sku; String? get barcode; String get name; String? get category; String? get unit;@JsonKey(name: 'requires_lot') bool get requiresLot;@JsonKey(name: 'requires_serial') bool get requiresSerial;@JsonKey(name: 'requires_expiry') bool get requiresExpiry;
+/// Create a copy of ProductDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$ProductCopyWith<Product> get copyWith => _$ProductCopyWithImpl<Product>(this as Product, _$identity);
+$ProductDtoCopyWith<ProductDto> get copyWith => _$ProductDtoCopyWithImpl<ProductDto>(this as ProductDto, _$identity);
 
+  /// Serializes this ProductDto to a JSON map.
+  Map<String, dynamic> toJson();
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Product&&(identical(other.id, id) || other.id == id)&&(identical(other.sku, sku) || other.sku == sku)&&(identical(other.barcode, barcode) || other.barcode == barcode)&&(identical(other.name, name) || other.name == name)&&(identical(other.category, category) || other.category == category)&&(identical(other.unit, unit) || other.unit == unit)&&(identical(other.requiresLot, requiresLot) || other.requiresLot == requiresLot)&&(identical(other.requiresSerial, requiresSerial) || other.requiresSerial == requiresSerial)&&(identical(other.requiresExpiry, requiresExpiry) || other.requiresExpiry == requiresExpiry));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProductDto&&(identical(other.id, id) || other.id == id)&&(identical(other.sku, sku) || other.sku == sku)&&(identical(other.barcode, barcode) || other.barcode == barcode)&&(identical(other.name, name) || other.name == name)&&(identical(other.category, category) || other.category == category)&&(identical(other.unit, unit) || other.unit == unit)&&(identical(other.requiresLot, requiresLot) || other.requiresLot == requiresLot)&&(identical(other.requiresSerial, requiresSerial) || other.requiresSerial == requiresSerial)&&(identical(other.requiresExpiry, requiresExpiry) || other.requiresExpiry == requiresExpiry));
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => Object.hash(runtimeType,id,sku,barcode,name,category,unit,requiresLot,requiresSerial,requiresExpiry);
 
 @override
 String toString() {
-  return 'Product(id: $id, sku: $sku, barcode: $barcode, name: $name, category: $category, unit: $unit, requiresLot: $requiresLot, requiresSerial: $requiresSerial, requiresExpiry: $requiresExpiry)';
+  return 'ProductDto(id: $id, sku: $sku, barcode: $barcode, name: $name, category: $category, unit: $unit, requiresLot: $requiresLot, requiresSerial: $requiresSerial, requiresExpiry: $requiresExpiry)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $ProductCopyWith<$Res>  {
-  factory $ProductCopyWith(Product value, $Res Function(Product) _then) = _$ProductCopyWithImpl;
+abstract mixin class $ProductDtoCopyWith<$Res>  {
+  factory $ProductDtoCopyWith(ProductDto value, $Res Function(ProductDto) _then) = _$ProductDtoCopyWithImpl;
 @useResult
 $Res call({
- String id, String sku, String? barcode, String name, String? category, String? unit, bool requiresLot, bool requiresSerial, bool requiresExpiry
+ String id, String sku, String? barcode, String name, String? category, String? unit,@JsonKey(name: 'requires_lot') bool requiresLot,@JsonKey(name: 'requires_serial') bool requiresSerial,@JsonKey(name: 'requires_expiry') bool requiresExpiry
 });
 
 
@@ -53,14 +56,14 @@ $Res call({
 
 }
 /// @nodoc
-class _$ProductCopyWithImpl<$Res>
-    implements $ProductCopyWith<$Res> {
-  _$ProductCopyWithImpl(this._self, this._then);
+class _$ProductDtoCopyWithImpl<$Res>
+    implements $ProductDtoCopyWith<$Res> {
+  _$ProductDtoCopyWithImpl(this._self, this._then);
 
-  final Product _self;
-  final $Res Function(Product) _then;
+  final ProductDto _self;
+  final $Res Function(ProductDto) _then;
 
-/// Create a copy of Product
+/// Create a copy of ProductDto
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? sku = null,Object? barcode = freezed,Object? name = null,Object? category = freezed,Object? unit = freezed,Object? requiresLot = null,Object? requiresSerial = null,Object? requiresExpiry = null,}) {
   return _then(_self.copyWith(
@@ -80,8 +83,8 @@ as bool,
 }
 
 
-/// Adds pattern-matching-related methods to [Product].
-extension ProductPatterns on Product {
+/// Adds pattern-matching-related methods to [ProductDto].
+extension ProductDtoPatterns on ProductDto {
 /// A variant of `map` that fallback to returning `orElse`.
 ///
 /// It is equivalent to doing:
@@ -94,10 +97,10 @@ extension ProductPatterns on Product {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _Product value)?  $default,{required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ProductDto value)?  $default,{required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _Product() when $default != null:
+case _ProductDto() when $default != null:
 return $default(_that);case _:
   return orElse();
 
@@ -116,10 +119,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _Product value)  $default,){
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ProductDto value)  $default,){
 final _that = this;
 switch (_that) {
-case _Product():
+case _ProductDto():
 return $default(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -137,10 +140,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _Product value)?  $default,){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ProductDto value)?  $default,){
 final _that = this;
 switch (_that) {
-case _Product() when $default != null:
+case _ProductDto() when $default != null:
 return $default(_that);case _:
   return null;
 
@@ -158,9 +161,9 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String sku,  String? barcode,  String name,  String? category,  String? unit,  bool requiresLot,  bool requiresSerial,  bool requiresExpiry)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String sku,  String? barcode,  String name,  String? category,  String? unit, @JsonKey(name: 'requires_lot')  bool requiresLot, @JsonKey(name: 'requires_serial')  bool requiresSerial, @JsonKey(name: 'requires_expiry')  bool requiresExpiry)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _Product() when $default != null:
+case _ProductDto() when $default != null:
 return $default(_that.id,_that.sku,_that.barcode,_that.name,_that.category,_that.unit,_that.requiresLot,_that.requiresSerial,_that.requiresExpiry);case _:
   return orElse();
 
@@ -179,9 +182,9 @@ return $default(_that.id,_that.sku,_that.barcode,_that.name,_that.category,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String sku,  String? barcode,  String name,  String? category,  String? unit,  bool requiresLot,  bool requiresSerial,  bool requiresExpiry)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String sku,  String? barcode,  String name,  String? category,  String? unit, @JsonKey(name: 'requires_lot')  bool requiresLot, @JsonKey(name: 'requires_serial')  bool requiresSerial, @JsonKey(name: 'requires_expiry')  bool requiresExpiry)  $default,) {final _that = this;
 switch (_that) {
-case _Product():
+case _ProductDto():
 return $default(_that.id,_that.sku,_that.barcode,_that.name,_that.category,_that.unit,_that.requiresLot,_that.requiresSerial,_that.requiresExpiry);case _:
   throw StateError('Unexpected subclass');
 
@@ -199,9 +202,9 @@ return $default(_that.id,_that.sku,_that.barcode,_that.name,_that.category,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String sku,  String? barcode,  String name,  String? category,  String? unit,  bool requiresLot,  bool requiresSerial,  bool requiresExpiry)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String sku,  String? barcode,  String name,  String? category,  String? unit, @JsonKey(name: 'requires_lot')  bool requiresLot, @JsonKey(name: 'requires_serial')  bool requiresSerial, @JsonKey(name: 'requires_expiry')  bool requiresExpiry)?  $default,) {final _that = this;
 switch (_that) {
-case _Product() when $default != null:
+case _ProductDto() when $default != null:
 return $default(_that.id,_that.sku,_that.barcode,_that.name,_that.category,_that.unit,_that.requiresLot,_that.requiresSerial,_that.requiresExpiry);case _:
   return null;
 
@@ -211,11 +214,11 @@ return $default(_that.id,_that.sku,_that.barcode,_that.name,_that.category,_that
 }
 
 /// @nodoc
+@JsonSerializable()
 
-
-class _Product implements Product {
-  const _Product({required this.id, required this.sku, this.barcode, required this.name, this.category, this.unit, this.requiresLot = false, this.requiresSerial = false, this.requiresExpiry = false});
-  
+class _ProductDto implements ProductDto {
+  const _ProductDto({required this.id, required this.sku, this.barcode, required this.name, this.category, this.unit, @JsonKey(name: 'requires_lot') this.requiresLot = false, @JsonKey(name: 'requires_serial') this.requiresSerial = false, @JsonKey(name: 'requires_expiry') this.requiresExpiry = false});
+  factory _ProductDto.fromJson(Map<String, dynamic> json) => _$ProductDtoFromJson(json);
 
 @override final  String id;
 @override final  String sku;
@@ -223,41 +226,44 @@ class _Product implements Product {
 @override final  String name;
 @override final  String? category;
 @override final  String? unit;
-@override@JsonKey() final  bool requiresLot;
-@override@JsonKey() final  bool requiresSerial;
-@override@JsonKey() final  bool requiresExpiry;
+@override@JsonKey(name: 'requires_lot') final  bool requiresLot;
+@override@JsonKey(name: 'requires_serial') final  bool requiresSerial;
+@override@JsonKey(name: 'requires_expiry') final  bool requiresExpiry;
 
-/// Create a copy of Product
+/// Create a copy of ProductDto
 /// with the given fields replaced by the non-null parameter values.
 @override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-_$ProductCopyWith<_Product> get copyWith => __$ProductCopyWithImpl<_Product>(this, _$identity);
+_$ProductDtoCopyWith<_ProductDto> get copyWith => __$ProductDtoCopyWithImpl<_ProductDto>(this, _$identity);
 
-
+@override
+Map<String, dynamic> toJson() {
+  return _$ProductDtoToJson(this, );
+}
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Product&&(identical(other.id, id) || other.id == id)&&(identical(other.sku, sku) || other.sku == sku)&&(identical(other.barcode, barcode) || other.barcode == barcode)&&(identical(other.name, name) || other.name == name)&&(identical(other.category, category) || other.category == category)&&(identical(other.unit, unit) || other.unit == unit)&&(identical(other.requiresLot, requiresLot) || other.requiresLot == requiresLot)&&(identical(other.requiresSerial, requiresSerial) || other.requiresSerial == requiresSerial)&&(identical(other.requiresExpiry, requiresExpiry) || other.requiresExpiry == requiresExpiry));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProductDto&&(identical(other.id, id) || other.id == id)&&(identical(other.sku, sku) || other.sku == sku)&&(identical(other.barcode, barcode) || other.barcode == barcode)&&(identical(other.name, name) || other.name == name)&&(identical(other.category, category) || other.category == category)&&(identical(other.unit, unit) || other.unit == unit)&&(identical(other.requiresLot, requiresLot) || other.requiresLot == requiresLot)&&(identical(other.requiresSerial, requiresSerial) || other.requiresSerial == requiresSerial)&&(identical(other.requiresExpiry, requiresExpiry) || other.requiresExpiry == requiresExpiry));
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => Object.hash(runtimeType,id,sku,barcode,name,category,unit,requiresLot,requiresSerial,requiresExpiry);
 
 @override
 String toString() {
-  return 'Product(id: $id, sku: $sku, barcode: $barcode, name: $name, category: $category, unit: $unit, requiresLot: $requiresLot, requiresSerial: $requiresSerial, requiresExpiry: $requiresExpiry)';
+  return 'ProductDto(id: $id, sku: $sku, barcode: $barcode, name: $name, category: $category, unit: $unit, requiresLot: $requiresLot, requiresSerial: $requiresSerial, requiresExpiry: $requiresExpiry)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$ProductCopyWith<$Res> implements $ProductCopyWith<$Res> {
-  factory _$ProductCopyWith(_Product value, $Res Function(_Product) _then) = __$ProductCopyWithImpl;
+abstract mixin class _$ProductDtoCopyWith<$Res> implements $ProductDtoCopyWith<$Res> {
+  factory _$ProductDtoCopyWith(_ProductDto value, $Res Function(_ProductDto) _then) = __$ProductDtoCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String sku, String? barcode, String name, String? category, String? unit, bool requiresLot, bool requiresSerial, bool requiresExpiry
+ String id, String sku, String? barcode, String name, String? category, String? unit,@JsonKey(name: 'requires_lot') bool requiresLot,@JsonKey(name: 'requires_serial') bool requiresSerial,@JsonKey(name: 'requires_expiry') bool requiresExpiry
 });
 
 
@@ -265,17 +271,17 @@ $Res call({
 
 }
 /// @nodoc
-class __$ProductCopyWithImpl<$Res>
-    implements _$ProductCopyWith<$Res> {
-  __$ProductCopyWithImpl(this._self, this._then);
+class __$ProductDtoCopyWithImpl<$Res>
+    implements _$ProductDtoCopyWith<$Res> {
+  __$ProductDtoCopyWithImpl(this._self, this._then);
 
-  final _Product _self;
-  final $Res Function(_Product) _then;
+  final _ProductDto _self;
+  final $Res Function(_ProductDto) _then;
 
-/// Create a copy of Product
+/// Create a copy of ProductDto
 /// with the given fields replaced by the non-null parameter values.
 @override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? sku = null,Object? barcode = freezed,Object? name = null,Object? category = freezed,Object? unit = freezed,Object? requiresLot = null,Object? requiresSerial = null,Object? requiresExpiry = null,}) {
-  return _then(_Product(
+  return _then(_ProductDto(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,sku: null == sku ? _self.sku : sku // ignore: cast_nullable_to_non_nullable
 as String,barcode: freezed == barcode ? _self.barcode : barcode // ignore: cast_nullable_to_non_nullable

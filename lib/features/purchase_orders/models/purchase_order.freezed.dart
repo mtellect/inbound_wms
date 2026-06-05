@@ -11,19 +11,16 @@ part of 'purchase_order.dart';
 
 // dart format off
 T _$identity<T>(T value) => value;
-
 /// @nodoc
 mixin _$PurchaseOrder {
 
- String get id;@JsonKey(name: 'po_number') String get poNumber;@JsonKey(name: 'supplier_id') String? get supplierId; String get status;@JsonKey(name: 'blind_receiving') bool get blindReceiving;@JsonKey(name: 'created_at') DateTime? get createdAt;
+ String get id; String get poNumber; String? get supplierId; String get status; bool get blindReceiving; DateTime? get createdAt;
 /// Create a copy of PurchaseOrder
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 $PurchaseOrderCopyWith<PurchaseOrder> get copyWith => _$PurchaseOrderCopyWithImpl<PurchaseOrder>(this as PurchaseOrder, _$identity);
 
-  /// Serializes this PurchaseOrder to a JSON map.
-  Map<String, dynamic> toJson();
 
 
 @override
@@ -31,7 +28,7 @@ bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is PurchaseOrder&&(identical(other.id, id) || other.id == id)&&(identical(other.poNumber, poNumber) || other.poNumber == poNumber)&&(identical(other.supplierId, supplierId) || other.supplierId == supplierId)&&(identical(other.status, status) || other.status == status)&&(identical(other.blindReceiving, blindReceiving) || other.blindReceiving == blindReceiving)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
 int get hashCode => Object.hash(runtimeType,id,poNumber,supplierId,status,blindReceiving,createdAt);
 
@@ -48,7 +45,7 @@ abstract mixin class $PurchaseOrderCopyWith<$Res>  {
   factory $PurchaseOrderCopyWith(PurchaseOrder value, $Res Function(PurchaseOrder) _then) = _$PurchaseOrderCopyWithImpl;
 @useResult
 $Res call({
- String id,@JsonKey(name: 'po_number') String poNumber,@JsonKey(name: 'supplier_id') String? supplierId, String status,@JsonKey(name: 'blind_receiving') bool blindReceiving,@JsonKey(name: 'created_at') DateTime? createdAt
+ String id, String poNumber, String? supplierId, String status, bool blindReceiving, DateTime? createdAt
 });
 
 
@@ -158,7 +155,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'po_number')  String poNumber, @JsonKey(name: 'supplier_id')  String? supplierId,  String status, @JsonKey(name: 'blind_receiving')  bool blindReceiving, @JsonKey(name: 'created_at')  DateTime? createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String poNumber,  String? supplierId,  String status,  bool blindReceiving,  DateTime? createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PurchaseOrder() when $default != null:
 return $default(_that.id,_that.poNumber,_that.supplierId,_that.status,_that.blindReceiving,_that.createdAt);case _:
@@ -179,7 +176,7 @@ return $default(_that.id,_that.poNumber,_that.supplierId,_that.status,_that.blin
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'po_number')  String poNumber, @JsonKey(name: 'supplier_id')  String? supplierId,  String status, @JsonKey(name: 'blind_receiving')  bool blindReceiving, @JsonKey(name: 'created_at')  DateTime? createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String poNumber,  String? supplierId,  String status,  bool blindReceiving,  DateTime? createdAt)  $default,) {final _that = this;
 switch (_that) {
 case _PurchaseOrder():
 return $default(_that.id,_that.poNumber,_that.supplierId,_that.status,_that.blindReceiving,_that.createdAt);case _:
@@ -199,7 +196,7 @@ return $default(_that.id,_that.poNumber,_that.supplierId,_that.status,_that.blin
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id, @JsonKey(name: 'po_number')  String poNumber, @JsonKey(name: 'supplier_id')  String? supplierId,  String status, @JsonKey(name: 'blind_receiving')  bool blindReceiving, @JsonKey(name: 'created_at')  DateTime? createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String poNumber,  String? supplierId,  String status,  bool blindReceiving,  DateTime? createdAt)?  $default,) {final _that = this;
 switch (_that) {
 case _PurchaseOrder() when $default != null:
 return $default(_that.id,_that.poNumber,_that.supplierId,_that.status,_that.blindReceiving,_that.createdAt);case _:
@@ -211,18 +208,18 @@ return $default(_that.id,_that.poNumber,_that.supplierId,_that.status,_that.blin
 }
 
 /// @nodoc
-@JsonSerializable()
+
 
 class _PurchaseOrder implements PurchaseOrder {
-  const _PurchaseOrder({required this.id, @JsonKey(name: 'po_number') required this.poNumber, @JsonKey(name: 'supplier_id') this.supplierId, this.status = 'pending', @JsonKey(name: 'blind_receiving') this.blindReceiving = false, @JsonKey(name: 'created_at') this.createdAt});
-  factory _PurchaseOrder.fromJson(Map<String, dynamic> json) => _$PurchaseOrderFromJson(json);
+  const _PurchaseOrder({required this.id, required this.poNumber, this.supplierId, this.status = 'pending', this.blindReceiving = false, this.createdAt});
+  
 
 @override final  String id;
-@override@JsonKey(name: 'po_number') final  String poNumber;
-@override@JsonKey(name: 'supplier_id') final  String? supplierId;
+@override final  String poNumber;
+@override final  String? supplierId;
 @override@JsonKey() final  String status;
-@override@JsonKey(name: 'blind_receiving') final  bool blindReceiving;
-@override@JsonKey(name: 'created_at') final  DateTime? createdAt;
+@override@JsonKey() final  bool blindReceiving;
+@override final  DateTime? createdAt;
 
 /// Create a copy of PurchaseOrder
 /// with the given fields replaced by the non-null parameter values.
@@ -230,17 +227,14 @@ class _PurchaseOrder implements PurchaseOrder {
 @pragma('vm:prefer-inline')
 _$PurchaseOrderCopyWith<_PurchaseOrder> get copyWith => __$PurchaseOrderCopyWithImpl<_PurchaseOrder>(this, _$identity);
 
-@override
-Map<String, dynamic> toJson() {
-  return _$PurchaseOrderToJson(this, );
-}
+
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is _PurchaseOrder&&(identical(other.id, id) || other.id == id)&&(identical(other.poNumber, poNumber) || other.poNumber == poNumber)&&(identical(other.supplierId, supplierId) || other.supplierId == supplierId)&&(identical(other.status, status) || other.status == status)&&(identical(other.blindReceiving, blindReceiving) || other.blindReceiving == blindReceiving)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
 int get hashCode => Object.hash(runtimeType,id,poNumber,supplierId,status,blindReceiving,createdAt);
 
@@ -257,7 +251,7 @@ abstract mixin class _$PurchaseOrderCopyWith<$Res> implements $PurchaseOrderCopy
   factory _$PurchaseOrderCopyWith(_PurchaseOrder value, $Res Function(_PurchaseOrder) _then) = __$PurchaseOrderCopyWithImpl;
 @override @useResult
 $Res call({
- String id,@JsonKey(name: 'po_number') String poNumber,@JsonKey(name: 'supplier_id') String? supplierId, String status,@JsonKey(name: 'blind_receiving') bool blindReceiving,@JsonKey(name: 'created_at') DateTime? createdAt
+ String id, String poNumber, String? supplierId, String status, bool blindReceiving, DateTime? createdAt
 });
 
 

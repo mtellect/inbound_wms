@@ -31,6 +31,12 @@
   - Create `core/startup/startup_service.dart` to handle ordered initialization (`registerNetwork`, `registerLocalDb`, `registerServices`, `registerControllers`).
   - Implement `auto_route` in `core/navigation/app_router.dart` to properly route web users vs mobile workers.
 - [ ] **Feature Data Modeling & Service Approach:**
-  - Implement the specific database models (`PurchaseOrder`, `Shipment`, `PoItem`, `ScanLog`) within their respective feature's `models/` directory using Freezed.
-  - **Service Approach:** For every feature's business logic and Supabase interaction, define an interface (e.g., `i_purchase_order_service.dart`) and its concrete implementation (e.g., `purchase_order_service.dart`), registering the interface in `get_it`.
-  - Create standard `ChangeNotifier` providers in the `providers/` directories (e.g. `AuthProvider`, `PurchaseOrderProvider`), which rely on these injected services.
+  - Implement the specific database domain models (`PurchaseOrder`, `Shipment`, `PoItem`, `ScanLog`) within their respective feature's `models/` directory using Freezed. **Domain models MUST NOT have `fromJson` or `toJson`.**
+  - **Service Approach Pattern:** Every service must strictly follow this exact structure inside `features/<feature>/services/`:
+    - `i_<feature>_api_service.dart` (Interface definition)
+    - `<feature>_api_service.dart` (Concrete implementation)
+    - `dto/` directory (for Response Data Transfer Objects with `fromJson`)
+    - `requests/` directory (for Request Payload Data Transfer Objects with `toJson`)
+    - `mappers/` directory (for converting between DTOs, Requests, and Domain Models)
+  - All Supabase or external API interactions must be done via these `<feature>_api_service.dart` implementations, which must parse responses into DTOs and map them to Domain Models before returning.
+  - Create standard `ChangeNotifier` providers in the `providers/` directories (e.g. `AuthProvider`, `PurchaseOrderProvider`), which rely on these injected API services.
