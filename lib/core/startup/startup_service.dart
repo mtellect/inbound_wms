@@ -14,7 +14,10 @@ import 'package:inbound_ms/features/purchase_orders/services/i_purchase_order_ap
 import 'package:inbound_ms/features/purchase_orders/services/purchase_order_api_service.dart';
 import 'package:inbound_ms/features/purchase_orders/providers/purchase_order_provider.dart';
 
-import 'package:inbound_ms/core/theme/theme_provider.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:inbound_ms/core/theme/i_theme_provider.dart';
+import 'package:inbound_ms/core/theme/app_theme_provider.dart';
+import 'package:inbound_ms/core/theme/web_theme_provider.dart';
 
 import 'i_startup_service.dart';
 
@@ -64,7 +67,13 @@ class StartUpService implements IStartUpService {
       () => PurchaseOrderProvider(purchaseOrderApiService: getIt.get<IPurchaseOrderApiService>())
     );
 
-    getIt.registerLazySingleton<ThemeProvider>(() => ThemeProvider());
+    getIt.registerLazySingleton<IThemeProvider>(() {
+      if (kIsWeb) {
+        return WebThemeProvider();
+      } else {
+        return AppThemeProvider();
+      }
+    });
 
     // Register AppRouter for declarative navigation (Needs AuthProvider)
     getIt.registerSingleton<AppRouter>(
