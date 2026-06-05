@@ -14,6 +14,8 @@ import 'package:inbound_ms/features/purchase_orders/services/i_purchase_order_ap
 import 'package:inbound_ms/features/purchase_orders/services/purchase_order_api_service.dart';
 import 'package:inbound_ms/features/purchase_orders/providers/purchase_order_provider.dart';
 
+import 'package:inbound_ms/core/theme/theme_provider.dart';
+
 import 'i_startup_service.dart';
 
 final getIt = GetIt.instance;
@@ -41,9 +43,6 @@ class StartUpService implements IStartUpService {
       () => EnvironmentService(environment: environment),
     );
 
-    // Register AppRouter for declarative navigation
-    getIt.registerSingleton<AppRouter>(AppRouter());
-    
     // Register Feature Services
     getIt.registerLazySingleton<IAuthenticationApiService>(
       () => AuthenticationApiService(supabaseClient: getIt.get<SupabaseClient>())
@@ -63,6 +62,13 @@ class StartUpService implements IStartUpService {
 
     getIt.registerLazySingleton<PurchaseOrderProvider>(
       () => PurchaseOrderProvider(purchaseOrderApiService: getIt.get<IPurchaseOrderApiService>())
+    );
+
+    getIt.registerLazySingleton<ThemeProvider>(() => ThemeProvider());
+
+    // Register AppRouter for declarative navigation (Needs AuthProvider)
+    getIt.registerSingleton<AppRouter>(
+      AppRouter(authProvider: getIt.get<AuthProvider>())
     );
   }
 

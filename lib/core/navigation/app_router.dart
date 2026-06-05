@@ -2,6 +2,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'app_routes_path_enum.dart';
 import 'package:inbound_ms/features/auth/pages/sign_in_page.dart';
+import 'package:inbound_ms/features/dashboard/pages/dashboard_shell_page.dart';
+import 'package:inbound_ms/features/dashboard/pages/dashboard_overview_page.dart';
+import 'package:inbound_ms/features/auth/providers/auth_provider.dart';
+import 'guards/auth_guard.dart';
 
 export 'app_routes_path_enum.dart';
 

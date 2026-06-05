@@ -2,8 +2,9 @@ part of 'app_router.dart';
 
 @AutoRouterConfig(replaceInRouteName: 'Page|Screen,Route')
 class AppRouter extends RootStackRouter {
+  final AuthProvider authProvider;
   
-  AppRouter();
+  AppRouter({required this.authProvider});
 
   @override
   RouteType get defaultRouteType => const RouteType.material();
@@ -13,8 +14,15 @@ class AppRouter extends RootStackRouter {
     TransitionRoute.fadeIn(
       page: SignInRoute.page, 
       path: AppRoutePathEnum.login.path,
-      initial: true, // Mark as initial so the router is not empty
+      initial: true,
     ),
-    // TODO: Add dashboard and scanner routes
+    TransitionRoute.fadeIn(
+      page: DashboardShellRoute.page,
+      path: AppRoutePathEnum.dashboard.path,
+      guards: [AuthGuard(authProvider: authProvider)],
+      children: [
+        AutoRoute(page: DashboardOverviewRoute.page, initial: true),
+      ]
+    ),
   ];
 }
