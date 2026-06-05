@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:inbound_ms/features/purchase_orders/models/po_item.dart';
 
 part 'purchase_order.freezed.dart';
 
@@ -11,5 +12,6 @@ abstract class PurchaseOrder with _$PurchaseOrder {
     @Default('pending') String status,
     @Default(false) bool blindReceiving,
     DateTime? createdAt,
+    @Default([]) List<PoItem> items,
   }) = _PurchaseOrder;
 }

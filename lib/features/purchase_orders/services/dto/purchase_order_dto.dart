@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:inbound_ms/features/purchase_orders/services/dto/po_item_dto.dart';
 
 part 'purchase_order_dto.freezed.dart';
 part 'purchase_order_dto.g.dart';
@@ -12,6 +13,7 @@ abstract class PurchaseOrderDto with _$PurchaseOrderDto {
     @Default('pending') String status,
     @Default(false) @JsonKey(name: 'blind_receiving') bool blindReceiving,
     @JsonKey(name: 'created_at') DateTime? createdAt,
+    @Default([]) @JsonKey(name: 'po_items') List<PoItemDto> items,
   }) = _PurchaseOrderDto;
 
   factory PurchaseOrderDto.fromJson(Map<String, dynamic> json) => _$PurchaseOrderDtoFromJson(json);

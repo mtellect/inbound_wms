@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'product_dto.dart';
+part of 'product.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -13,39 +13,33 @@ part of 'product_dto.dart';
 T _$identity<T>(T value) => value;
 
 /// @nodoc
-mixin _$ProductDto {
+mixin _$Product {
   String get id;
   String get sku;
-  String? get barcode;
   String get name;
+  String? get barcode;
   String? get category;
   String? get unit;
-  @JsonKey(name: 'requires_lot')
   bool get requiresLot;
-  @JsonKey(name: 'requires_serial')
   bool get requiresSerial;
-  @JsonKey(name: 'requires_expiry')
   bool get requiresExpiry;
 
-  /// Create a copy of ProductDto
+  /// Create a copy of Product
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
-  $ProductDtoCopyWith<ProductDto> get copyWith =>
-      _$ProductDtoCopyWithImpl<ProductDto>(this as ProductDto, _$identity);
-
-  /// Serializes this ProductDto to a JSON map.
-  Map<String, dynamic> toJson();
+  $ProductCopyWith<Product> get copyWith =>
+      _$ProductCopyWithImpl<Product>(this as Product, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is ProductDto &&
+            other is Product &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.sku, sku) || other.sku == sku) &&
-            (identical(other.barcode, barcode) || other.barcode == barcode) &&
             (identical(other.name, name) || other.name == name) &&
+            (identical(other.barcode, barcode) || other.barcode == barcode) &&
             (identical(other.category, category) ||
                 other.category == category) &&
             (identical(other.unit, unit) || other.unit == unit) &&
@@ -57,51 +51,49 @@ mixin _$ProductDto {
                 other.requiresExpiry == requiresExpiry));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, sku, barcode, name, category,
+  int get hashCode => Object.hash(runtimeType, id, sku, name, barcode, category,
       unit, requiresLot, requiresSerial, requiresExpiry);
 
   @override
   String toString() {
-    return 'ProductDto(id: $id, sku: $sku, barcode: $barcode, name: $name, category: $category, unit: $unit, requiresLot: $requiresLot, requiresSerial: $requiresSerial, requiresExpiry: $requiresExpiry)';
+    return 'Product(id: $id, sku: $sku, name: $name, barcode: $barcode, category: $category, unit: $unit, requiresLot: $requiresLot, requiresSerial: $requiresSerial, requiresExpiry: $requiresExpiry)';
   }
 }
 
 /// @nodoc
-abstract mixin class $ProductDtoCopyWith<$Res> {
-  factory $ProductDtoCopyWith(
-          ProductDto value, $Res Function(ProductDto) _then) =
-      _$ProductDtoCopyWithImpl;
+abstract mixin class $ProductCopyWith<$Res> {
+  factory $ProductCopyWith(Product value, $Res Function(Product) _then) =
+      _$ProductCopyWithImpl;
   @useResult
   $Res call(
       {String id,
       String sku,
-      String? barcode,
       String name,
+      String? barcode,
       String? category,
       String? unit,
-      @JsonKey(name: 'requires_lot') bool requiresLot,
-      @JsonKey(name: 'requires_serial') bool requiresSerial,
-      @JsonKey(name: 'requires_expiry') bool requiresExpiry});
+      bool requiresLot,
+      bool requiresSerial,
+      bool requiresExpiry});
 }
 
 /// @nodoc
-class _$ProductDtoCopyWithImpl<$Res> implements $ProductDtoCopyWith<$Res> {
-  _$ProductDtoCopyWithImpl(this._self, this._then);
+class _$ProductCopyWithImpl<$Res> implements $ProductCopyWith<$Res> {
+  _$ProductCopyWithImpl(this._self, this._then);
 
-  final ProductDto _self;
-  final $Res Function(ProductDto) _then;
+  final Product _self;
+  final $Res Function(Product) _then;
 
-  /// Create a copy of ProductDto
+  /// Create a copy of Product
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? id = null,
     Object? sku = null,
-    Object? barcode = freezed,
     Object? name = null,
+    Object? barcode = freezed,
     Object? category = freezed,
     Object? unit = freezed,
     Object? requiresLot = null,
@@ -117,14 +109,14 @@ class _$ProductDtoCopyWithImpl<$Res> implements $ProductDtoCopyWith<$Res> {
           ? _self.sku
           : sku // ignore: cast_nullable_to_non_nullable
               as String,
-      barcode: freezed == barcode
-          ? _self.barcode
-          : barcode // ignore: cast_nullable_to_non_nullable
-              as String?,
       name: null == name
           ? _self.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      barcode: freezed == barcode
+          ? _self.barcode
+          : barcode // ignore: cast_nullable_to_non_nullable
+              as String?,
       category: freezed == category
           ? _self.category
           : category // ignore: cast_nullable_to_non_nullable
@@ -149,8 +141,8 @@ class _$ProductDtoCopyWithImpl<$Res> implements $ProductDtoCopyWith<$Res> {
   }
 }
 
-/// Adds pattern-matching-related methods to [ProductDto].
-extension ProductDtoPatterns on ProductDto {
+/// Adds pattern-matching-related methods to [Product].
+extension ProductPatterns on Product {
   /// A variant of `map` that fallback to returning `orElse`.
   ///
   /// It is equivalent to doing:
@@ -165,12 +157,12 @@ extension ProductDtoPatterns on ProductDto {
 
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>(
-    TResult Function(_ProductDto value)? $default, {
+    TResult Function(_Product value)? $default, {
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
-      case _ProductDto() when $default != null:
+      case _Product() when $default != null:
         return $default(_that);
       case _:
         return orElse();
@@ -192,11 +184,11 @@ extension ProductDtoPatterns on ProductDto {
 
   @optionalTypeArgs
   TResult map<TResult extends Object?>(
-    TResult Function(_ProductDto value) $default,
+    TResult Function(_Product value) $default,
   ) {
     final _that = this;
     switch (_that) {
-      case _ProductDto():
+      case _Product():
         return $default(_that);
       case _:
         throw StateError('Unexpected subclass');
@@ -217,11 +209,11 @@ extension ProductDtoPatterns on ProductDto {
 
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>(
-    TResult? Function(_ProductDto value)? $default,
+    TResult? Function(_Product value)? $default,
   ) {
     final _that = this;
     switch (_that) {
-      case _ProductDto() when $default != null:
+      case _Product() when $default != null:
         return $default(_that);
       case _:
         return null;
@@ -245,24 +237,24 @@ extension ProductDtoPatterns on ProductDto {
     TResult Function(
             String id,
             String sku,
-            String? barcode,
             String name,
+            String? barcode,
             String? category,
             String? unit,
-            @JsonKey(name: 'requires_lot') bool requiresLot,
-            @JsonKey(name: 'requires_serial') bool requiresSerial,
-            @JsonKey(name: 'requires_expiry') bool requiresExpiry)?
+            bool requiresLot,
+            bool requiresSerial,
+            bool requiresExpiry)?
         $default, {
     required TResult orElse(),
   }) {
     final _that = this;
     switch (_that) {
-      case _ProductDto() when $default != null:
+      case _Product() when $default != null:
         return $default(
             _that.id,
             _that.sku,
-            _that.barcode,
             _that.name,
+            _that.barcode,
             _that.category,
             _that.unit,
             _that.requiresLot,
@@ -291,23 +283,23 @@ extension ProductDtoPatterns on ProductDto {
     TResult Function(
             String id,
             String sku,
-            String? barcode,
             String name,
+            String? barcode,
             String? category,
             String? unit,
-            @JsonKey(name: 'requires_lot') bool requiresLot,
-            @JsonKey(name: 'requires_serial') bool requiresSerial,
-            @JsonKey(name: 'requires_expiry') bool requiresExpiry)
+            bool requiresLot,
+            bool requiresSerial,
+            bool requiresExpiry)
         $default,
   ) {
     final _that = this;
     switch (_that) {
-      case _ProductDto():
+      case _Product():
         return $default(
             _that.id,
             _that.sku,
-            _that.barcode,
             _that.name,
+            _that.barcode,
             _that.category,
             _that.unit,
             _that.requiresLot,
@@ -335,23 +327,23 @@ extension ProductDtoPatterns on ProductDto {
     TResult? Function(
             String id,
             String sku,
-            String? barcode,
             String name,
+            String? barcode,
             String? category,
             String? unit,
-            @JsonKey(name: 'requires_lot') bool requiresLot,
-            @JsonKey(name: 'requires_serial') bool requiresSerial,
-            @JsonKey(name: 'requires_expiry') bool requiresExpiry)?
+            bool requiresLot,
+            bool requiresSerial,
+            bool requiresExpiry)?
         $default,
   ) {
     final _that = this;
     switch (_that) {
-      case _ProductDto() when $default != null:
+      case _Product() when $default != null:
         return $default(
             _that.id,
             _that.sku,
-            _that.barcode,
             _that.name,
+            _that.barcode,
             _that.category,
             _that.unit,
             _that.requiresLot,
@@ -364,67 +356,58 @@ extension ProductDtoPatterns on ProductDto {
 }
 
 /// @nodoc
-@JsonSerializable()
-class _ProductDto implements ProductDto {
-  const _ProductDto(
+
+class _Product implements Product {
+  const _Product(
       {required this.id,
       required this.sku,
-      this.barcode,
       required this.name,
+      this.barcode,
       this.category,
       this.unit,
-      @JsonKey(name: 'requires_lot') this.requiresLot = false,
-      @JsonKey(name: 'requires_serial') this.requiresSerial = false,
-      @JsonKey(name: 'requires_expiry') this.requiresExpiry = false});
-  factory _ProductDto.fromJson(Map<String, dynamic> json) =>
-      _$ProductDtoFromJson(json);
+      this.requiresLot = false,
+      this.requiresSerial = false,
+      this.requiresExpiry = false});
 
   @override
   final String id;
   @override
   final String sku;
   @override
-  final String? barcode;
-  @override
   final String name;
+  @override
+  final String? barcode;
   @override
   final String? category;
   @override
   final String? unit;
   @override
-  @JsonKey(name: 'requires_lot')
+  @JsonKey()
   final bool requiresLot;
   @override
-  @JsonKey(name: 'requires_serial')
+  @JsonKey()
   final bool requiresSerial;
   @override
-  @JsonKey(name: 'requires_expiry')
+  @JsonKey()
   final bool requiresExpiry;
 
-  /// Create a copy of ProductDto
+  /// Create a copy of Product
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
-  _$ProductDtoCopyWith<_ProductDto> get copyWith =>
-      __$ProductDtoCopyWithImpl<_ProductDto>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$ProductDtoToJson(
-      this,
-    );
-  }
+  _$ProductCopyWith<_Product> get copyWith =>
+      __$ProductCopyWithImpl<_Product>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _ProductDto &&
+            other is _Product &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.sku, sku) || other.sku == sku) &&
-            (identical(other.barcode, barcode) || other.barcode == barcode) &&
             (identical(other.name, name) || other.name == name) &&
+            (identical(other.barcode, barcode) || other.barcode == barcode) &&
             (identical(other.category, category) ||
                 other.category == category) &&
             (identical(other.unit, unit) || other.unit == unit) &&
@@ -436,60 +419,57 @@ class _ProductDto implements ProductDto {
                 other.requiresExpiry == requiresExpiry));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, sku, barcode, name, category,
+  int get hashCode => Object.hash(runtimeType, id, sku, name, barcode, category,
       unit, requiresLot, requiresSerial, requiresExpiry);
 
   @override
   String toString() {
-    return 'ProductDto(id: $id, sku: $sku, barcode: $barcode, name: $name, category: $category, unit: $unit, requiresLot: $requiresLot, requiresSerial: $requiresSerial, requiresExpiry: $requiresExpiry)';
+    return 'Product(id: $id, sku: $sku, name: $name, barcode: $barcode, category: $category, unit: $unit, requiresLot: $requiresLot, requiresSerial: $requiresSerial, requiresExpiry: $requiresExpiry)';
   }
 }
 
 /// @nodoc
-abstract mixin class _$ProductDtoCopyWith<$Res>
-    implements $ProductDtoCopyWith<$Res> {
-  factory _$ProductDtoCopyWith(
-          _ProductDto value, $Res Function(_ProductDto) _then) =
-      __$ProductDtoCopyWithImpl;
+abstract mixin class _$ProductCopyWith<$Res> implements $ProductCopyWith<$Res> {
+  factory _$ProductCopyWith(_Product value, $Res Function(_Product) _then) =
+      __$ProductCopyWithImpl;
   @override
   @useResult
   $Res call(
       {String id,
       String sku,
-      String? barcode,
       String name,
+      String? barcode,
       String? category,
       String? unit,
-      @JsonKey(name: 'requires_lot') bool requiresLot,
-      @JsonKey(name: 'requires_serial') bool requiresSerial,
-      @JsonKey(name: 'requires_expiry') bool requiresExpiry});
+      bool requiresLot,
+      bool requiresSerial,
+      bool requiresExpiry});
 }
 
 /// @nodoc
-class __$ProductDtoCopyWithImpl<$Res> implements _$ProductDtoCopyWith<$Res> {
-  __$ProductDtoCopyWithImpl(this._self, this._then);
+class __$ProductCopyWithImpl<$Res> implements _$ProductCopyWith<$Res> {
+  __$ProductCopyWithImpl(this._self, this._then);
 
-  final _ProductDto _self;
-  final $Res Function(_ProductDto) _then;
+  final _Product _self;
+  final $Res Function(_Product) _then;
 
-  /// Create a copy of ProductDto
+  /// Create a copy of Product
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $Res call({
     Object? id = null,
     Object? sku = null,
-    Object? barcode = freezed,
     Object? name = null,
+    Object? barcode = freezed,
     Object? category = freezed,
     Object? unit = freezed,
     Object? requiresLot = null,
     Object? requiresSerial = null,
     Object? requiresExpiry = null,
   }) {
-    return _then(_ProductDto(
+    return _then(_Product(
       id: null == id
           ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -498,14 +478,14 @@ class __$ProductDtoCopyWithImpl<$Res> implements _$ProductDtoCopyWith<$Res> {
           ? _self.sku
           : sku // ignore: cast_nullable_to_non_nullable
               as String,
-      barcode: freezed == barcode
-          ? _self.barcode
-          : barcode // ignore: cast_nullable_to_non_nullable
-              as String?,
       name: null == name
           ? _self.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      barcode: freezed == barcode
+          ? _self.barcode
+          : barcode // ignore: cast_nullable_to_non_nullable
+              as String?,
       category: freezed == category
           ? _self.category
           : category // ignore: cast_nullable_to_non_nullable

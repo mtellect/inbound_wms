@@ -7,7 +7,8 @@ import 'package:uuid/uuid.dart';
 class PurchaseOrderProvider extends ChangeNotifier {
   final IPurchaseOrderApiService _purchaseOrderApiService;
 
-  PurchaseOrderProvider({required this._purchaseOrderApiService});
+  PurchaseOrderProvider({required IPurchaseOrderApiService purchaseOrderApiService})
+      : _purchaseOrderApiService = purchaseOrderApiService;
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;

@@ -16,6 +16,10 @@ _PurchaseOrderDto _$PurchaseOrderDtoFromJson(Map<String, dynamic> json) =>
       createdAt: json['created_at'] == null
           ? null
           : DateTime.parse(json['created_at'] as String),
+      items: (json['po_items'] as List<dynamic>?)
+              ?.map((e) => PoItemDto.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$PurchaseOrderDtoToJson(_PurchaseOrderDto instance) =>
@@ -26,4 +30,5 @@ Map<String, dynamic> _$PurchaseOrderDtoToJson(_PurchaseOrderDto instance) =>
       'status': instance.status,
       'blind_receiving': instance.blindReceiving,
       'created_at': instance.createdAt?.toIso8601String(),
+      'po_items': instance.items,
     };

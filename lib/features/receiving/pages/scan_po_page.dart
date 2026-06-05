@@ -5,15 +5,8 @@ import 'package:inbound_ms/core/resources/app_colors.dart';
 
 import 'package:inbound_ms/features/purchase_orders/providers/purchase_order_provider.dart';
 import 'package:inbound_ms/features/purchase_orders/models/purchase_order.dart';
+import 'package:inbound_ms/features/purchase_orders/models/po_item.dart';
 import 'package:provider/provider.dart';
-
-class PoLineItem {
-  final String sku;
-  final String name;
-  final int expectedQty;
-
-  PoLineItem({required this.sku, required this.name, required this.expectedQty});
-}
 
 class ScanPoPage extends StatefulWidget {
   const ScanPoPage({super.key});
@@ -27,7 +20,7 @@ class _ScanPoPageState extends State<ScanPoPage> {
   final FocusNode _scanFocusNode = FocusNode();
 
   PurchaseOrder? _selectedPo;
-  List<PoLineItem> _currentManifest = [];
+  List<PoItem> _currentManifest = [];
   final Map<String, int> _scannedQuantities = {};
   int _unexpectedScans = 0;
 
@@ -52,17 +45,15 @@ class _ScanPoPageState extends State<ScanPoPage> {
     setState(() {
       _selectedPo = provider.activeOrders.firstWhere((po) => po.id == poId);
       
-      // Generate a dummy manifest since real PO items aren't fetched yet
-      _currentManifest = [
-        PoLineItem(sku: 'SKU-A100', name: 'Wireless Mouse (Mock)', expectedQty: 50),
-        PoLineItem(sku: 'SKU-B200', name: 'Keyboard (Mock)', expectedQty: 20),
-      ];
+      _currentManifest = _selectedPo!.items;
 
       _scannedQuantities.clear();
       _unexpectedScans = 0;
       // Initialize scan counts
       for (var item in _currentManifest) {
-        _scannedQuantities[item.sku] = 0;
+        if (item.product != null) {
+          _scannedQuantities[item.product!.sku] = 0;
+        }
       }
     });
     // Give focus to scanner
@@ -90,7 +81,7 @@ class _ScanPoPageState extends State<ScanPoPage> {
 
   int get _totalExpected {
     if (_selectedPo == null) return 0;
-    return _currentManifest.fold(0, (sum, item) => sum + item.expectedQty);
+    return _currentManifest.fold(0, (sum, item) => sum + item.expectedQuantity);
   }
 
   int get _totalScanned {
@@ -101,9 +92,10 @@ class _ScanPoPageState extends State<ScanPoPage> {
     if (_selectedPo == null) return 0;
     int overages = 0;
     for (var item in _currentManifest) {
-      final scanned = _scannedQuantities[item.sku] ?? 0;
-      if (scanned > item.expectedQty) {
-        overages += (scanned - item.expectedQty);
+      if (item.product == null) continue;
+      final scanned = _scannedQuantities[item.product!.sku] ?? 0;
+      if (scanned > item.expectedQuantity) {
+        overages += (scanned - item.expectedQuantity);
       }
     }
     return overages;
@@ -299,8 +291,8 @@ class _ScanPoPageState extends State<ScanPoPage> {
                                 separatorBuilder: (_, __) => const Divider(color: AppColors.separatorColor),
                                 itemBuilder: (context, index) {
                                   final item = _currentManifest[index];
-                                  final scanned = _scannedQuantities[item.sku] ?? 0;
-                                  final variance = scanned - item.expectedQty;
+                                  final scanned = _scannedQuantities[item.product?.sku ?? ''] ?? 0;
+                                  final variance = scanned - item.expectedQuantity;
                                   
                                   Color statusColor = AppColors.separatorColor;
                                   IconData statusIcon = Icons.pending;
@@ -327,13 +319,13 @@ class _ScanPoPageState extends State<ScanPoPage> {
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            Text(item.sku, style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.textPrimaryLight)),
-                                            Text(item.name, style: const TextStyle(color: AppColors.textSecondaryLight, fontSize: 12)),
+                                            Text(item.product?.sku ?? 'Unknown SKU', style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.textPrimaryLight)),
+                                            Text(item.product?.name ?? 'Unknown Product', style: const TextStyle(color: AppColors.textSecondaryLight, fontSize: 12)),
                                           ],
                                         ),
                                       ),
                                       Expanded(
-                                        child: Text('Expected: ${item.expectedQty}', style: const TextStyle(color: AppColors.textSecondaryLight)),
+                                        child: Text('Expected: ${item.expectedQuantity}', style: const TextStyle(color: AppColors.textSecondaryLight)),
                                       ),
                                       Expanded(
                                         child: Text('Scanned: $scanned', style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.textPrimaryLight)),
@@ -355,7 +347,7 @@ class _ScanPoPageState extends State<ScanPoPage> {
                                             tooltip: 'Undo last scan',
                                             onPressed: scanned > 0 ? () {
                                               setState(() {
-                                                _scannedQuantities[item.sku] = scanned - 1;
+                                                _scannedQuantities[item.product!.sku] = scanned - 1;
                                               });
                                             } : null,
                                           ),
@@ -364,7 +356,7 @@ class _ScanPoPageState extends State<ScanPoPage> {
                                             tooltip: 'Manual entry',
                                             onPressed: () {
                                               setState(() {
-                                                _scannedQuantities[item.sku] = scanned + 1;
+                                                _scannedQuantities[item.product!.sku] = scanned + 1;
                                               });
                                             },
                                           ),

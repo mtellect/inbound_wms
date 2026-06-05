@@ -16,8 +16,8 @@ T _$identity<T>(T value) => value;
 mixin _$ProductDto {
   String get id;
   String get sku;
-  String? get barcode;
   String get name;
+  String? get barcode;
   String? get category;
   String? get unit;
   @JsonKey(name: 'requires_lot')
@@ -44,8 +44,8 @@ mixin _$ProductDto {
             other is ProductDto &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.sku, sku) || other.sku == sku) &&
-            (identical(other.barcode, barcode) || other.barcode == barcode) &&
             (identical(other.name, name) || other.name == name) &&
+            (identical(other.barcode, barcode) || other.barcode == barcode) &&
             (identical(other.category, category) ||
                 other.category == category) &&
             (identical(other.unit, unit) || other.unit == unit) &&
@@ -59,12 +59,12 @@ mixin _$ProductDto {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, sku, barcode, name, category,
+  int get hashCode => Object.hash(runtimeType, id, sku, name, barcode, category,
       unit, requiresLot, requiresSerial, requiresExpiry);
 
   @override
   String toString() {
-    return 'ProductDto(id: $id, sku: $sku, barcode: $barcode, name: $name, category: $category, unit: $unit, requiresLot: $requiresLot, requiresSerial: $requiresSerial, requiresExpiry: $requiresExpiry)';
+    return 'ProductDto(id: $id, sku: $sku, name: $name, barcode: $barcode, category: $category, unit: $unit, requiresLot: $requiresLot, requiresSerial: $requiresSerial, requiresExpiry: $requiresExpiry)';
   }
 }
 
@@ -77,8 +77,8 @@ abstract mixin class $ProductDtoCopyWith<$Res> {
   $Res call(
       {String id,
       String sku,
-      String? barcode,
       String name,
+      String? barcode,
       String? category,
       String? unit,
       @JsonKey(name: 'requires_lot') bool requiresLot,
@@ -100,8 +100,8 @@ class _$ProductDtoCopyWithImpl<$Res> implements $ProductDtoCopyWith<$Res> {
   $Res call({
     Object? id = null,
     Object? sku = null,
-    Object? barcode = freezed,
     Object? name = null,
+    Object? barcode = freezed,
     Object? category = freezed,
     Object? unit = freezed,
     Object? requiresLot = null,
@@ -117,14 +117,14 @@ class _$ProductDtoCopyWithImpl<$Res> implements $ProductDtoCopyWith<$Res> {
           ? _self.sku
           : sku // ignore: cast_nullable_to_non_nullable
               as String,
-      barcode: freezed == barcode
-          ? _self.barcode
-          : barcode // ignore: cast_nullable_to_non_nullable
-              as String?,
       name: null == name
           ? _self.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      barcode: freezed == barcode
+          ? _self.barcode
+          : barcode // ignore: cast_nullable_to_non_nullable
+              as String?,
       category: freezed == category
           ? _self.category
           : category // ignore: cast_nullable_to_non_nullable
@@ -245,8 +245,8 @@ extension ProductDtoPatterns on ProductDto {
     TResult Function(
             String id,
             String sku,
-            String? barcode,
             String name,
+            String? barcode,
             String? category,
             String? unit,
             @JsonKey(name: 'requires_lot') bool requiresLot,
@@ -261,8 +261,8 @@ extension ProductDtoPatterns on ProductDto {
         return $default(
             _that.id,
             _that.sku,
-            _that.barcode,
             _that.name,
+            _that.barcode,
             _that.category,
             _that.unit,
             _that.requiresLot,
@@ -291,8 +291,8 @@ extension ProductDtoPatterns on ProductDto {
     TResult Function(
             String id,
             String sku,
-            String? barcode,
             String name,
+            String? barcode,
             String? category,
             String? unit,
             @JsonKey(name: 'requires_lot') bool requiresLot,
@@ -306,8 +306,8 @@ extension ProductDtoPatterns on ProductDto {
         return $default(
             _that.id,
             _that.sku,
-            _that.barcode,
             _that.name,
+            _that.barcode,
             _that.category,
             _that.unit,
             _that.requiresLot,
@@ -335,8 +335,8 @@ extension ProductDtoPatterns on ProductDto {
     TResult? Function(
             String id,
             String sku,
-            String? barcode,
             String name,
+            String? barcode,
             String? category,
             String? unit,
             @JsonKey(name: 'requires_lot') bool requiresLot,
@@ -350,8 +350,8 @@ extension ProductDtoPatterns on ProductDto {
         return $default(
             _that.id,
             _that.sku,
-            _that.barcode,
             _that.name,
+            _that.barcode,
             _that.category,
             _that.unit,
             _that.requiresLot,
@@ -369,8 +369,8 @@ class _ProductDto implements ProductDto {
   const _ProductDto(
       {required this.id,
       required this.sku,
-      this.barcode,
       required this.name,
+      this.barcode,
       this.category,
       this.unit,
       @JsonKey(name: 'requires_lot') this.requiresLot = false,
@@ -384,9 +384,9 @@ class _ProductDto implements ProductDto {
   @override
   final String sku;
   @override
-  final String? barcode;
-  @override
   final String name;
+  @override
+  final String? barcode;
   @override
   final String? category;
   @override
@@ -423,8 +423,8 @@ class _ProductDto implements ProductDto {
             other is _ProductDto &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.sku, sku) || other.sku == sku) &&
-            (identical(other.barcode, barcode) || other.barcode == barcode) &&
             (identical(other.name, name) || other.name == name) &&
+            (identical(other.barcode, barcode) || other.barcode == barcode) &&
             (identical(other.category, category) ||
                 other.category == category) &&
             (identical(other.unit, unit) || other.unit == unit) &&
@@ -438,12 +438,12 @@ class _ProductDto implements ProductDto {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, sku, barcode, name, category,
+  int get hashCode => Object.hash(runtimeType, id, sku, name, barcode, category,
       unit, requiresLot, requiresSerial, requiresExpiry);
 
   @override
   String toString() {
-    return 'ProductDto(id: $id, sku: $sku, barcode: $barcode, name: $name, category: $category, unit: $unit, requiresLot: $requiresLot, requiresSerial: $requiresSerial, requiresExpiry: $requiresExpiry)';
+    return 'ProductDto(id: $id, sku: $sku, name: $name, barcode: $barcode, category: $category, unit: $unit, requiresLot: $requiresLot, requiresSerial: $requiresSerial, requiresExpiry: $requiresExpiry)';
   }
 }
 
@@ -458,8 +458,8 @@ abstract mixin class _$ProductDtoCopyWith<$Res>
   $Res call(
       {String id,
       String sku,
-      String? barcode,
       String name,
+      String? barcode,
       String? category,
       String? unit,
       @JsonKey(name: 'requires_lot') bool requiresLot,
@@ -481,8 +481,8 @@ class __$ProductDtoCopyWithImpl<$Res> implements _$ProductDtoCopyWith<$Res> {
   $Res call({
     Object? id = null,
     Object? sku = null,
-    Object? barcode = freezed,
     Object? name = null,
+    Object? barcode = freezed,
     Object? category = freezed,
     Object? unit = freezed,
     Object? requiresLot = null,
@@ -498,14 +498,14 @@ class __$ProductDtoCopyWithImpl<$Res> implements _$ProductDtoCopyWith<$Res> {
           ? _self.sku
           : sku // ignore: cast_nullable_to_non_nullable
               as String,
-      barcode: freezed == barcode
-          ? _self.barcode
-          : barcode // ignore: cast_nullable_to_non_nullable
-              as String?,
       name: null == name
           ? _self.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      barcode: freezed == barcode
+          ? _self.barcode
+          : barcode // ignore: cast_nullable_to_non_nullable
+              as String?,
       category: freezed == category
           ? _self.category
           : category // ignore: cast_nullable_to_non_nullable

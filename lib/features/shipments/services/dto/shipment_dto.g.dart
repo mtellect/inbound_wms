@@ -7,16 +7,16 @@ part of 'shipment_dto.dart';
 // **************************************************************************
 
 _ShipmentDto _$ShipmentDtoFromJson(Map<String, dynamic> json) => _ShipmentDto(
-  id: json['id'] as String,
-  poId: json['po_id'] as String,
-  carrierName: json['carrier_name'] as String?,
-  trackingNumber: json['tracking_number'] as String?,
-  dockDoor: json['dock_door'] as String?,
-  arrivalTime: json['arrival_time'] == null
-      ? null
-      : DateTime.parse(json['arrival_time'] as String),
-  status: json['status'] as String? ?? 'expected',
-);
+      id: json['id'] as String,
+      poId: json['po_id'] as String,
+      carrierName: json['carrier_name'] as String?,
+      trackingNumber: json['tracking_number'] as String?,
+      dockDoor: json['dock_door'] as String?,
+      arrivalTime: json['arrival_time'] == null
+          ? null
+          : DateTime.parse(json['arrival_time'] as String),
+      status: json['status'] as String? ?? 'expected',
+    );
 
 Map<String, dynamic> _$ShipmentDtoToJson(_ShipmentDto instance) =>
     <String, dynamic>{

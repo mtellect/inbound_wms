@@ -9,8 +9,8 @@ part of 'product_dto.dart';
 _ProductDto _$ProductDtoFromJson(Map<String, dynamic> json) => _ProductDto(
       id: json['id'] as String,
       sku: json['sku'] as String,
-      barcode: json['barcode'] as String?,
       name: json['name'] as String,
+      barcode: json['barcode'] as String?,
       category: json['category'] as String?,
       unit: json['unit'] as String?,
       requiresLot: json['requires_lot'] as bool? ?? false,
@@ -22,8 +22,8 @@ Map<String, dynamic> _$ProductDtoToJson(_ProductDto instance) =>
     <String, dynamic>{
       'id': instance.id,
       'sku': instance.sku,
-      'barcode': instance.barcode,
       'name': instance.name,
+      'barcode': instance.barcode,
       'category': instance.category,
       'unit': instance.unit,
       'requires_lot': instance.requiresLot,
