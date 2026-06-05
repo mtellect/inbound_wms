@@ -6,7 +6,7 @@ create table public.user_roles (
   id uuid references auth.users on delete cascade primary key,
   email text not null,
   display_name text,
-  role text check (role in ('manager', 'supervisor', 'worker')) not null,
+  role text check (role in ('admin', 'manager', 'supervisor', 'worker')) not null,
   status text check (status in ('active', 'inactive', 'offline')) default 'active',
   last_login timestamp with time zone,
   requires_password_reset boolean default true
