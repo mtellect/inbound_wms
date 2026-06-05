@@ -54,7 +54,11 @@ class QuickActionsCard extends StatelessWidget {
               const SizedBox(height: 12),
             ],
             _buildActionTile(context, 'Scan Label', Icons.document_scanner, () {
-              DialogUtils.showDialog(context: context, builder: (_) => const ScanPoModal());
+              DialogUtils.showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (_) => const ScanPoModal(),
+              );
             }),
           ],
         ),

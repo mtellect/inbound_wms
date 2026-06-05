@@ -132,7 +132,7 @@ class PurchaseOrderProvider extends ChangeNotifier {
       await _purchaseOrderApiService.updatePoItemsReceivedQuantities(updatedItems);
 
       // 3. Update PO Status
-      final newStatus = isComplete ? 'completed' : 'receiving';
+      final newStatus = isComplete ? 'completed' : 'in_progress';
       await _purchaseOrderApiService.updatePurchaseOrderStatus(po.id, newStatus);
 
       // 4. Reload
@@ -144,6 +144,27 @@ class PurchaseOrderProvider extends ChangeNotifier {
     } finally {
       _isLoading = false;
       notifyListeners();
+    }
+  }
+
+  Future<void> autoSaveReceivingSession({
+    required PurchaseOrder po,
+    required Map<String, int> scannedQuantities,
+  }) async {
+    try {
+      final updatedItems = po.items.map((item) {
+        if (item.product != null) {
+          final scanned = scannedQuantities[item.product!.sku.toUpperCase()] ?? 0;
+          return item.copyWith(receivedQuantity: scanned);
+        }
+        return item;
+      }).toList();
+
+      await _purchaseOrderApiService.updatePoItemsReceivedQuantities(updatedItems);
+      await _purchaseOrderApiService.updatePurchaseOrderStatus(po.id, 'in_progress');
+      // Deliberately skipping loadActiveOrders() to prevent blocking UI/spinners during background save
+    } catch (e) {
+      debugPrint("Error auto-saving session: $e");
     }
   }
 }

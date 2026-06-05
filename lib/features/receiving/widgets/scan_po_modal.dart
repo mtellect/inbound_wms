@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:inbound_ms/core/utils/toast_utils.dart';
 import 'package:inbound_ms/core/resources/app_colors.dart';
@@ -26,6 +27,7 @@ class _ScanPoModalState extends State<ScanPoModal> {
   List<PoItem> _currentManifest = [];
   final Map<String, int> _scannedQuantities = {};
   int _unexpectedScans = 0;
+  Timer? _autoSaveTimer;
 
   @override
   void initState() {
@@ -39,7 +41,19 @@ class _ScanPoModalState extends State<ScanPoModal> {
   void dispose() {
     _scanController.dispose();
     _scanFocusNode.dispose();
+    _autoSaveTimer?.cancel();
     super.dispose();
+  }
+
+  void _triggerAutoSave() {
+    _autoSaveTimer?.cancel();
+    _autoSaveTimer = Timer(const Duration(milliseconds: 1500), () {
+      if (_selectedPo == null || !mounted) return;
+      context.read<PurchaseOrderProvider>().autoSaveReceivingSession(
+            po: _selectedPo!,
+            scannedQuantities: _scannedQuantities,
+          );
+    });
   }
 
   void _onPoSelected(String? poId) {
@@ -109,10 +123,12 @@ class _ScanPoModalState extends State<ScanPoModal> {
     setState(() {
       if (_scannedQuantities.containsKey(barcode)) {
         _scannedQuantities[barcode] = (_scannedQuantities[barcode] ?? 0) + 1;
+        _triggerAutoSave();
         debugPrint("Success: Incremented quantity for $barcode");
         ToastUtils.showSuccess(context, message: 'Scanned 1x $barcode');
       } else {
         _unexpectedScans++;
+        _triggerAutoSave();
         debugPrint("Error: Unexpected SKU $barcode");
         ToastUtils.showError(context, message: 'Unexpected SKU: $barcode not on PO!');
       }
@@ -123,11 +139,16 @@ class _ScanPoModalState extends State<ScanPoModal> {
     setState(() {
       _scannedQuantities[sku] = newQuantity;
     });
+    _triggerAutoSave();
   }
 
   void _handleSaveSession(bool isComplete) {
-    if (_selectedPo == null) return;
-    
+    _autoSaveTimer?.cancel();
+    if (_selectedPo == null) {
+      Navigator.of(context).pop();
+      return;
+    }
+
     context.read<PurchaseOrderProvider>().saveReceivingSession(
           po: _selectedPo!,
           scannedQuantities: _scannedQuantities,
@@ -201,7 +222,7 @@ class _ScanPoModalState extends State<ScanPoModal> {
                             color: AppColors.textPrimaryLight)),
                     IconButton(
                       icon: const Icon(Icons.close, color: AppColors.textSecondaryLight),
-                      onPressed: () => Navigator.of(context).pop(),
+                      onPressed: () => _handleSaveSession(false),
                     ),
                   ],
                 ),
