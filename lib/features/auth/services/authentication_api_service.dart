@@ -1,4 +1,5 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:inbound_ms/features/auth/models/user_role.dart';
 import 'i_authentication_api_service.dart';
 
 class AuthenticationApiService implements IAuthenticationApiService {
@@ -21,11 +22,15 @@ class AuthenticationApiService implements IAuthenticationApiService {
   bool get isAuthenticated => _supabaseClient.auth.currentUser != null;
 
   @override
-  String? get currentUserRole {
+  UserRole? get currentUserRole {
     // Assuming role is stored in user metadata or a separate users table
-    // For simplicity, reading from user_metadata. Return 'worker' by default for safety.
     final user = _supabaseClient.auth.currentUser;
     if (user == null) return null;
-    return user.userMetadata?['role'] as String? ?? 'worker';
+    
+    final roleStr = user.userMetadata?['role'] as String? ?? 'staff';
+    return UserRole.values.firstWhere(
+      (e) => e.name == roleStr,
+      orElse: () => UserRole.staff,
+    );
   }
 }

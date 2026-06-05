@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:inbound_ms/features/users/models/app_user.dart';
+import 'package:inbound_ms/features/auth/models/user_role.dart';
 import 'package:inbound_ms/core/widgets/table/app_table_view.dart';
 import 'package:inbound_ms/core/widgets/table/table_resource.dart';
 
@@ -15,9 +16,9 @@ class UsersPage extends StatefulWidget {
 
 class _UsersPageState extends State<UsersPage> {
   final List<AppUser> _users = [
-    AppUser(id: '1', username: 'manager', displayName: 'System Manager', role: 'manager', status: 'active', lastLogin: DateTime.now().subtract(const Duration(minutes: 5))),
-    AppUser(id: '2', username: 'jdoe', displayName: 'John Doe', role: 'staff', status: 'active', lastLogin: DateTime.now().subtract(const Duration(hours: 2))),
-    AppUser(id: '3', username: 'msmith', displayName: 'Mary Smith', role: 'staff', status: 'offline', lastLogin: DateTime.now().subtract(const Duration(days: 1))),
+    AppUser(id: '1', username: 'manager', displayName: 'System Manager', role: UserRole.manager, status: 'active', lastLogin: DateTime.now().subtract(const Duration(minutes: 5))),
+    AppUser(id: '2', username: 'jdoe', displayName: 'John Doe', role: UserRole.staff, status: 'active', lastLogin: DateTime.now().subtract(const Duration(hours: 2))),
+    AppUser(id: '3', username: 'msmith', displayName: 'Mary Smith', role: UserRole.staff, status: 'offline', lastLogin: DateTime.now().subtract(const Duration(days: 1))),
   ];
 
  
@@ -29,9 +30,9 @@ class _UsersPageState extends State<UsersPage> {
         id: u.id,
         uid: u.id,
         cells: {
-          'user': TableCellData(value: u.displayName, subValue: u.role),
+          'user': TableCellData(value: u.displayName, subValue: u.role.displayName),
           'username': TableCellData(value: '@${u.username}'),
-          'role': TableCellData(value: u.role.toUpperCase(), type: AdminColumnType.pill),
+          'role': TableCellData(value: u.role.name.toUpperCase(), type: AdminColumnType.pill),
           'status': TableCellData(value: u.status, type: AdminColumnType.pill),
           'lastLogin': TableCellData(value: u.lastLogin?.toString().split('.')[0] ?? 'Never'),
         },

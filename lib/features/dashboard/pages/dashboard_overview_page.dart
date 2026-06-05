@@ -3,7 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:inbound_ms/core/widgets/page_header.dart';
 import 'package:inbound_ms/core/utils/toast_utils.dart';
 import 'package:inbound_ms/core/utils/dialog_utils.dart';
+import 'package:inbound_ms/core/utils/dialog_utils.dart';
 import 'package:inbound_ms/features/receiving/pages/scan_po_page.dart';
+import 'package:provider/provider.dart';
+import 'package:inbound_ms/features/auth/providers/auth_provider.dart';
+import 'package:inbound_ms/features/auth/models/user_role.dart';
+import 'package:provider/provider.dart';
 
 @RoutePage()
 class DashboardOverviewPage extends StatelessWidget {
@@ -252,6 +257,8 @@ class DashboardOverviewPage extends StatelessWidget {
   }
 
   Widget _buildQuickActionsCard(BuildContext context) {
+    final isManager = context.watch<AuthProvider>().isManager;
+
     return Container(
       decoration: BoxDecoration(
         gradient: const LinearGradient(
@@ -280,19 +287,18 @@ class DashboardOverviewPage extends StatelessWidget {
               ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800, color: Colors.white),
             ),
             const SizedBox(height: 24),
-            _buildActionTile(context, 'Create PO', Icons.add, () {
-              ToastUtils.showInfo(context, message: 'PO Creation Form not yet implemented');
-            }),
-            const SizedBox(height: 12),
-            _buildActionTile(context, 'Import CSV', Icons.file_upload, () {
-              ToastUtils.showInfo(context, message: 'CSV Importer not yet implemented');
-            }),
-            const SizedBox(height: 12),
+            if (isManager) ...[
+              _buildActionTile(context, 'Create PO', Icons.add, () {
+                ToastUtils.showInfo(context, message: 'PO Creation Form not yet implemented');
+              }),
+              const SizedBox(height: 12),
+              _buildActionTile(context, 'Import CSV', Icons.file_upload, () {
+                ToastUtils.showInfo(context, message: 'CSV Importer not yet implemented');
+              }),
+              const SizedBox(height: 12),
+            ],
             _buildActionTile(context, 'Scan Label', Icons.document_scanner, () {
-              DialogUtils.showDialog(
-                context: context,
-                builder: (_) => const ScanPoPage(),
-              );
+              DialogUtils.showDialog(context: context, builder: (_) => const ScanPoPage());
             }),
           ],
         ),

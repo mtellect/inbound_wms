@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:inbound_ms/features/auth/models/user_role.dart';
 
 part 'app_user.freezed.dart';
 
@@ -8,7 +9,7 @@ abstract class AppUser with _$AppUser {
     required String id,
     required String username,
     required String displayName,
-    required String role,
+    required UserRole role,
     required String status,
     DateTime? lastLogin,
   }) = _AppUser;

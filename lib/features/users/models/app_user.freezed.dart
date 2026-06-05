@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AppUser {
 
- String get id; String get username; String get displayName; String get role; String get status; DateTime? get lastLogin;
+ String get id; String get username; String get displayName; UserRole get role; String get status; DateTime? get lastLogin;
 /// Create a copy of AppUser
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -45,7 +45,7 @@ abstract mixin class $AppUserCopyWith<$Res>  {
   factory $AppUserCopyWith(AppUser value, $Res Function(AppUser) _then) = _$AppUserCopyWithImpl;
 @useResult
 $Res call({
- String id, String username, String displayName, String role, String status, DateTime? lastLogin
+ String id, String username, String displayName, UserRole role, String status, DateTime? lastLogin
 });
 
 
@@ -68,7 +68,7 @@ id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
 as String,displayName: null == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
 as String,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
-as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as UserRole,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as String,lastLogin: freezed == lastLogin ? _self.lastLogin : lastLogin // ignore: cast_nullable_to_non_nullable
 as DateTime?,
   ));
@@ -155,7 +155,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String username,  String displayName,  String role,  String status,  DateTime? lastLogin)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String username,  String displayName,  UserRole role,  String status,  DateTime? lastLogin)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AppUser() when $default != null:
 return $default(_that.id,_that.username,_that.displayName,_that.role,_that.status,_that.lastLogin);case _:
@@ -176,7 +176,7 @@ return $default(_that.id,_that.username,_that.displayName,_that.role,_that.statu
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String username,  String displayName,  String role,  String status,  DateTime? lastLogin)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String username,  String displayName,  UserRole role,  String status,  DateTime? lastLogin)  $default,) {final _that = this;
 switch (_that) {
 case _AppUser():
 return $default(_that.id,_that.username,_that.displayName,_that.role,_that.status,_that.lastLogin);case _:
@@ -196,7 +196,7 @@ return $default(_that.id,_that.username,_that.displayName,_that.role,_that.statu
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String username,  String displayName,  String role,  String status,  DateTime? lastLogin)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String username,  String displayName,  UserRole role,  String status,  DateTime? lastLogin)?  $default,) {final _that = this;
 switch (_that) {
 case _AppUser() when $default != null:
 return $default(_that.id,_that.username,_that.displayName,_that.role,_that.status,_that.lastLogin);case _:
@@ -217,7 +217,7 @@ class _AppUser implements AppUser {
 @override final  String id;
 @override final  String username;
 @override final  String displayName;
-@override final  String role;
+@override final  UserRole role;
 @override final  String status;
 @override final  DateTime? lastLogin;
 
@@ -251,7 +251,7 @@ abstract mixin class _$AppUserCopyWith<$Res> implements $AppUserCopyWith<$Res> {
   factory _$AppUserCopyWith(_AppUser value, $Res Function(_AppUser) _then) = __$AppUserCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String username, String displayName, String role, String status, DateTime? lastLogin
+ String id, String username, String displayName, UserRole role, String status, DateTime? lastLogin
 });
 
 
@@ -274,7 +274,7 @@ id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
 as String,displayName: null == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
 as String,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
-as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as UserRole,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as String,lastLogin: freezed == lastLogin ? _self.lastLogin : lastLogin // ignore: cast_nullable_to_non_nullable
 as DateTime?,
   ));
