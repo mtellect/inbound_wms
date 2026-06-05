@@ -5,6 +5,7 @@ import 'package:inbound_ms/core/widgets/table/table_resource.dart';
 import 'package:provider/provider.dart';
 import 'package:inbound_ms/features/purchase_orders/providers/purchase_order_provider.dart';
 import 'package:inbound_ms/core/utils/toast_utils.dart';
+import 'package:inbound_ms/core/widgets/delete_confirmation_dialog.dart';
 
 @RoutePage()
 class PurchaseOrdersPage extends StatefulWidget {
@@ -77,13 +78,20 @@ class _PurchaseOrdersPageState extends State<PurchaseOrdersPage> {
                     totalRecords: records.length,
                     onAdd: () {},
                     onEdit: (record) {},
-                    onDelete: (record) async {
-                      try {
-                        await context.read<PurchaseOrderProvider>().deleteOrder(record.id);
-                        if (context.mounted) ToastUtils.showSuccess(context, message: 'Order deleted successfully');
-                      } catch (e) {
-                        if (context.mounted) ToastUtils.showError(context, message: 'Failed to delete order: $e');
-                      }
+                    onDelete: (record) {
+                      DeleteConfirmationDialog.show(
+                        context,
+                        title: 'Delete Purchase Order',
+                        message: 'Are you sure you want to delete this purchase order? This action cannot be undone and will delete all associated line items.',
+                        onDelete: () async {
+                          try {
+                            await context.read<PurchaseOrderProvider>().deleteOrder(record.id);
+                            if (context.mounted) ToastUtils.showSuccess(context, message: 'Order deleted successfully');
+                          } catch (e) {
+                            if (context.mounted) ToastUtils.showError(context, message: 'Failed to delete order: $e');
+                          }
+                        },
+                      );
                     },
                     onView: (record) {},
                   ),
