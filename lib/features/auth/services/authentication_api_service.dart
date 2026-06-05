@@ -4,7 +4,8 @@ import 'i_authentication_api_service.dart';
 class AuthenticationApiService implements IAuthenticationApiService {
   final SupabaseClient _supabaseClient;
 
-  AuthenticationApiService(this._supabaseClient);
+  AuthenticationApiService({required SupabaseClient supabaseClient})
+      : _supabaseClient = supabaseClient;
 
   @override
   Future<void> signIn({required String email, required String password}) async {

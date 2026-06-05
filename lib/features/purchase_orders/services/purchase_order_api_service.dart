@@ -7,7 +7,8 @@ import 'i_purchase_order_api_service.dart';
 class PurchaseOrderApiService implements IPurchaseOrderApiService {
   final SupabaseClient _supabaseClient;
 
-  PurchaseOrderApiService(this._supabaseClient);
+  PurchaseOrderApiService({required SupabaseClient supabaseClient})
+      : _supabaseClient = supabaseClient;
 
   @override
   Future<List<PurchaseOrder>> fetchActivePurchaseOrders() async {

@@ -2,22 +2,23 @@ import 'package:flutter/foundation.dart';
 import 'package:inbound_ms/features/auth/services/i_authentication_api_service.dart';
 
 class AuthProvider extends ChangeNotifier {
-  final IAuthenticationApiService _authService;
+  final IAuthenticationApiService _authenticationApiService;
 
-  AuthProvider(this._authService);
+  AuthProvider({required IAuthenticationApiService authenticationApiService})
+      : _authenticationApiService = authenticationApiService;
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-  bool get isAuthenticated => _authService.isAuthenticated;
-  String? get role => _authService.currentUserRole;
+  bool get isAuthenticated => _authenticationApiService.isAuthenticated;
+  String? get role => _authenticationApiService.currentUserRole;
 
   Future<void> signIn(String email, String password) async {
     _isLoading = true;
     notifyListeners();
 
     try {
-      await _authService.signIn(email: email, password: password);
+      await _authenticationApiService.signIn(email: email, password: password);
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -25,7 +26,7 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<void> signOut() async {
-    await _authService.signOut();
+    await _authenticationApiService.signOut();
     notifyListeners();
   }
 }

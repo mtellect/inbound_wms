@@ -5,6 +5,15 @@ import 'package:inbound_ms/core/navigation/app_router.dart';
 import 'package:inbound_ms/core/enums/api_environment_enum.dart';
 import 'package:inbound_ms/core/services/i_environment_service.dart';
 import 'package:inbound_ms/core/services/environment_service.dart';
+
+import 'package:inbound_ms/features/auth/services/i_authentication_api_service.dart';
+import 'package:inbound_ms/features/auth/services/authentication_api_service.dart';
+import 'package:inbound_ms/features/auth/providers/auth_provider.dart';
+
+import 'package:inbound_ms/features/purchase_orders/services/i_purchase_order_api_service.dart';
+import 'package:inbound_ms/features/purchase_orders/services/purchase_order_api_service.dart';
+import 'package:inbound_ms/features/purchase_orders/providers/purchase_order_provider.dart';
+
 import 'i_startup_service.dart';
 
 final getIt = GetIt.instance;
@@ -35,12 +44,26 @@ class StartUpService implements IStartUpService {
     // Register AppRouter for declarative navigation
     getIt.registerSingleton<AppRouter>(AppRouter());
     
-    // TODO: Register individual Feature Services (e.g., IAuthService, IPurchaseOrderService)
+    // Register Feature Services
+    getIt.registerLazySingleton<IAuthenticationApiService>(
+      () => AuthenticationApiService(supabaseClient: getIt.get<SupabaseClient>())
+    );
+
+    getIt.registerLazySingleton<IPurchaseOrderApiService>(
+      () => PurchaseOrderApiService(supabaseClient: getIt.get<SupabaseClient>())
+    );
   }
 
   @override
   Future<void> registerControllers() async {
-    // TODO: Register State Providers (ChangeNotifiers) here.
+    // Register State Providers
+    getIt.registerLazySingleton<AuthProvider>(
+      () => AuthProvider(authenticationApiService: getIt.get<IAuthenticationApiService>())
+    );
+
+    getIt.registerLazySingleton<PurchaseOrderProvider>(
+      () => PurchaseOrderProvider(purchaseOrderApiService: getIt.get<IPurchaseOrderApiService>())
+    );
   }
 
   @override

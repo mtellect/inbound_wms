@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:inbound_ms/core/startup/startup_service.dart';
 import 'package:inbound_ms/core/navigation/app_router.dart';
 import 'package:inbound_ms/core/enums/api_environment_enum.dart';
+import 'package:inbound_ms/features/auth/providers/auth_provider.dart';
+import 'package:inbound_ms/features/purchase_orders/providers/purchase_order_provider.dart';
 
 Future<void> runApplication({required ApiEnvironmentEnum environment}) async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,8 +26,8 @@ class App extends StatelessWidget {
 
     return MultiProvider(
       providers: [
-        // TODO: Inject all providers here using ChangeNotifierProvider.value(value: getIt.get<Provider>())
-        // e.g. ChangeNotifierProvider.value(value: getIt.get<AuthProvider>()),
+        ChangeNotifierProvider.value(value: getIt.get<AuthProvider>()),
+        ChangeNotifierProvider.value(value: getIt.get<PurchaseOrderProvider>()),
       ],
       builder: (context, _) {
         return MaterialApp.router(
