@@ -6,7 +6,9 @@ enum UserRole {
   @JsonValue('staff')
   staff,
   @JsonValue('admin')
-  admin;
+  admin,
+  @JsonValue('superAdmin')
+  superAdmin;
 
   String get displayName {
     switch (this) {
@@ -16,6 +18,8 @@ enum UserRole {
         return 'Staff';
       case UserRole.admin:
         return 'Admin';
+      case UserRole.superAdmin:
+        return 'Super Admin';
     }
   }
 }
