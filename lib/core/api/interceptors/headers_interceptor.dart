@@ -10,7 +10,7 @@ class HeadersInterceptor extends Interceptor {
       // 'deviceId': AppVersionCheck.deviceId,
 
       // "X-API-KEY": "H7QzFHJx4w46fI5Uzi4RvtTwlEXpdgYUH",
-      'deviceType': Platform.operatingSystem,
+      'deviceType': kIsWeb ? 'web' : Platform.operatingSystem,
     };
 
     Map<String, String> baseHeaders = {
@@ -36,9 +36,7 @@ class HeadersInterceptor extends Interceptor {
     String token = localdbService.getAccessToken();
     // token = "6|o8pXlTPTTPqbfrJ8hyQ2dVYrYzlXZXDFJmsVuFKta7318bec";
     if (token != "") {
-      Map<String, String>? header = {
-        "Authorization": "Bearer $token",
-      };
+      Map<String, String>? header = {"Authorization": "Bearer $token"};
       customHeaders.addAll(header);
     }
 

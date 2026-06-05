@@ -23,6 +23,7 @@ class _UserDetailsModalState extends State<UserDetailsModal> {
   late final TextEditingController _emailController;
   late final TextEditingController _nameController;
   late final TextEditingController _passwordController;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -43,27 +44,37 @@ class _UserDetailsModalState extends State<UserDetailsModal> {
     super.dispose();
   }
 
-  void _save() {
+  Future<void> _save() async {
+    setState(() => _isLoading = true);
     final provider = context.read<UserProvider>();
-    if (widget.user == null) {
-      provider.createUser(
-        email: _emailController.text,
-        password: _passwordController.text,
-        displayName: _nameController.text,
-        role: _selectedRole.name,
-        status: _selectedStatus,
-        requiresPasswordReset: _requiresPasswordReset,
-      );
-    } else {
-      if (_selectedRole != widget.user!.role) {
-        provider.updateUserRole(widget.user!.id, _selectedRole.name);
+    try {
+      if (widget.user == null) {
+        await provider.createUser(
+          email: _emailController.text,
+          password: _passwordController.text,
+          displayName: _nameController.text,
+          role: _selectedRole.name,
+          status: _selectedStatus,
+          requiresPasswordReset: _requiresPasswordReset,
+        );
+      } else {
+        if (_selectedRole != widget.user!.role) {
+          await provider.updateUserRole(widget.user!.id, _selectedRole.name);
+        }
+        if (_selectedStatus != widget.user!.status) {
+          await provider.updateUserStatus(widget.user!.id, _selectedStatus);
+        }
       }
-      if (_selectedStatus != widget.user!.status) {
-        provider.updateUserStatus(widget.user!.id, _selectedStatus);
+      if (mounted) Navigator.of(context).pop();
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.toString()), backgroundColor: Colors.red),
+        );
       }
-      // Also potentially update display name if changed
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
     }
-    Navigator.of(context).pop();
   }
 
   @override
@@ -93,7 +104,7 @@ class _UserDetailsModalState extends State<UserDetailsModal> {
                           color: AppColors.textPrimaryLight)),
                   IconButton(
                     icon: const Icon(Icons.close, color: AppColors.textSecondaryLight),
-                    onPressed: () => Navigator.of(context).pop(),
+                    onPressed: _isLoading ? null : () => Navigator.of(context).pop(),
                   ),
                 ],
               ),
@@ -178,17 +189,26 @@ class _UserDetailsModalState extends State<UserDetailsModal> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
+                    onPressed: _isLoading ? null : () => Navigator.of(context).pop(),
                     child: const Text('Cancel'),
                   ),
                   const SizedBox(width: 16),
                   ElevatedButton(
-                    onPressed: _save,
+                    onPressed: _isLoading ? null : _save,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primary,
                       foregroundColor: AppColors.textPrimaryDark,
                     ),
-                    child: const Text('Save Changes'),
+                    child: _isLoading 
+                        ? const SizedBox(
+                            width: 20, 
+                            height: 20, 
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2, 
+                              valueColor: AlwaysStoppedAnimation<Color>(AppColors.textPrimaryDark)
+                            )
+                          )
+                        : const Text('Save Changes'),
                   ),
                 ],
               ),
