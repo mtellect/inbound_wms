@@ -75,6 +75,7 @@ class _PurchaseOrdersPageState extends State<PurchaseOrdersPage> {
                     resource: _resource,
                     records: records,
                     isLoading: provider.isLoading,
+                    loadingRecordIds: provider.loadingOrderIds,
                     totalRecords: records.length,
                     onAdd: () {},
                     onEdit: (record) {},
@@ -82,14 +83,16 @@ class _PurchaseOrdersPageState extends State<PurchaseOrdersPage> {
                       DeleteConfirmationDialog.show(
                         context,
                         title: 'Delete Purchase Order',
-                        message: 'Are you sure you want to delete this purchase order? This action cannot be undone and will delete all associated line items.',
-                        onDelete: () async {
-                          try {
-                            await context.read<PurchaseOrderProvider>().deleteOrder(record.id);
-                            if (context.mounted) ToastUtils.showSuccess(context, message: 'Order deleted successfully');
-                          } catch (e) {
-                            if (context.mounted) ToastUtils.showError(context, message: 'Failed to delete order: $e');
-                          }
+                        message:
+                            'Are you sure you want to delete this purchase order? This action cannot be undone and will delete all associated line items.',
+                        onDelete: () {
+                          context.read<PurchaseOrderProvider>().deleteOrder(
+                                id: record.id,
+                                onSuccess: () => ToastUtils.showSuccess(context,
+                                    message: 'Order deleted successfully'),
+                                onError: (error) => ToastUtils.showError(context,
+                                    message: 'Failed to delete order: $error'),
+                              );
                         },
                       );
                     },

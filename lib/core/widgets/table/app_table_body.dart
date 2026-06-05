@@ -23,6 +23,7 @@ class AppTableBody<T> extends StatefulWidget {
   final List<AdminTableAction<T>>? additionalActions;
   final Set<T>? selectedIds;
   final void Function(Set<T>)? onSelectionChanged;
+  final Set<T>? loadingRecordIds;
 
   const AppTableBody({
     super.key,
@@ -44,6 +45,7 @@ class AppTableBody<T> extends StatefulWidget {
     this.additionalActions,
     this.selectedIds,
     this.onSelectionChanged,
+    this.loadingRecordIds,
   });
 
   @override
@@ -166,6 +168,7 @@ class _AppTableBodyState<T> extends State<AppTableBody<T>> {
 
   Widget _buildTableRow(TableRowData<T> record) {
     final isSelected = widget.selectedIds?.contains(record.id) ?? false;
+    final isRowLoading = widget.loadingRecordIds?.contains(record.id) ?? false;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
@@ -178,8 +181,10 @@ class _AppTableBodyState<T> extends State<AppTableBody<T>> {
               : Colors.black.withValues(alpha: 0.05),
         ),
       ),
-      child: Row(
-        children: [
+      child: Opacity(
+        opacity: isRowLoading ? 0.5 : 1.0,
+        child: Row(
+          children: [
           if (widget.resource.selectable)
             SizedBox(
               width: 40,
@@ -202,10 +207,16 @@ class _AppTableBodyState<T> extends State<AppTableBody<T>> {
             width: 80,
             child: Align(
               alignment: Alignment.centerRight,
-              child: PopupMenuButton<String>(
-                icon: Icon(Icons.more_horiz, color: Colors.grey[500]!),
-                // color: const Color(0xFF1E1E2E),
-                shape: RoundedRectangleBorder(
+              child: isRowLoading
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2, color: Colors.blue),
+                    )
+                  : PopupMenuButton<String>(
+                      icon: Icon(Icons.more_horiz, color: Colors.grey[500]!),
+                      // color: const Color(0xFF1E1E2E),
+                      shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                   side: BorderSide(color: Colors.black.withValues(alpha: 0.1)),
                 ),
@@ -275,8 +286,9 @@ class _AppTableBodyState<T> extends State<AppTableBody<T>> {
           ),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildEmptyRow() {
     return Container(

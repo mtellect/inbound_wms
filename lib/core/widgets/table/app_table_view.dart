@@ -30,6 +30,9 @@ class AppTableView<T> extends StatefulWidget {
   // Selection
   final Set<T>? selectedIds;
   final void Function(Set<T>)? onSelectionChanged;
+  
+  // Loading state per record
+  final Set<T>? loadingRecordIds;
 
   const AppTableView({
     super.key,
@@ -54,6 +57,7 @@ class AppTableView<T> extends StatefulWidget {
     this.additionalActions,
     this.selectedIds,
     this.onSelectionChanged,
+    this.loadingRecordIds,
   });
 
   @override
@@ -128,6 +132,7 @@ class _AppTableViewState<T> extends State<AppTableView<T>> {
                 additionalActions: widget.additionalActions,
                 selectedIds: widget.selectedIds,
                 onSelectionChanged: widget.onSelectionChanged,
+                loadingRecordIds: widget.loadingRecordIds,
               ),
             ),
           ),

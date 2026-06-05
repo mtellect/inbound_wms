@@ -13,6 +13,9 @@ class PurchaseOrderProvider extends ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
+  final Set<String> _loadingOrderIds = {};
+  Set<String> get loadingOrderIds => _loadingOrderIds;
+
   List<PurchaseOrder> _activeOrders = [];
   List<PurchaseOrder> get activeOrders => _activeOrders;
 
@@ -84,18 +87,23 @@ class PurchaseOrderProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> deleteOrder(String id) async {
-    _isLoading = true;
+  Future<void> deleteOrder({
+    required String id,
+    required VoidCallback onSuccess,
+    required Function(String) onError,
+  }) async {
+    _loadingOrderIds.add(id);
     notifyListeners();
 
     try {
       await _purchaseOrderApiService.deletePurchaseOrder(id);
       await loadActiveOrders();
+      onSuccess();
     } catch (e) {
       debugPrint("Error deleting order: $e");
-      rethrow;
+      onError(e.toString());
     } finally {
-      _isLoading = false;
+      _loadingOrderIds.remove(id);
       notifyListeners();
     }
   }
