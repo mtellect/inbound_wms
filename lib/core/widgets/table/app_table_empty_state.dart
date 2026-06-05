@@ -34,7 +34,7 @@ class AppTableEmptyState extends StatelessWidget {
             Text(
               isNoResults ? 'No matching records' : 'Select a Resource',
               style: TextStyle(
-                color: Colors.white,
+                color: Colors.black87,
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
@@ -45,7 +45,7 @@ class AppTableEmptyState extends StatelessWidget {
                 ? 'Try adjusting your search query or filters for $resourceName.'
                 : 'Choose a resource from the sidebar to view and manage its records.',
               style: TextStyle(
-                color: Colors.white.withValues(alpha: 0.6),
+                color: Colors.black.withValues(alpha: 0.6),
                 fontSize: 16,
               ),
               textAlign: TextAlign.center,

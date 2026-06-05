@@ -45,7 +45,7 @@ class AppTableCell<T> extends StatelessWidget {
           width: 48,
           height: 48,
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             borderRadius: BorderRadius.circular(12),
           ),
           child: ClipRRect(
@@ -56,11 +56,11 @@ class AppTableCell<T> extends StatelessWidget {
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
                       return const Center(
-                        child: Icon(Icons.person_outline, color: Colors.white24),
+                        child: Icon(Icons.person_outline, color: Colors.black26),
                       );
                     },
                   )
-                : Icon(Icons.shopping_bag_outlined, color: Colors.white24),
+                : Icon(Icons.shopping_bag_outlined, color: Colors.black26),
           ),
         ),
         const SizedBox(width: 12),
@@ -72,7 +72,7 @@ class AppTableCell<T> extends StatelessWidget {
               Text(
                 cell.value,
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black87,
                   fontWeight: FontWeight.w500,
                   fontSize: 14,
                 ),
@@ -143,12 +143,12 @@ class AppTableCell<T> extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.05),
+        color: Colors.black.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Text(
         cell.value,
-        style: TextStyle(color: Colors.white, fontSize: 12),
+        style: TextStyle(color: Colors.black87, fontSize: 12),
       ),
     );
   }
@@ -164,7 +164,7 @@ class AppTableCell<T> extends StatelessWidget {
           decoration: BoxDecoration(
             color: color,
             shape: BoxShape.circle,
-            border: Border.all(color: Colors.white24, width: 1),
+            border: Border.all(color: Colors.black26, width: 1),
             boxShadow: [
               if (color != Colors.transparent)
                 BoxShadow(
@@ -178,7 +178,7 @@ class AppTableCell<T> extends StatelessWidget {
         const SizedBox(width: 12),
         Text(
           cell.value,
-          style: TextStyle(color: Colors.white70, fontSize: 14),
+          style: TextStyle(color: Colors.black87, fontSize: 14),
         ),
       ],
     );
@@ -187,7 +187,7 @@ class AppTableCell<T> extends StatelessWidget {
   Widget _buildTextCell(TableCellData cell) {
     return Text(
       cell.value,
-      style: TextStyle(color: Colors.white70, fontSize: 14),
+      style: TextStyle(color: Colors.black87, fontSize: 14),
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
     );
@@ -197,7 +197,7 @@ class AppTableCell<T> extends StatelessWidget {
     return Text(
       '\$${(cell.price ?? 0).toStringAsFixed(2)}',
       style: TextStyle(
-        color: Colors.white,
+        color: Colors.black87,
         fontWeight: FontWeight.bold,
         fontSize: 14,
       ),

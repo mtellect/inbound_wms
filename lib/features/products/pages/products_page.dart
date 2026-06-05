@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:inbound_ms/features/products/models/product.dart';
+import 'package:inbound_ms/core/widgets/page_header.dart';
 import 'package:inbound_ms/core/widgets/table/app_table_view.dart';
 import 'package:inbound_ms/core/widgets/table/table_resource.dart';
 
@@ -60,6 +61,23 @@ class _ProductsPageState extends State<ProductsPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          PageHeader(
+            title: 'Products Master',
+            subtitle: 'Manage your product catalog and tracking requirements.',
+            actions: [
+              OutlinedButton.icon(
+                onPressed: () {},
+                icon: const Icon(Icons.upload_file),
+                label: const Text('Import CSV'),
+              ),
+              const SizedBox(width: 12),
+              FilledButton.icon(
+                onPressed: () {},
+                icon: const Icon(Icons.add),
+                label: const Text('Add Product'),
+              ),
+            ],
+          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(24.0),

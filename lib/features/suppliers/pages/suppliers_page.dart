@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:inbound_ms/features/suppliers/models/supplier.dart';
+import 'package:inbound_ms/core/widgets/page_header.dart';
 import 'package:inbound_ms/core/widgets/table/app_table_view.dart';
 import 'package:inbound_ms/core/widgets/table/table_resource.dart';
 
@@ -50,6 +51,17 @@ class _SuppliersPageState extends State<SuppliersPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          PageHeader(
+            title: 'Suppliers Master',
+            subtitle: 'Manage your vendors and supplier contacts.',
+            actions: [
+              FilledButton.icon(
+                onPressed: () {},
+                icon: const Icon(Icons.add),
+                label: const Text('Add Supplier'),
+              ),
+            ],
+          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(24.0),

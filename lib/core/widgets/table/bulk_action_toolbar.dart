@@ -81,7 +81,7 @@ class BulkActionToolbar extends StatelessWidget {
                 color: Colors.blue.shade300,
               ),
               const SizedBox(width: 8),
-              const VerticalDivider(width: 1, indent: 8, endIndent: 8, color: Colors.white10),
+              const VerticalDivider(width: 1, indent: 8, endIndent: 8, color: Colors.black12),
               const SizedBox(width: 8),
               IconButton(
                 icon: Icon(Icons.close, color: Colors.grey[500]!, size: 20),

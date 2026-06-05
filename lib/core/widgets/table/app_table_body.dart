@@ -174,10 +174,10 @@ class _AppTableBodyState<T> extends State<AppTableBody<T>> {
       decoration: BoxDecoration(
         color: isSelected
             ? Colors.blue.withValues(alpha: 0.1)
-            : Colors.white.withValues(alpha: 0.3),
+            : Colors.black.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: isSelected ? Colors.blue.withValues(alpha: 0.3) : Colors.white.withValues(alpha: 0.05),
+          color: isSelected ? Colors.blue.withValues(alpha: 0.3) : Colors.black.withValues(alpha: 0.05),
         ),
       ),
       child: Row(
@@ -209,7 +209,7 @@ class _AppTableBodyState<T> extends State<AppTableBody<T>> {
                 color: const Color(0xFF1E1E2E),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
-                  side: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
+                  side: BorderSide(color: Colors.black.withValues(alpha: 0.1)),
                 ),
                 onSelected: (val) {
                   if (val == 'view') {
@@ -231,7 +231,7 @@ class _AppTableBodyState<T> extends State<AppTableBody<T>> {
                         children: [
                           Icon(Icons.visibility_outlined, color: Colors.green.shade300, size: 18),
                           const SizedBox(width: 12),
-                          Text('View', style: TextStyle(color: Colors.white, fontSize: 13)),
+                          Text('View', style: TextStyle(color: Colors.black87, fontSize: 13)),
                         ],
                       ),
                     ),
@@ -242,7 +242,7 @@ class _AppTableBodyState<T> extends State<AppTableBody<T>> {
                         children: [
                           Icon(Icons.edit_outlined, color: Colors.blue.shade300, size: 18),
                           const SizedBox(width: 12),
-                          Text('Edit', style: TextStyle(color: Colors.white, fontSize: 13)),
+                          Text('Edit', style: TextStyle(color: Colors.black87, fontSize: 13)),
                         ],
                       ),
                     ),
@@ -253,7 +253,7 @@ class _AppTableBodyState<T> extends State<AppTableBody<T>> {
                         children: [
                           Icon(Icons.delete_outline, color: Colors.red.shade300, size: 18),
                           const SizedBox(width: 12),
-                          Text('Delete', style: TextStyle(color: Colors.white, fontSize: 13)),
+                          Text('Delete', style: TextStyle(color: Colors.black87, fontSize: 13)),
                         ],
                       ),
                     ),
@@ -263,9 +263,9 @@ class _AppTableBodyState<T> extends State<AppTableBody<T>> {
                         value: action.value,
                         child: Row(
                           children: [
-                            Icon(action.icon, color: action.iconColor ?? Colors.white, size: 18),
+                            Icon(action.icon, color: action.iconColor ?? Colors.black87, size: 18),
                             const SizedBox(width: 12),
-                            Text(action.label, style: TextStyle(color: Colors.white, fontSize: 13)),
+                            Text(action.label, style: TextStyle(color: Colors.black87, fontSize: 13)),
                           ],
                         ),
                       ),
@@ -284,9 +284,9 @@ class _AppTableBodyState<T> extends State<AppTableBody<T>> {
       height: 72, // Average height of a row
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.1),
+        color: Colors.black.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.02)),
+        border: Border.all(color: Colors.black.withValues(alpha: 0.02)),
       ),
     );
   }
@@ -342,7 +342,7 @@ class _AppTableBodyState<T> extends State<AppTableBody<T>> {
           const SizedBox(height: 24),
           Text(
             'No matching records',
-            style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+            style: TextStyle(color: Colors.black87, fontSize: 24, fontWeight: FontWeight.bold),
           ),
         ],
       ),

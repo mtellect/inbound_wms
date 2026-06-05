@@ -51,7 +51,7 @@ class AppTableHeader extends StatelessWidget {
           resource.tableName,
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color: Colors.black87,
           ),
         ),
         const SizedBox(height: 8),
@@ -114,7 +114,7 @@ class AppTableHeader extends StatelessWidget {
       height: 44,
       child: TextField(
         controller: searchController,
-        style: TextStyle(color: Colors.white, fontSize: 14),
+        style: TextStyle(color: Colors.black87, fontSize: 14),
         decoration: InputDecoration(
           hintText: 'Search ${resource.tableName}...',
           hintStyle: TextStyle(color: Colors.grey[500]!),
@@ -126,14 +126,14 @@ class AppTableHeader extends StatelessWidget {
                 )
               : null,
           filled: true,
-          fillColor: Colors.white.withValues(alpha: 0.5),
+          fillColor: Colors.black.withValues(alpha: 0.5),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
+            borderSide: BorderSide(color: Colors.black.withValues(alpha: 0.1)),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.1)),
+            borderSide: BorderSide(color: Colors.black.withValues(alpha: 0.1)),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
