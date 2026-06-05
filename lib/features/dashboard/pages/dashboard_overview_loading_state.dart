@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inbound_ms/core/widgets/app_shimmer.dart';
 import 'package:inbound_ms/features/dashboard/widgets/section_card.dart';
-import 'package:inbound_ms/features/dashboard/widgets/quick_actions_card.dart';
 
 class DashboardOverviewLoadingState extends StatelessWidget {
   const DashboardOverviewLoadingState({super.key});
@@ -18,10 +17,7 @@ class DashboardOverviewLoadingState extends StatelessWidget {
           children: [
             Expanded(flex: 2, child: DashboardRecentActivityLoadingState()),
             SizedBox(width: 24),
-            Expanded(
-              flex: 1,
-              child: QuickActionsCard(),
-            ),
+            Expanded(flex: 1, child: DashboardQuickActionsLoadingState()),
           ],
         ),
       ],
@@ -88,6 +84,53 @@ class DashboardRecentActivityLoadingState extends StatelessWidget {
               ),
             );
           }),
+        ),
+      ),
+    );
+  }
+}
+
+class DashboardQuickActionsLoadingState extends StatelessWidget {
+  const DashboardQuickActionsLoadingState({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.05),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: Colors.grey.withValues(alpha: 0.1)),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(32.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const AppShimmerChild(height: 24, width: 150, radius: 4),
+            const SizedBox(height: 24),
+            ...List.generate(3, (index) {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 12.0),
+                child: AppShimmerParent(
+                  child: Container(
+                    padding: const EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.grey.withValues(alpha: 0.1)),
+                    ),
+                    child: Row(
+                      children: const [
+                        AppShimmerChild(height: 24, width: 24, radius: 12),
+                        SizedBox(width: 16),
+                        AppShimmerChild(height: 16, width: 100, radius: 4),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            }),
+          ],
         ),
       ),
     );
