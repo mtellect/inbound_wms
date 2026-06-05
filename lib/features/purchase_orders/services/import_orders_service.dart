@@ -1,30 +1,17 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
-import 'package:file_picker/file_picker.dart';
+
 import 'package:csv/csv.dart';
 import 'package:excel/excel.dart';
 import 'package:uuid/uuid.dart';
 import 'package:inbound_ms/features/purchase_orders/models/purchase_order.dart';
 
 class ImportOrdersService {
-  static Future<List<PurchaseOrder>?> pickAndParseOrders() async {
+  static List<PurchaseOrder> parseOrdersBytes(Uint8List bytes, String extension, {String? defaultSupplierId}) {
     try {
-      FilePickerResult? result = await FilePicker.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: ['csv', 'xlsx'],
-        withData: true,
-      );
-
-      if (result == null || result.files.isEmpty) return null;
-
-      final file = result.files.first;
-      final bytes = file.bytes;
-      if (bytes == null)
-        throw Exception("Failed to read file bytes. Only use on supported platforms.");
-
       List<List<dynamic>> fields = [];
 
-      if (file.extension?.toLowerCase() == 'xlsx') {
+      if (extension.toLowerCase() == 'xlsx') {
         var excel = Excel.decodeBytes(bytes);
         var table = excel.tables[excel.tables.keys.first];
         if (table != null) {
@@ -36,12 +23,12 @@ class ImportOrdersService {
         final csvString = utf8.decode(bytes);
         fields = Csv().decode(csvString);
       }
-
+      
       if (fields.isEmpty) throw Exception("File is empty");
 
       // Assuming first row is headers
       final headers = fields[0].map((e) => e.toString().toLowerCase().trim()).toList();
-
+      
       int poNumberIndex = headers.indexOf('po_number');
       if (poNumberIndex == -1) poNumberIndex = headers.indexOf('po number');
       if (poNumberIndex == -1) {
@@ -59,7 +46,7 @@ class ImportOrdersService {
       }
 
       Map<String, PurchaseOrder> uniqueOrders = {};
-
+      
       for (int i = 1; i < fields.length; i++) {
         final row = fields[i];
         if (row.isEmpty || row.every((e) => e.toString().trim().isEmpty)) continue;
@@ -72,10 +59,12 @@ class ImportOrdersService {
 
         if (uniqueOrders.containsKey(poNumber)) continue;
 
-        String? supplierId;
+        String? supplierId = defaultSupplierId;
         if (supplierIdIndex != -1 && supplierIdIndex < row.length) {
-          supplierId = row[supplierIdIndex].toString().trim();
-          if (supplierId.isEmpty) supplierId = null;
+          final rowSupplierId = row[supplierIdIndex].toString().trim();
+          if (rowSupplierId.isNotEmpty) {
+            supplierId = rowSupplierId; // File column overrides modal default
+          }
         }
 
         bool blindReceiving = false;

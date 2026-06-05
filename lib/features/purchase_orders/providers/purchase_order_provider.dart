@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:inbound_ms/features/purchase_orders/models/purchase_order.dart';
 import 'package:inbound_ms/features/purchase_orders/services/i_purchase_order_api_service.dart';
-import 'package:inbound_ms/features/purchase_orders/services/import_orders_service.dart';
+
 import 'package:uuid/uuid.dart';
 
 class PurchaseOrderProvider extends ChangeNotifier {
@@ -58,23 +58,26 @@ class PurchaseOrderProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> importCsvOrders({
-    required VoidCallback onSuccess,
-    required Function(String) onError,
+  Future<void> importCsvOrders(
+    List<PurchaseOrder> orders, {
+    VoidCallback? onSuccess,
+    Function(String)? onError,
   }) async {
     _isLoading = true;
     notifyListeners();
 
     try {
-      final orders = await ImportOrdersService.pickAndParseOrders();
-      if (orders == null || orders.isEmpty) return;
+      if (orders.isEmpty) {
+        if (onError != null) onError("No valid orders found in file.");
+        return;
+      }
       
       await _purchaseOrderApiService.createPurchaseOrders(orders);
       await loadActiveOrders();
-      onSuccess();
+      if (onSuccess != null) onSuccess();
     } catch (e) {
       debugPrint("Error importing CSV orders: $e");
-      onError(e.toString());
+      if (onError != null) onError(e.toString());
     } finally {
       _isLoading = false;
       notifyListeners();

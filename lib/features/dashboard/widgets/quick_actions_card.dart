@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:inbound_ms/features/auth/providers/auth_provider.dart';
-import 'package:inbound_ms/features/purchase_orders/providers/purchase_order_provider.dart';
+
 import 'package:inbound_ms/features/purchase_orders/widgets/create_po_modal.dart';
+import 'package:inbound_ms/features/purchase_orders/widgets/import_orders_modal.dart';
 import 'package:inbound_ms/features/receiving/pages/scan_po_page.dart';
 import 'package:inbound_ms/core/utils/dialog_utils.dart';
-import 'package:inbound_ms/core/utils/toast_utils.dart';
+
 
 class QuickActionsCard extends StatelessWidget {
   const QuickActionsCard({super.key});
@@ -48,18 +49,7 @@ class QuickActionsCard extends StatelessWidget {
               }),
               const SizedBox(height: 12),
               _buildActionTile(context, 'Import CSV/Excel', Icons.file_upload, () {
-                context.read<PurchaseOrderProvider>().importCsvOrders(
-                  onSuccess: () {
-                    if (context.mounted) {
-                      ToastUtils.showSuccess(context, message: 'Imported orders successfully');
-                    }
-                  },
-                  onError: (error) {
-                    if (context.mounted) {
-                      ToastUtils.showError(context, message: 'Failed to import file: $error');
-                    }
-                  },
-                );
+                DialogUtils.showDialog(context: context, builder: (_) => const ImportOrdersModal());
               }),
               const SizedBox(height: 12),
             ],
