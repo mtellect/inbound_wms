@@ -5,8 +5,7 @@ import 'package:inbound_ms/features/auth/models/user_role.dart';
 class AuthProvider extends ChangeNotifier {
   final IAuthenticationApiService _authenticationApiService;
 
-  AuthProvider({required IAuthenticationApiService authenticationApiService})
-    : _authenticationApiService = authenticationApiService;
+  AuthProvider({required this._authenticationApiService});
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
