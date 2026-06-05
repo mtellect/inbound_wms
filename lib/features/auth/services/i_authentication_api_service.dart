@@ -5,4 +5,5 @@ abstract class IAuthenticationApiService {
   Future<void> signOut();
   bool get isAuthenticated;
   UserRole? get currentUserRole;
+  String? get currentUserId;
 }

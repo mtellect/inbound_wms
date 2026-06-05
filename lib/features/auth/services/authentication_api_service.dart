@@ -5,8 +5,7 @@ import 'i_authentication_api_service.dart';
 class AuthenticationApiService implements IAuthenticationApiService {
   final SupabaseClient _supabaseClient;
 
-  AuthenticationApiService({required SupabaseClient supabaseClient})
-      : _supabaseClient = supabaseClient;
+  AuthenticationApiService({required this._supabaseClient});
 
   @override
   Future<void> signIn({required String email, required String password}) async {
@@ -22,15 +21,15 @@ class AuthenticationApiService implements IAuthenticationApiService {
   bool get isAuthenticated => _supabaseClient.auth.currentUser != null;
 
   @override
+  String? get currentUserId => _supabaseClient.auth.currentUser?.id;
+
+  @override
   UserRole? get currentUserRole {
     // Assuming role is stored in user metadata or a separate users table
     final user = _supabaseClient.auth.currentUser;
     if (user == null) return null;
-    
+
     final roleStr = user.userMetadata?['role'] as String? ?? 'worker';
-    return UserRole.values.firstWhere(
-      (e) => e.name == roleStr,
-      orElse: () => UserRole.worker,
-    );
+    return UserRole.values.firstWhere((e) => e.name == roleStr, orElse: () => UserRole.worker);
   }
 }

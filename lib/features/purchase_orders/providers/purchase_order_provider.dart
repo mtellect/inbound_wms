@@ -1,14 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:inbound_ms/features/purchase_orders/models/purchase_order.dart';
+import 'package:inbound_ms/core/startup/startup_service.dart';
 import 'package:inbound_ms/features/purchase_orders/services/i_purchase_order_api_service.dart';
-
+import 'package:inbound_ms/features/receiving/models/scan_session.dart';
+import 'package:inbound_ms/features/receiving/providers/session_provider.dart';
 import 'package:uuid/uuid.dart';
 
 class PurchaseOrderProvider extends ChangeNotifier {
   final IPurchaseOrderApiService _purchaseOrderApiService;
 
-  PurchaseOrderProvider({required IPurchaseOrderApiService purchaseOrderApiService})
-      : _purchaseOrderApiService = purchaseOrderApiService;
+  PurchaseOrderProvider({required this._purchaseOrderApiService});
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -112,6 +113,7 @@ class PurchaseOrderProvider extends ChangeNotifier {
     required PurchaseOrder po,
     required Map<String, int> scannedQuantities,
     required bool isComplete,
+    required String operatorId,
     required VoidCallback onSuccess,
     required Function(String) onError,
   }) async {
@@ -135,7 +137,34 @@ class PurchaseOrderProvider extends ChangeNotifier {
       final newStatus = isComplete ? 'completed' : 'in_progress';
       await _purchaseOrderApiService.updatePurchaseOrderStatus(po.id, newStatus);
 
-      // 4. Reload
+      // 4. Calculate session stats and create audit record
+      int totalExpected = po.items.fold(0, (sum, item) => sum + item.expectedQuantity);
+      int totalScanned = scannedQuantities.values.fold(0, (sum, qty) => sum + qty);
+      int discrepancies = 0;
+      for (var item in po.items) {
+        if (item.product == null) continue;
+        final scanned = scannedQuantities[item.product!.sku.toUpperCase()] ?? 0;
+        if (scanned > item.expectedQuantity) {
+          discrepancies += (scanned - item.expectedQuantity);
+        }
+      }
+
+      final sessionRecord = ScanSession(
+        id: const Uuid().v4(),
+        sessionNumber: 'REC-${DateTime.now().millisecondsSinceEpoch.toString().substring(5)}',
+        poId: po.id,
+        poNumber: po.poNumber,
+        operatorId: operatorId,
+        totalExpected: totalExpected,
+        totalScanned: totalScanned,
+        discrepancies: discrepancies,
+        startTime: DateTime.now().subtract(const Duration(minutes: 5)),
+        status: isComplete ? 'completed' : 'paused',
+      );
+
+      await getIt.get<SessionProvider>().createSession(sessionRecord);
+
+      // 5. Reload
       await loadActiveOrders();
       onSuccess();
     } catch (e) {

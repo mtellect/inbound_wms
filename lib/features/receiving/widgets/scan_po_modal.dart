@@ -8,7 +8,7 @@ import 'package:inbound_ms/features/purchase_orders/providers/purchase_order_pro
 import 'package:inbound_ms/features/purchase_orders/models/purchase_order.dart';
 import 'package:inbound_ms/features/purchase_orders/models/po_item.dart';
 import 'package:provider/provider.dart';
-import 'package:inbound_ms/features/receiving/providers/session_provider.dart';
+import 'package:inbound_ms/features/auth/providers/auth_provider.dart';
 
 import 'package:inbound_ms/features/receiving/widgets/po_context_header.dart';
 import 'package:inbound_ms/features/receiving/widgets/scan_metrics_row.dart';
@@ -52,9 +52,9 @@ class _ScanPoModalState extends State<ScanPoModal> {
     _autoSaveTimer = Timer(const Duration(milliseconds: 1500), () {
       if (_selectedPo == null || !mounted) return;
       context.read<PurchaseOrderProvider>().autoSaveReceivingSession(
-            po: _selectedPo!,
-            scannedQuantities: _scannedQuantities,
-          );
+        po: _selectedPo!,
+        scannedQuantities: _scannedQuantities,
+      );
     });
   }
 
@@ -107,8 +107,9 @@ class _ScanPoModalState extends State<ScanPoModal> {
   bool _tryAutoSelectPo(String barcode) {
     final poProvider = context.read<PurchaseOrderProvider>();
     try {
-      final matchedPo =
-          poProvider.activeOrders.firstWhere((p) => p.poNumber.toUpperCase() == barcode);
+      final matchedPo = poProvider.activeOrders.firstWhere(
+        (p) => p.poNumber.toUpperCase() == barcode,
+      );
       if (_selectedPo?.id != matchedPo.id) {
         _onPoSelected(matchedPo.id);
         ToastUtils.showSuccess(context, message: 'Auto-selected PO: ${matchedPo.poNumber}');
@@ -151,25 +152,30 @@ class _ScanPoModalState extends State<ScanPoModal> {
       return;
     }
 
+    final authProvider = context.read<AuthProvider>();
+    final operatorId = authProvider.currentUserId ?? '00000000-0000-0000-0000-000000000000';
+
     context.read<PurchaseOrderProvider>().saveReceivingSession(
-          po: _selectedPo!,
-          scannedQuantities: _scannedQuantities,
-          isComplete: isComplete,
-          onSuccess: () {
-            if (mounted) {
-              ToastUtils.showSuccess(context,
-                  message: isComplete ? 'Receiving completed!' : 'Session paused.');
-              context.read<SessionProvider>().fetchSessions();
-              context.read<DashboardProvider>().loadDashboardData();
-              Navigator.of(context).pop();
-            }
-          },
-          onError: (err) {
-            if (mounted) {
-              ToastUtils.showError(context, message: 'Failed to save: $err');
-            }
-          },
-        );
+      po: _selectedPo!,
+      scannedQuantities: _scannedQuantities,
+      isComplete: isComplete,
+      operatorId: operatorId,
+      onSuccess: () async {
+        if (mounted) {
+          ToastUtils.showSuccess(
+            context,
+            message: isComplete ? 'Receiving completed!' : 'Session paused.',
+          );
+          context.read<DashboardProvider>().loadDashboardData();
+          Navigator.of(context).pop();
+        }
+      },
+      onError: (err) {
+        if (mounted) {
+          ToastUtils.showError(context, message: 'Failed to save: $err');
+        }
+      },
+    );
   }
 
   int get _totalExpected {
@@ -219,11 +225,14 @@ class _ScanPoModalState extends State<ScanPoModal> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text('Receive PO Session',
-                        style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.w900,
-                            color: AppColors.textPrimaryLight)),
+                    const Text(
+                      'Receive PO Session',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w900,
+                        color: AppColors.textPrimaryLight,
+                      ),
+                    ),
                     IconButton(
                       icon: const Icon(Icons.close, color: AppColors.textSecondaryLight),
                       onPressed: () => _handleSaveSession(false),
@@ -233,10 +242,7 @@ class _ScanPoModalState extends State<ScanPoModal> {
                 const SizedBox(height: 24),
 
                 // Top Meta Data (Context Selection)
-                PoContextHeader(
-                  selectedPo: _selectedPo,
-                  onPoSelected: _onPoSelected,
-                ),
+                PoContextHeader(selectedPo: _selectedPo, onPoSelected: _onPoSelected),
                 const SizedBox(height: 24),
 
                 // Scanner Input
@@ -255,17 +261,22 @@ class _ScanPoModalState extends State<ScanPoModal> {
                               ? 'Scan barcode — press Enter'
                               : 'Select a PO to begin scanning',
                           hintStyle: const TextStyle(color: AppColors.textSecondaryLight),
-                          prefixIcon: const Icon(Icons.qr_code_scanner,
-                              color: AppColors.textSecondaryLight),
+                          prefixIcon: const Icon(
+                            Icons.qr_code_scanner,
+                            color: AppColors.textSecondaryLight,
+                          ),
                           border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: const BorderSide(color: AppColors.separatorColor)),
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(color: AppColors.separatorColor),
+                          ),
                           enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: const BorderSide(color: AppColors.separatorColor)),
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(color: AppColors.separatorColor),
+                          ),
                           focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: const BorderSide(color: AppColors.primary, width: 2)),
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(color: AppColors.primary, width: 2),
+                          ),
                           filled: true,
                           fillColor: _selectedPo != null
                               ? AppColors.surfaceLight

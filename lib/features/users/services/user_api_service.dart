@@ -10,10 +10,7 @@ class UserApiService implements IUserApiService {
   final SupabaseClient _supabaseClient;
   final ApiClient _apiClient;
 
-  UserApiService({
-    required this._supabaseClient,
-    required this._apiClient,
-  });
+  UserApiService({required this._supabaseClient, required this._apiClient});
 
   @override
   Future<List<AppUser>> fetchAllUsers() async {
@@ -47,7 +44,7 @@ class UserApiService implements IUserApiService {
     // We use ApiClient to hit the Supabase Admin Auth API directly with the service_role key
     try {
       final env = EnvConfigurationsModel.instance;
-      
+
       final response = await _apiClient.postApi(
         url: '${env.supabaseUrl}/auth/v1/admin/users',
         headers: {
@@ -55,16 +52,12 @@ class UserApiService implements IUserApiService {
           'Authorization': 'Bearer ${env.supabaseServiceRoleKey}',
           'Content-Type': 'application/json',
         },
-        body: {
-          'email': email,
-          'password': password,
-          'email_confirm': true,
-        },
+        body: {'email': email, 'password': password, 'email_confirm': true},
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final userId = response.data['id'];
-        
+
         // Insert the user into public.user_roles
         await _supabaseClient.from('user_roles').insert({
           'id': userId,
@@ -77,7 +70,7 @@ class UserApiService implements IUserApiService {
       } else {
         throw Exception('Failed to create user: ${response.data}');
       }
-    } catch(e) {
+    } catch (e) {
       throw Exception('Failed to create user via HTTP request. Error: $e');
     }
   }

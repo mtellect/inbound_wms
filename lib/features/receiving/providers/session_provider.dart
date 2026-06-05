@@ -5,8 +5,7 @@ import 'package:inbound_ms/features/receiving/services/i_session_api_service.dar
 class SessionProvider extends ChangeNotifier {
   final ISessionApiService _sessionApiService;
 
-  SessionProvider({required ISessionApiService sessionApiService})
-      : _sessionApiService = sessionApiService;
+  SessionProvider({required this._sessionApiService});
 
   List<ScanSession> _sessions = [];
   List<ScanSession> get sessions => _sessions;
@@ -39,6 +38,17 @@ class SessionProvider extends ChangeNotifier {
     } catch (e) {
       _error = e.toString();
       notifyListeners();
+    }
+  }
+
+  Future<void> createSession(ScanSession session) async {
+    try {
+      await _sessionApiService.createSession(session);
+      await fetchSessions();
+    } catch (e) {
+      _error = e.toString();
+      notifyListeners();
+      rethrow;
     }
   }
 }

@@ -13,6 +13,7 @@ class AuthProvider extends ChangeNotifier {
   bool get isAuthenticated => _authenticationApiService.isAuthenticated;
   UserRole? get role => _authenticationApiService.currentUserRole;
   bool get isManager => [UserRole.manager, UserRole.supervisor].contains(role);
+  String? get currentUserId => _authenticationApiService.currentUserId;
 
   Future<void> signIn(String email, String password) async {
     _isLoading = true;
