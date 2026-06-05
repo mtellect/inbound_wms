@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:inbound_ms/core/resources/app_colors.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:inbound_ms/core/widgets/app_dropdown_button.dart';
 import 'package:inbound_ms/features/purchase_orders/models/purchase_order.dart';
 import 'package:inbound_ms/features/purchase_orders/providers/purchase_order_provider.dart';
@@ -39,13 +40,25 @@ class PoContextHeader extends StatelessWidget {
                 builder: (context, provider, child) {
                   return AppDropDownButton<String>(
                     value: selectedPo?.id,
-                    hint: const Text('Select a Purchase Order'),
+                    hint: const Text(
+                      'Select a Purchase Order',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.textSecondaryLight,
+                      ),
+                    ),
                     isSearchable: true,
                     searchHint: 'Search PO...',
                     items: provider.activeOrders
-                        .map((po) => DropdownMenuItem(
+                        .map((po) => DropdownItem<String>(
                               value: po.id,
-                              child: Text(po.poNumber),
+                              child: Text(
+                                po.poNumber,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColors.textPrimaryLight,
+                                ),
+                              ),
                             ))
                         .toList(),
                     onChanged: onPoSelected,
@@ -68,7 +81,8 @@ class PoContextHeader extends StatelessWidget {
           flex: 1,
           child: MetaField(
             label: 'DATE',
-            value: selectedPo?.createdAt?.toIso8601String().split('T')[0] ?? '---',
+            value:
+                selectedPo?.createdAt?.toIso8601String().split('T')[0] ?? '---',
             isDate: true,
           ),
         ),
