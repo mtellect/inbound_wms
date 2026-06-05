@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:inbound_ms/core/resources/app_colors.dart';
-import 'package:inbound_ms/core/utils/toast_utils.dart';
 import 'package:inbound_ms/features/purchase_orders/models/po_item.dart';
 import 'package:inbound_ms/features/purchase_orders/models/purchase_order.dart';
 
@@ -9,6 +8,8 @@ class SessionManifestTable extends StatelessWidget {
   final List<PoItem> currentManifest;
   final Map<String, int> scannedQuantities;
   final void Function(String sku, int newQuantity)? onUpdateQuantity;
+  final VoidCallback? onPause;
+  final VoidCallback? onComplete;
   final bool isReadOnly;
 
   const SessionManifestTable({
@@ -17,6 +18,8 @@ class SessionManifestTable extends StatelessWidget {
     required this.currentManifest,
     required this.scannedQuantities,
     this.onUpdateQuantity,
+    this.onPause,
+    this.onComplete,
     this.isReadOnly = false,
   });
 
@@ -45,25 +48,15 @@ class SessionManifestTable extends StatelessWidget {
                     Row(
                       children: [
                         TextButton.icon(
-                          onPressed: selectedPo != null
-                              ? () {
-                                  ToastUtils.showSuccess(context, message: 'Session paused.');
-                                  Navigator.of(context).pop();
-                                }
-                              : null,
+                          onPressed: selectedPo != null ? onPause : null,
                           icon: const Icon(Icons.pause),
                           label: const Text('Pause'),
-                          style:
-                              TextButton.styleFrom(foregroundColor: AppColors.textSecondaryLight),
+                          style: TextButton.styleFrom(
+                              foregroundColor: AppColors.textSecondaryLight),
                         ),
                         const SizedBox(width: 8),
                         ElevatedButton.icon(
-                          onPressed: selectedPo != null
-                              ? () {
-                                  ToastUtils.showSuccess(context, message: 'Receiving completed.');
-                                  Navigator.of(context).pop();
-                                }
-                              : null,
+                          onPressed: selectedPo != null ? onComplete : null,
                           icon: const Icon(Icons.check_circle),
                           label: const Text('Complete Receiving'),
                           style: ElevatedButton.styleFrom(

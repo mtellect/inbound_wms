@@ -54,7 +54,7 @@ class _ScanPoModalState extends State<ScanPoModal> {
       _unexpectedScans = 0;
       for (var item in _currentManifest) {
         if (item.product != null) {
-          _scannedQuantities[item.product!.sku.toUpperCase()] = 0;
+          _scannedQuantities[item.product!.sku.toUpperCase()] = item.receivedQuantity;
         }
       }
     });
@@ -123,6 +123,28 @@ class _ScanPoModalState extends State<ScanPoModal> {
     setState(() {
       _scannedQuantities[sku] = newQuantity;
     });
+  }
+
+  void _handleSaveSession(bool isComplete) {
+    if (_selectedPo == null) return;
+    
+    context.read<PurchaseOrderProvider>().saveReceivingSession(
+          po: _selectedPo!,
+          scannedQuantities: _scannedQuantities,
+          isComplete: isComplete,
+          onSuccess: () {
+            if (mounted) {
+              ToastUtils.showSuccess(context,
+                  message: isComplete ? 'Receiving completed!' : 'Session paused.');
+              Navigator.of(context).pop();
+            }
+          },
+          onError: (err) {
+            if (mounted) {
+              ToastUtils.showError(context, message: 'Failed to save: $err');
+            }
+          },
+        );
   }
 
   int get _totalExpected {
@@ -257,6 +279,8 @@ class _ScanPoModalState extends State<ScanPoModal> {
                   currentManifest: _currentManifest,
                   scannedQuantities: _scannedQuantities,
                   onUpdateQuantity: _updateQuantity,
+                  onPause: () => _handleSaveSession(false),
+                  onComplete: () => _handleSaveSession(true),
                 ),
               ],
             ),

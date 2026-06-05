@@ -1,3 +1,4 @@
+import 'package:inbound_ms/features/purchase_orders/models/po_item.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:inbound_ms/features/purchase_orders/models/purchase_order.dart';
 import 'package:inbound_ms/features/purchase_orders/services/dto/purchase_order_dto.dart';
@@ -132,5 +133,18 @@ class PurchaseOrderApiService implements IPurchaseOrderApiService {
         .from('purchase_orders')
         .delete()
         .eq('id', id);
+  }
+
+  @override
+  Future<void> updatePoItemsReceivedQuantities(List<PoItem> items) async {
+    final List<Map<String, dynamic>> upserts = [];
+    for (var item in items) {
+      final json = PoItemMapper.toDto(item).toJson();
+      json.remove('products'); // Don't try to upsert the joined product
+      upserts.add(json);
+    }
+    if (upserts.isNotEmpty) {
+      await _supabaseClient.from('po_items').upsert(upserts);
+    }
   }
 }

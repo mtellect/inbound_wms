@@ -107,4 +107,43 @@ class PurchaseOrderProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<void> saveReceivingSession({
+    required PurchaseOrder po,
+    required Map<String, int> scannedQuantities,
+    required bool isComplete,
+    required VoidCallback onSuccess,
+    required Function(String) onError,
+  }) async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      // 1. Update the items locally
+      final updatedItems = po.items.map((item) {
+        if (item.product != null) {
+          final scanned = scannedQuantities[item.product!.sku.toUpperCase()] ?? 0;
+          return item.copyWith(receivedQuantity: scanned);
+        }
+        return item;
+      }).toList();
+
+      // 2. Save items to DB
+      await _purchaseOrderApiService.updatePoItemsReceivedQuantities(updatedItems);
+
+      // 3. Update PO Status
+      final newStatus = isComplete ? 'completed' : 'receiving';
+      await _purchaseOrderApiService.updatePurchaseOrderStatus(po.id, newStatus);
+
+      // 4. Reload
+      await loadActiveOrders();
+      onSuccess();
+    } catch (e) {
+      debugPrint("Error saving receiving session: $e");
+      onError(e.toString());
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
 }
