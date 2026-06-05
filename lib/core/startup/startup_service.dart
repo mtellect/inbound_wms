@@ -30,11 +30,8 @@ class StartUpService implements IStartUpService {
   @override
   Future<void> registerNetwork() async {
     // Initialize Supabase Client
-    await Supabase.initialize(
-      url: Env.supabaseUrl,
-      anonKey: Env.supabaseAnonKey,
-    );
-    
+    await Supabase.initialize(url: Env.supabaseUrl, anonKey: Env.supabaseAnonKey);
+
     // Register the client in GetIt for easy access in our Feature Services
     getIt.registerLazySingleton<SupabaseClient>(() => Supabase.instance.client);
   }
@@ -48,11 +45,11 @@ class StartUpService implements IStartUpService {
 
     // Register Feature Services
     getIt.registerLazySingleton<IAuthenticationApiService>(
-      () => AuthenticationApiService(supabaseClient: getIt.get<SupabaseClient>())
+      () => AuthenticationApiService(supabaseClient: getIt.get<SupabaseClient>()),
     );
 
     getIt.registerLazySingleton<IPurchaseOrderApiService>(
-      () => PurchaseOrderApiService(supabaseClient: getIt.get<SupabaseClient>())
+      () => PurchaseOrderApiService(supabaseClient: getIt.get<SupabaseClient>()),
     );
   }
 
@@ -60,25 +57,22 @@ class StartUpService implements IStartUpService {
   Future<void> registerControllers() async {
     // Register State Providers
     getIt.registerLazySingleton<AuthProvider>(
-      () => AuthProvider(authenticationApiService: getIt.get<IAuthenticationApiService>())
+      () => AuthProvider(authenticationApiService: getIt.get<IAuthenticationApiService>()),
     );
 
     getIt.registerLazySingleton<PurchaseOrderProvider>(
-      () => PurchaseOrderProvider(purchaseOrderApiService: getIt.get<IPurchaseOrderApiService>())
+      () => PurchaseOrderProvider(purchaseOrderApiService: getIt.get<IPurchaseOrderApiService>()),
     );
 
-    getIt.registerLazySingleton<IThemeProvider>(() {
-      if (kIsWeb) {
-        return WebThemeProvider();
-      } else {
-        return AppThemeProvider();
-      }
-    });
+    getIt.registerLazySingleton<IThemeProvider>(
+      () => switch (kIsWeb) {
+        true => WebThemeProvider(),
+        false => AppThemeProvider(),
+      },
+    );
 
     // Register AppRouter for declarative navigation (Needs AuthProvider)
-    getIt.registerSingleton<AppRouter>(
-      AppRouter(authProvider: getIt.get<AuthProvider>())
-    );
+    getIt.registerSingleton<AppRouter>(AppRouter(authProvider: getIt.get<AuthProvider>()));
   }
 
   @override
