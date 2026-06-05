@@ -29,7 +29,6 @@ class DashboardShellPage extends StatelessWidget {
                 activeIndex: tabsRouter.activeIndex,
                 onDestinationSelected: tabsRouter.setActiveIndex,
               ),
-              const VerticalDivider(thickness: 1, width: 1),
               Expanded(
                 child: child,
               ),
