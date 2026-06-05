@@ -11,6 +11,22 @@
 part of 'app_router.dart';
 
 /// generated route for
+/// [ActiveScanPage]
+class ActiveScanRoute extends PageRouteInfo<void> {
+  const ActiveScanRoute({List<PageRouteInfo>? children})
+    : super(ActiveScanRoute.name, initialChildren: children);
+
+  static const String name = 'ActiveScanRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const ActiveScanPage();
+    },
+  );
+}
+
+/// generated route for
 /// [DashboardOverviewPage]
 class DashboardOverviewRoute extends PageRouteInfo<void> {
   const DashboardOverviewRoute({List<PageRouteInfo>? children})
@@ -91,6 +107,22 @@ class PurchaseOrdersRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [SessionsPage]
+class SessionsRoute extends PageRouteInfo<void> {
+  const SessionsRoute({List<PageRouteInfo>? children})
+    : super(SessionsRoute.name, initialChildren: children);
+
+  static const String name = 'SessionsRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const SessionsPage();
+    },
+  );
+}
+
+/// generated route for
 /// [ShipmentsPage]
 class ShipmentsRoute extends PageRouteInfo<void> {
   const ShipmentsRoute({List<PageRouteInfo>? children})
@@ -134,6 +166,22 @@ class SuppliersRoute extends PageRouteInfo<void> {
     name,
     builder: (data) {
       return const SuppliersPage();
+    },
+  );
+}
+
+/// generated route for
+/// [UsersPage]
+class UsersRoute extends PageRouteInfo<void> {
+  const UsersRoute({List<PageRouteInfo>? children})
+    : super(UsersRoute.name, initialChildren: children);
+
+  static const String name = 'UsersRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const UsersPage();
     },
   );
 }
