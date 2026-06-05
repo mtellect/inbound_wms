@@ -7,21 +7,21 @@ part of 'scan_log_dto.dart';
 // **************************************************************************
 
 _ScanLogDto _$ScanLogDtoFromJson(Map<String, dynamic> json) => _ScanLogDto(
-      id: json['id'] as String,
-      shipmentId: json['shipment_id'] as String,
-      poItemId: json['po_item_id'] as String,
-      userId: json['user_id'] as String,
-      quantity: (json['quantity'] as num).toInt(),
-      lotNumber: json['lot_number'] as String?,
-      serialNumber: json['serial_number'] as String?,
-      expiryDate: json['expiry_date'] == null
-          ? null
-          : DateTime.parse(json['expiry_date'] as String),
-      locationId: json['location_id'] as String?,
-      scannedAt: json['scanned_at'] == null
-          ? null
-          : DateTime.parse(json['scanned_at'] as String),
-    );
+  id: json['id'] as String,
+  shipmentId: json['shipment_id'] as String,
+  poItemId: json['po_item_id'] as String,
+  userId: json['user_id'] as String,
+  quantity: (json['quantity'] as num).toInt(),
+  lotNumber: json['lot_number'] as String?,
+  serialNumber: json['serial_number'] as String?,
+  expiryDate: json['expiry_date'] == null
+      ? null
+      : DateTime.parse(json['expiry_date'] as String),
+  locationId: json['location_id'] as String?,
+  scannedAt: json['scanned_at'] == null
+      ? null
+      : DateTime.parse(json['scanned_at'] as String),
+);
 
 Map<String, dynamic> _$ScanLogDtoToJson(_ScanLogDto instance) =>
     <String, dynamic>{

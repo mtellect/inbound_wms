@@ -5,7 +5,10 @@ create extension if not exists "uuid-ossp";
 create table public.user_roles (
   id uuid references auth.users on delete cascade primary key,
   email text not null,
-  role text check (role in ('manager', 'supervisor', 'worker')) not null
+  display_name text,
+  role text check (role in ('manager', 'supervisor', 'worker')) not null,
+  status text check (status in ('active', 'inactive', 'offline')) default 'active',
+  last_login timestamp with time zone
 );
 
 -- 2. Suppliers
@@ -81,6 +84,21 @@ create table public.scan_logs (
   expiry_date date,
   location_id uuid references public.locations,
   scanned_at timestamp with time zone default timezone('utc'::text, now())
+);
+
+-- 8.5 Receiving Sessions
+create table public.receiving_sessions (
+  id uuid primary key default uuid_generate_v4(),
+  session_number text not null unique,
+  shipment_id uuid references public.shipments,
+  po_id uuid references public.purchase_orders,
+  operator_id uuid references public.user_roles(id),
+  total_expected integer default 0,
+  total_scanned integer default 0,
+  discrepancies integer default 0,
+  status text check (status in ('active', 'paused', 'completed', 'completed_with_errors')) default 'active',
+  start_time timestamp with time zone default timezone('utc'::text, now()),
+  end_time timestamp with time zone
 );
 
 -- 9. Discrepancies

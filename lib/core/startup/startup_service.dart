@@ -10,6 +10,14 @@ import 'package:inbound_ms/features/auth/services/i_authentication_api_service.d
 import 'package:inbound_ms/features/auth/services/authentication_api_service.dart';
 import 'package:inbound_ms/features/auth/providers/auth_provider.dart';
 
+import 'package:inbound_ms/features/users/services/i_user_api_service.dart';
+import 'package:inbound_ms/features/users/services/user_api_service.dart';
+import 'package:inbound_ms/features/users/providers/user_provider.dart';
+
+import 'package:inbound_ms/features/receiving/services/i_session_api_service.dart';
+import 'package:inbound_ms/features/receiving/services/session_api_service.dart';
+import 'package:inbound_ms/features/receiving/providers/session_provider.dart';
+
 import 'package:inbound_ms/features/purchase_orders/services/i_purchase_order_api_service.dart';
 import 'package:inbound_ms/features/purchase_orders/services/purchase_order_api_service.dart';
 import 'package:inbound_ms/features/purchase_orders/providers/purchase_order_provider.dart';
@@ -58,6 +66,14 @@ class StartUpService implements IStartUpService {
       () => AuthenticationApiService(supabaseClient: getIt.get<SupabaseClient>()),
     );
 
+    getIt.registerLazySingleton<IUserApiService>(
+      () => UserApiService(supabaseClient: getIt.get<SupabaseClient>()),
+    );
+
+    getIt.registerLazySingleton<ISessionApiService>(
+      () => SessionApiService(supabaseClient: getIt.get<SupabaseClient>()),
+    );
+
     getIt.registerLazySingleton<IPurchaseOrderApiService>(
       () => PurchaseOrderApiService(supabaseClient: getIt.get<SupabaseClient>()),
     );
@@ -72,6 +88,14 @@ class StartUpService implements IStartUpService {
     // Register State Providers
     getIt.registerLazySingleton<AuthProvider>(
       () => AuthProvider(authenticationApiService: getIt.get<IAuthenticationApiService>()),
+    );
+
+    getIt.registerLazySingleton<UserProvider>(
+      () => UserProvider(userApiService: getIt.get<IUserApiService>()),
+    );
+
+    getIt.registerLazySingleton<SessionProvider>(
+      () => SessionProvider(sessionApiService: getIt.get<ISessionApiService>()),
     );
 
     getIt.registerLazySingleton<PurchaseOrderProvider>(

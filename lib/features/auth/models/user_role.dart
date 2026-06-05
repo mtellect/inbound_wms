@@ -3,23 +3,19 @@ import 'package:json_annotation/json_annotation.dart';
 enum UserRole {
   @JsonValue('manager')
   manager,
-  @JsonValue('staff')
-  staff,
-  @JsonValue('admin')
-  admin,
-  @JsonValue('superAdmin')
-  superAdmin;
+  @JsonValue('supervisor')
+  supervisor,
+  @JsonValue('worker')
+  worker;
 
   String get displayName {
     switch (this) {
       case UserRole.manager:
         return 'Manager';
-      case UserRole.staff:
-        return 'Staff';
-      case UserRole.admin:
-        return 'Admin';
-      case UserRole.superAdmin:
-        return 'Super Admin';
+      case UserRole.supervisor:
+        return 'Supervisor';
+      case UserRole.worker:
+        return 'Worker';
     }
   }
 }

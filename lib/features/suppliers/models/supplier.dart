@@ -1,7 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'supplier.freezed.dart';
-part 'supplier.g.dart';
 
 @freezed
 abstract class Supplier with _$Supplier {
@@ -12,7 +11,6 @@ abstract class Supplier with _$Supplier {
     String? contactName,
     String? email,
     String? phone,
+    @Default('active') String status,
   }) = _Supplier;
-
-  factory Supplier.fromJson(Map<String, dynamic> json) => _$SupplierFromJson(json);
 }

@@ -14,7 +14,7 @@ part of 'app_router.dart';
 /// [DashboardOverviewPage]
 class DashboardOverviewRoute extends PageRouteInfo<void> {
   const DashboardOverviewRoute({List<PageRouteInfo>? children})
-      : super(DashboardOverviewRoute.name, initialChildren: children);
+    : super(DashboardOverviewRoute.name, initialChildren: children);
 
   static const String name = 'DashboardOverviewRoute';
 
@@ -30,7 +30,7 @@ class DashboardOverviewRoute extends PageRouteInfo<void> {
 /// [DashboardShellPage]
 class DashboardShellRoute extends PageRouteInfo<void> {
   const DashboardShellRoute({List<PageRouteInfo>? children})
-      : super(DashboardShellRoute.name, initialChildren: children);
+    : super(DashboardShellRoute.name, initialChildren: children);
 
   static const String name = 'DashboardShellRoute';
 
@@ -46,7 +46,7 @@ class DashboardShellRoute extends PageRouteInfo<void> {
 /// [DiscrepancyTriagePage]
 class DiscrepancyTriageRoute extends PageRouteInfo<void> {
   const DiscrepancyTriageRoute({List<PageRouteInfo>? children})
-      : super(DiscrepancyTriageRoute.name, initialChildren: children);
+    : super(DiscrepancyTriageRoute.name, initialChildren: children);
 
   static const String name = 'DiscrepancyTriageRoute';
 
@@ -62,7 +62,7 @@ class DiscrepancyTriageRoute extends PageRouteInfo<void> {
 /// [ProductsPage]
 class ProductsRoute extends PageRouteInfo<void> {
   const ProductsRoute({List<PageRouteInfo>? children})
-      : super(ProductsRoute.name, initialChildren: children);
+    : super(ProductsRoute.name, initialChildren: children);
 
   static const String name = 'ProductsRoute';
 
@@ -78,7 +78,7 @@ class ProductsRoute extends PageRouteInfo<void> {
 /// [PurchaseOrdersPage]
 class PurchaseOrdersRoute extends PageRouteInfo<void> {
   const PurchaseOrdersRoute({List<PageRouteInfo>? children})
-      : super(PurchaseOrdersRoute.name, initialChildren: children);
+    : super(PurchaseOrdersRoute.name, initialChildren: children);
 
   static const String name = 'PurchaseOrdersRoute';
 
@@ -94,7 +94,7 @@ class PurchaseOrdersRoute extends PageRouteInfo<void> {
 /// [SessionsPage]
 class SessionsRoute extends PageRouteInfo<void> {
   const SessionsRoute({List<PageRouteInfo>? children})
-      : super(SessionsRoute.name, initialChildren: children);
+    : super(SessionsRoute.name, initialChildren: children);
 
   static const String name = 'SessionsRoute';
 
@@ -110,7 +110,7 @@ class SessionsRoute extends PageRouteInfo<void> {
 /// [ShipmentsPage]
 class ShipmentsRoute extends PageRouteInfo<void> {
   const ShipmentsRoute({List<PageRouteInfo>? children})
-      : super(ShipmentsRoute.name, initialChildren: children);
+    : super(ShipmentsRoute.name, initialChildren: children);
 
   static const String name = 'ShipmentsRoute';
 
@@ -126,7 +126,7 @@ class ShipmentsRoute extends PageRouteInfo<void> {
 /// [SignInPage]
 class SignInRoute extends PageRouteInfo<void> {
   const SignInRoute({List<PageRouteInfo>? children})
-      : super(SignInRoute.name, initialChildren: children);
+    : super(SignInRoute.name, initialChildren: children);
 
   static const String name = 'SignInRoute';
 
@@ -142,7 +142,7 @@ class SignInRoute extends PageRouteInfo<void> {
 /// [SuppliersPage]
 class SuppliersRoute extends PageRouteInfo<void> {
   const SuppliersRoute({List<PageRouteInfo>? children})
-      : super(SuppliersRoute.name, initialChildren: children);
+    : super(SuppliersRoute.name, initialChildren: children);
 
   static const String name = 'SuppliersRoute';
 
@@ -158,7 +158,7 @@ class SuppliersRoute extends PageRouteInfo<void> {
 /// [UsersPage]
 class UsersRoute extends PageRouteInfo<void> {
   const UsersRoute({List<PageRouteInfo>? children})
-      : super(UsersRoute.name, initialChildren: children);
+    : super(UsersRoute.name, initialChildren: children);
 
   static const String name = 'UsersRoute';
 

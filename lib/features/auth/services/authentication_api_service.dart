@@ -27,10 +27,10 @@ class AuthenticationApiService implements IAuthenticationApiService {
     final user = _supabaseClient.auth.currentUser;
     if (user == null) return null;
     
-    final roleStr = user.userMetadata?['role'] as String? ?? 'staff';
+    final roleStr = user.userMetadata?['role'] as String? ?? 'worker';
     return UserRole.values.firstWhere(
       (e) => e.name == roleStr,
-      orElse: () => UserRole.staff,
+      orElse: () => UserRole.worker,
     );
   }
 }

@@ -14,520 +14,288 @@ T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$ProductDto {
-  String get id;
-  String get sku;
-  String? get barcode;
-  String get name;
-  String? get category;
-  String? get unit;
-  @JsonKey(name: 'requires_lot')
-  bool get requiresLot;
-  @JsonKey(name: 'requires_serial')
-  bool get requiresSerial;
-  @JsonKey(name: 'requires_expiry')
-  bool get requiresExpiry;
 
-  /// Create a copy of ProductDto
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @pragma('vm:prefer-inline')
-  $ProductDtoCopyWith<ProductDto> get copyWith =>
-      _$ProductDtoCopyWithImpl<ProductDto>(this as ProductDto, _$identity);
+ String get id; String get sku; String? get barcode; String get name; String? get category; String? get unit;@JsonKey(name: 'requires_lot') bool get requiresLot;@JsonKey(name: 'requires_serial') bool get requiresSerial;@JsonKey(name: 'requires_expiry') bool get requiresExpiry;
+/// Create a copy of ProductDto
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ProductDtoCopyWith<ProductDto> get copyWith => _$ProductDtoCopyWithImpl<ProductDto>(this as ProductDto, _$identity);
 
   /// Serializes this ProductDto to a JSON map.
   Map<String, dynamic> toJson();
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is ProductDto &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.sku, sku) || other.sku == sku) &&
-            (identical(other.barcode, barcode) || other.barcode == barcode) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.category, category) ||
-                other.category == category) &&
-            (identical(other.unit, unit) || other.unit == unit) &&
-            (identical(other.requiresLot, requiresLot) ||
-                other.requiresLot == requiresLot) &&
-            (identical(other.requiresSerial, requiresSerial) ||
-                other.requiresSerial == requiresSerial) &&
-            (identical(other.requiresExpiry, requiresExpiry) ||
-                other.requiresExpiry == requiresExpiry));
-  }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  int get hashCode => Object.hash(runtimeType, id, sku, barcode, name, category,
-      unit, requiresLot, requiresSerial, requiresExpiry);
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProductDto&&(identical(other.id, id) || other.id == id)&&(identical(other.sku, sku) || other.sku == sku)&&(identical(other.barcode, barcode) || other.barcode == barcode)&&(identical(other.name, name) || other.name == name)&&(identical(other.category, category) || other.category == category)&&(identical(other.unit, unit) || other.unit == unit)&&(identical(other.requiresLot, requiresLot) || other.requiresLot == requiresLot)&&(identical(other.requiresSerial, requiresSerial) || other.requiresSerial == requiresSerial)&&(identical(other.requiresExpiry, requiresExpiry) || other.requiresExpiry == requiresExpiry));
+}
 
-  @override
-  String toString() {
-    return 'ProductDto(id: $id, sku: $sku, barcode: $barcode, name: $name, category: $category, unit: $unit, requiresLot: $requiresLot, requiresSerial: $requiresSerial, requiresExpiry: $requiresExpiry)';
-  }
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,sku,barcode,name,category,unit,requiresLot,requiresSerial,requiresExpiry);
+
+@override
+String toString() {
+  return 'ProductDto(id: $id, sku: $sku, barcode: $barcode, name: $name, category: $category, unit: $unit, requiresLot: $requiresLot, requiresSerial: $requiresSerial, requiresExpiry: $requiresExpiry)';
+}
+
+
 }
 
 /// @nodoc
-abstract mixin class $ProductDtoCopyWith<$Res> {
-  factory $ProductDtoCopyWith(
-          ProductDto value, $Res Function(ProductDto) _then) =
-      _$ProductDtoCopyWithImpl;
-  @useResult
-  $Res call(
-      {String id,
-      String sku,
-      String? barcode,
-      String name,
-      String? category,
-      String? unit,
-      @JsonKey(name: 'requires_lot') bool requiresLot,
-      @JsonKey(name: 'requires_serial') bool requiresSerial,
-      @JsonKey(name: 'requires_expiry') bool requiresExpiry});
-}
+abstract mixin class $ProductDtoCopyWith<$Res>  {
+  factory $ProductDtoCopyWith(ProductDto value, $Res Function(ProductDto) _then) = _$ProductDtoCopyWithImpl;
+@useResult
+$Res call({
+ String id, String sku, String? barcode, String name, String? category, String? unit,@JsonKey(name: 'requires_lot') bool requiresLot,@JsonKey(name: 'requires_serial') bool requiresSerial,@JsonKey(name: 'requires_expiry') bool requiresExpiry
+});
 
+
+
+
+}
 /// @nodoc
-class _$ProductDtoCopyWithImpl<$Res> implements $ProductDtoCopyWith<$Res> {
+class _$ProductDtoCopyWithImpl<$Res>
+    implements $ProductDtoCopyWith<$Res> {
   _$ProductDtoCopyWithImpl(this._self, this._then);
 
   final ProductDto _self;
   final $Res Function(ProductDto) _then;
 
-  /// Create a copy of ProductDto
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = null,
-    Object? sku = null,
-    Object? barcode = freezed,
-    Object? name = null,
-    Object? category = freezed,
-    Object? unit = freezed,
-    Object? requiresLot = null,
-    Object? requiresSerial = null,
-    Object? requiresExpiry = null,
-  }) {
-    return _then(_self.copyWith(
-      id: null == id
-          ? _self.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      sku: null == sku
-          ? _self.sku
-          : sku // ignore: cast_nullable_to_non_nullable
-              as String,
-      barcode: freezed == barcode
-          ? _self.barcode
-          : barcode // ignore: cast_nullable_to_non_nullable
-              as String?,
-      name: null == name
-          ? _self.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      category: freezed == category
-          ? _self.category
-          : category // ignore: cast_nullable_to_non_nullable
-              as String?,
-      unit: freezed == unit
-          ? _self.unit
-          : unit // ignore: cast_nullable_to_non_nullable
-              as String?,
-      requiresLot: null == requiresLot
-          ? _self.requiresLot
-          : requiresLot // ignore: cast_nullable_to_non_nullable
-              as bool,
-      requiresSerial: null == requiresSerial
-          ? _self.requiresSerial
-          : requiresSerial // ignore: cast_nullable_to_non_nullable
-              as bool,
-      requiresExpiry: null == requiresExpiry
-          ? _self.requiresExpiry
-          : requiresExpiry // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ));
-  }
+/// Create a copy of ProductDto
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? sku = null,Object? barcode = freezed,Object? name = null,Object? category = freezed,Object? unit = freezed,Object? requiresLot = null,Object? requiresSerial = null,Object? requiresExpiry = null,}) {
+  return _then(_self.copyWith(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,sku: null == sku ? _self.sku : sku // ignore: cast_nullable_to_non_nullable
+as String,barcode: freezed == barcode ? _self.barcode : barcode // ignore: cast_nullable_to_non_nullable
+as String?,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,category: freezed == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
+as String?,unit: freezed == unit ? _self.unit : unit // ignore: cast_nullable_to_non_nullable
+as String?,requiresLot: null == requiresLot ? _self.requiresLot : requiresLot // ignore: cast_nullable_to_non_nullable
+as bool,requiresSerial: null == requiresSerial ? _self.requiresSerial : requiresSerial // ignore: cast_nullable_to_non_nullable
+as bool,requiresExpiry: null == requiresExpiry ? _self.requiresExpiry : requiresExpiry // ignore: cast_nullable_to_non_nullable
+as bool,
+  ));
 }
+
+}
+
 
 /// Adds pattern-matching-related methods to [ProductDto].
 extension ProductDtoPatterns on ProductDto {
-  /// A variant of `map` that fallback to returning `orElse`.
-  ///
-  /// It is equivalent to doing:
-  /// ```dart
-  /// switch (sealedClass) {
-  ///   case final Subclass value:
-  ///     return ...;
-  ///   case _:
-  ///     return orElse();
-  /// }
-  /// ```
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
 
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>(
-    TResult Function(_ProductDto value)? $default, {
-    required TResult orElse(),
-  }) {
-    final _that = this;
-    switch (_that) {
-      case _ProductDto() when $default != null:
-        return $default(_that);
-      case _:
-        return orElse();
-    }
-  }
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ProductDto value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _ProductDto() when $default != null:
+return $default(_that);case _:
+  return orElse();
 
-  /// A `switch`-like method, using callbacks.
-  ///
-  /// Callbacks receives the raw object, upcasted.
-  /// It is equivalent to doing:
-  /// ```dart
-  /// switch (sealedClass) {
-  ///   case final Subclass value:
-  ///     return ...;
-  ///   case final Subclass2 value:
-  ///     return ...;
-  /// }
-  /// ```
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
 
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>(
-    TResult Function(_ProductDto value) $default,
-  ) {
-    final _that = this;
-    switch (_that) {
-      case _ProductDto():
-        return $default(_that);
-      case _:
-        throw StateError('Unexpected subclass');
-    }
-  }
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ProductDto value)  $default,){
+final _that = this;
+switch (_that) {
+case _ProductDto():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
 
-  /// A variant of `map` that fallback to returning `null`.
-  ///
-  /// It is equivalent to doing:
-  /// ```dart
-  /// switch (sealedClass) {
-  ///   case final Subclass value:
-  ///     return ...;
-  ///   case _:
-  ///     return null;
-  /// }
-  /// ```
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
 
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>(
-    TResult? Function(_ProductDto value)? $default,
-  ) {
-    final _that = this;
-    switch (_that) {
-      case _ProductDto() when $default != null:
-        return $default(_that);
-      case _:
-        return null;
-    }
-  }
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ProductDto value)?  $default,){
+final _that = this;
+switch (_that) {
+case _ProductDto() when $default != null:
+return $default(_that);case _:
+  return null;
 
-  /// A variant of `when` that fallback to an `orElse` callback.
-  ///
-  /// It is equivalent to doing:
-  /// ```dart
-  /// switch (sealedClass) {
-  ///   case Subclass(:final field):
-  ///     return ...;
-  ///   case _:
-  ///     return orElse();
-  /// }
-  /// ```
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
 
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>(
-    TResult Function(
-            String id,
-            String sku,
-            String? barcode,
-            String name,
-            String? category,
-            String? unit,
-            @JsonKey(name: 'requires_lot') bool requiresLot,
-            @JsonKey(name: 'requires_serial') bool requiresSerial,
-            @JsonKey(name: 'requires_expiry') bool requiresExpiry)?
-        $default, {
-    required TResult orElse(),
-  }) {
-    final _that = this;
-    switch (_that) {
-      case _ProductDto() when $default != null:
-        return $default(
-            _that.id,
-            _that.sku,
-            _that.barcode,
-            _that.name,
-            _that.category,
-            _that.unit,
-            _that.requiresLot,
-            _that.requiresSerial,
-            _that.requiresExpiry);
-      case _:
-        return orElse();
-    }
-  }
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String sku,  String? barcode,  String name,  String? category,  String? unit, @JsonKey(name: 'requires_lot')  bool requiresLot, @JsonKey(name: 'requires_serial')  bool requiresSerial, @JsonKey(name: 'requires_expiry')  bool requiresExpiry)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _ProductDto() when $default != null:
+return $default(_that.id,_that.sku,_that.barcode,_that.name,_that.category,_that.unit,_that.requiresLot,_that.requiresSerial,_that.requiresExpiry);case _:
+  return orElse();
 
-  /// A `switch`-like method, using callbacks.
-  ///
-  /// As opposed to `map`, this offers destructuring.
-  /// It is equivalent to doing:
-  /// ```dart
-  /// switch (sealedClass) {
-  ///   case Subclass(:final field):
-  ///     return ...;
-  ///   case Subclass2(:final field2):
-  ///     return ...;
-  /// }
-  /// ```
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
 
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>(
-    TResult Function(
-            String id,
-            String sku,
-            String? barcode,
-            String name,
-            String? category,
-            String? unit,
-            @JsonKey(name: 'requires_lot') bool requiresLot,
-            @JsonKey(name: 'requires_serial') bool requiresSerial,
-            @JsonKey(name: 'requires_expiry') bool requiresExpiry)
-        $default,
-  ) {
-    final _that = this;
-    switch (_that) {
-      case _ProductDto():
-        return $default(
-            _that.id,
-            _that.sku,
-            _that.barcode,
-            _that.name,
-            _that.category,
-            _that.unit,
-            _that.requiresLot,
-            _that.requiresSerial,
-            _that.requiresExpiry);
-      case _:
-        throw StateError('Unexpected subclass');
-    }
-  }
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String sku,  String? barcode,  String name,  String? category,  String? unit, @JsonKey(name: 'requires_lot')  bool requiresLot, @JsonKey(name: 'requires_serial')  bool requiresSerial, @JsonKey(name: 'requires_expiry')  bool requiresExpiry)  $default,) {final _that = this;
+switch (_that) {
+case _ProductDto():
+return $default(_that.id,_that.sku,_that.barcode,_that.name,_that.category,_that.unit,_that.requiresLot,_that.requiresSerial,_that.requiresExpiry);case _:
+  throw StateError('Unexpected subclass');
 
-  /// A variant of `when` that fallback to returning `null`
-  ///
-  /// It is equivalent to doing:
-  /// ```dart
-  /// switch (sealedClass) {
-  ///   case Subclass(:final field):
-  ///     return ...;
-  ///   case _:
-  ///     return null;
-  /// }
-  /// ```
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
 
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>(
-    TResult? Function(
-            String id,
-            String sku,
-            String? barcode,
-            String name,
-            String? category,
-            String? unit,
-            @JsonKey(name: 'requires_lot') bool requiresLot,
-            @JsonKey(name: 'requires_serial') bool requiresSerial,
-            @JsonKey(name: 'requires_expiry') bool requiresExpiry)?
-        $default,
-  ) {
-    final _that = this;
-    switch (_that) {
-      case _ProductDto() when $default != null:
-        return $default(
-            _that.id,
-            _that.sku,
-            _that.barcode,
-            _that.name,
-            _that.category,
-            _that.unit,
-            _that.requiresLot,
-            _that.requiresSerial,
-            _that.requiresExpiry);
-      case _:
-        return null;
-    }
-  }
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String sku,  String? barcode,  String name,  String? category,  String? unit, @JsonKey(name: 'requires_lot')  bool requiresLot, @JsonKey(name: 'requires_serial')  bool requiresSerial, @JsonKey(name: 'requires_expiry')  bool requiresExpiry)?  $default,) {final _that = this;
+switch (_that) {
+case _ProductDto() when $default != null:
+return $default(_that.id,_that.sku,_that.barcode,_that.name,_that.category,_that.unit,_that.requiresLot,_that.requiresSerial,_that.requiresExpiry);case _:
+  return null;
+
+}
+}
+
 }
 
 /// @nodoc
 @JsonSerializable()
+
 class _ProductDto implements ProductDto {
-  const _ProductDto(
-      {required this.id,
-      required this.sku,
-      this.barcode,
-      required this.name,
-      this.category,
-      this.unit,
-      @JsonKey(name: 'requires_lot') this.requiresLot = false,
-      @JsonKey(name: 'requires_serial') this.requiresSerial = false,
-      @JsonKey(name: 'requires_expiry') this.requiresExpiry = false});
-  factory _ProductDto.fromJson(Map<String, dynamic> json) =>
-      _$ProductDtoFromJson(json);
+  const _ProductDto({required this.id, required this.sku, this.barcode, required this.name, this.category, this.unit, @JsonKey(name: 'requires_lot') this.requiresLot = false, @JsonKey(name: 'requires_serial') this.requiresSerial = false, @JsonKey(name: 'requires_expiry') this.requiresExpiry = false});
+  factory _ProductDto.fromJson(Map<String, dynamic> json) => _$ProductDtoFromJson(json);
 
-  @override
-  final String id;
-  @override
-  final String sku;
-  @override
-  final String? barcode;
-  @override
-  final String name;
-  @override
-  final String? category;
-  @override
-  final String? unit;
-  @override
-  @JsonKey(name: 'requires_lot')
-  final bool requiresLot;
-  @override
-  @JsonKey(name: 'requires_serial')
-  final bool requiresSerial;
-  @override
-  @JsonKey(name: 'requires_expiry')
-  final bool requiresExpiry;
+@override final  String id;
+@override final  String sku;
+@override final  String? barcode;
+@override final  String name;
+@override final  String? category;
+@override final  String? unit;
+@override@JsonKey(name: 'requires_lot') final  bool requiresLot;
+@override@JsonKey(name: 'requires_serial') final  bool requiresSerial;
+@override@JsonKey(name: 'requires_expiry') final  bool requiresExpiry;
 
-  /// Create a copy of ProductDto
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @pragma('vm:prefer-inline')
-  _$ProductDtoCopyWith<_ProductDto> get copyWith =>
-      __$ProductDtoCopyWithImpl<_ProductDto>(this, _$identity);
+/// Create a copy of ProductDto
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ProductDtoCopyWith<_ProductDto> get copyWith => __$ProductDtoCopyWithImpl<_ProductDto>(this, _$identity);
 
-  @override
-  Map<String, dynamic> toJson() {
-    return _$ProductDtoToJson(
-      this,
-    );
-  }
+@override
+Map<String, dynamic> toJson() {
+  return _$ProductDtoToJson(this, );
+}
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _ProductDto &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.sku, sku) || other.sku == sku) &&
-            (identical(other.barcode, barcode) || other.barcode == barcode) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.category, category) ||
-                other.category == category) &&
-            (identical(other.unit, unit) || other.unit == unit) &&
-            (identical(other.requiresLot, requiresLot) ||
-                other.requiresLot == requiresLot) &&
-            (identical(other.requiresSerial, requiresSerial) ||
-                other.requiresSerial == requiresSerial) &&
-            (identical(other.requiresExpiry, requiresExpiry) ||
-                other.requiresExpiry == requiresExpiry));
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProductDto&&(identical(other.id, id) || other.id == id)&&(identical(other.sku, sku) || other.sku == sku)&&(identical(other.barcode, barcode) || other.barcode == barcode)&&(identical(other.name, name) || other.name == name)&&(identical(other.category, category) || other.category == category)&&(identical(other.unit, unit) || other.unit == unit)&&(identical(other.requiresLot, requiresLot) || other.requiresLot == requiresLot)&&(identical(other.requiresSerial, requiresSerial) || other.requiresSerial == requiresSerial)&&(identical(other.requiresExpiry, requiresExpiry) || other.requiresExpiry == requiresExpiry));
+}
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  int get hashCode => Object.hash(runtimeType, id, sku, barcode, name, category,
-      unit, requiresLot, requiresSerial, requiresExpiry);
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,sku,barcode,name,category,unit,requiresLot,requiresSerial,requiresExpiry);
 
-  @override
-  String toString() {
-    return 'ProductDto(id: $id, sku: $sku, barcode: $barcode, name: $name, category: $category, unit: $unit, requiresLot: $requiresLot, requiresSerial: $requiresSerial, requiresExpiry: $requiresExpiry)';
-  }
+@override
+String toString() {
+  return 'ProductDto(id: $id, sku: $sku, barcode: $barcode, name: $name, category: $category, unit: $unit, requiresLot: $requiresLot, requiresSerial: $requiresSerial, requiresExpiry: $requiresExpiry)';
+}
+
+
 }
 
 /// @nodoc
-abstract mixin class _$ProductDtoCopyWith<$Res>
-    implements $ProductDtoCopyWith<$Res> {
-  factory _$ProductDtoCopyWith(
-          _ProductDto value, $Res Function(_ProductDto) _then) =
-      __$ProductDtoCopyWithImpl;
-  @override
-  @useResult
-  $Res call(
-      {String id,
-      String sku,
-      String? barcode,
-      String name,
-      String? category,
-      String? unit,
-      @JsonKey(name: 'requires_lot') bool requiresLot,
-      @JsonKey(name: 'requires_serial') bool requiresSerial,
-      @JsonKey(name: 'requires_expiry') bool requiresExpiry});
-}
+abstract mixin class _$ProductDtoCopyWith<$Res> implements $ProductDtoCopyWith<$Res> {
+  factory _$ProductDtoCopyWith(_ProductDto value, $Res Function(_ProductDto) _then) = __$ProductDtoCopyWithImpl;
+@override @useResult
+$Res call({
+ String id, String sku, String? barcode, String name, String? category, String? unit,@JsonKey(name: 'requires_lot') bool requiresLot,@JsonKey(name: 'requires_serial') bool requiresSerial,@JsonKey(name: 'requires_expiry') bool requiresExpiry
+});
 
+
+
+
+}
 /// @nodoc
-class __$ProductDtoCopyWithImpl<$Res> implements _$ProductDtoCopyWith<$Res> {
+class __$ProductDtoCopyWithImpl<$Res>
+    implements _$ProductDtoCopyWith<$Res> {
   __$ProductDtoCopyWithImpl(this._self, this._then);
 
   final _ProductDto _self;
   final $Res Function(_ProductDto) _then;
 
-  /// Create a copy of ProductDto
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $Res call({
-    Object? id = null,
-    Object? sku = null,
-    Object? barcode = freezed,
-    Object? name = null,
-    Object? category = freezed,
-    Object? unit = freezed,
-    Object? requiresLot = null,
-    Object? requiresSerial = null,
-    Object? requiresExpiry = null,
-  }) {
-    return _then(_ProductDto(
-      id: null == id
-          ? _self.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      sku: null == sku
-          ? _self.sku
-          : sku // ignore: cast_nullable_to_non_nullable
-              as String,
-      barcode: freezed == barcode
-          ? _self.barcode
-          : barcode // ignore: cast_nullable_to_non_nullable
-              as String?,
-      name: null == name
-          ? _self.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      category: freezed == category
-          ? _self.category
-          : category // ignore: cast_nullable_to_non_nullable
-              as String?,
-      unit: freezed == unit
-          ? _self.unit
-          : unit // ignore: cast_nullable_to_non_nullable
-              as String?,
-      requiresLot: null == requiresLot
-          ? _self.requiresLot
-          : requiresLot // ignore: cast_nullable_to_non_nullable
-              as bool,
-      requiresSerial: null == requiresSerial
-          ? _self.requiresSerial
-          : requiresSerial // ignore: cast_nullable_to_non_nullable
-              as bool,
-      requiresExpiry: null == requiresExpiry
-          ? _self.requiresExpiry
-          : requiresExpiry // ignore: cast_nullable_to_non_nullable
-              as bool,
-    ));
-  }
+/// Create a copy of ProductDto
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? sku = null,Object? barcode = freezed,Object? name = null,Object? category = freezed,Object? unit = freezed,Object? requiresLot = null,Object? requiresSerial = null,Object? requiresExpiry = null,}) {
+  return _then(_ProductDto(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,sku: null == sku ? _self.sku : sku // ignore: cast_nullable_to_non_nullable
+as String,barcode: freezed == barcode ? _self.barcode : barcode // ignore: cast_nullable_to_non_nullable
+as String?,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,category: freezed == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
+as String?,unit: freezed == unit ? _self.unit : unit // ignore: cast_nullable_to_non_nullable
+as String?,requiresLot: null == requiresLot ? _self.requiresLot : requiresLot // ignore: cast_nullable_to_non_nullable
+as bool,requiresSerial: null == requiresSerial ? _self.requiresSerial : requiresSerial // ignore: cast_nullable_to_non_nullable
+as bool,requiresExpiry: null == requiresExpiry ? _self.requiresExpiry : requiresExpiry // ignore: cast_nullable_to_non_nullable
+as bool,
+  ));
+}
+
+
 }
 
 // dart format on

@@ -8,6 +8,8 @@ import 'package:toastification/toastification.dart';
 import 'package:inbound_ms/features/auth/providers/auth_provider.dart';
 import 'package:inbound_ms/features/purchase_orders/providers/purchase_order_provider.dart';
 import 'package:inbound_ms/features/dashboard/providers/dashboard_provider.dart';
+import 'package:inbound_ms/features/users/providers/user_provider.dart';
+import 'package:inbound_ms/features/receiving/providers/session_provider.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 
 Future<void> runApplication({required ApiEnvironmentEnum environment}) async {
@@ -32,6 +34,8 @@ class App extends StatelessWidget {
         ChangeNotifierProvider.value(value: getIt.get<AuthProvider>()),
         ChangeNotifierProvider.value(value: getIt.get<PurchaseOrderProvider>()),
         ChangeNotifierProvider.value(value: getIt.get<DashboardProvider>()),
+        ChangeNotifierProvider.value(value: getIt.get<UserProvider>()),
+        ChangeNotifierProvider.value(value: getIt.get<SessionProvider>()),
         ChangeNotifierProvider.value(value: getIt.get<IThemeProvider>()),
       ],
       builder: (context, _) {

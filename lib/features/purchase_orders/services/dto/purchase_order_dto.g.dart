@@ -16,7 +16,8 @@ _PurchaseOrderDto _$PurchaseOrderDtoFromJson(Map<String, dynamic> json) =>
       createdAt: json['created_at'] == null
           ? null
           : DateTime.parse(json['created_at'] as String),
-      items: (json['po_items'] as List<dynamic>?)
+      items:
+          (json['po_items'] as List<dynamic>?)
               ?.map((e) => PoItemDto.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
