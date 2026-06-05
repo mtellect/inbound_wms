@@ -2,6 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:inbound_ms/features/purchase_orders/models/purchase_order.dart';
 import 'package:inbound_ms/features/purchase_orders/widgets/po_import_view.dart';
+import 'package:inbound_ms/core/widgets/page_header.dart';
+import 'package:inbound_ms/core/widgets/app_data_table.dart';
 
 @RoutePage()
 class PurchaseOrdersPage extends StatefulWidget {
@@ -20,86 +22,82 @@ class _PurchaseOrdersPageState extends State<PurchaseOrdersPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Purchase Orders'),
-        actions: [
-          OutlinedButton.icon(
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) => const POImportView(),
-              );
-            },
-            icon: const Icon(Icons.file_upload),
-            label: const Text('Import CSV / EDI'),
-          ),
-          const SizedBox(width: 8),
-          FilledButton.icon(
-            onPressed: () {},
-            icon: const Icon(Icons.add),
-            label: const Text('Create PO'),
-          ),
-          const SizedBox(width: 16),
-        ],
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
+      backgroundColor: Colors.transparent,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Card(
-            clipBehavior: Clip.antiAlias,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: DataTable(
-                columns: const [
-                  DataColumn(label: Text('PO Number')),
-                  DataColumn(label: Text('Supplier')),
-                  DataColumn(label: Text('Date Created')),
-                  DataColumn(label: Text('Status')),
-                  DataColumn(label: Text('Blind Recv')),
-                  DataColumn(label: Text('Actions')),
-                ],
-                rows: _pos.map((po) {
-                  return DataRow(
-                    cells: [
-                      DataCell(Text(po.poNumber, style: const TextStyle(fontWeight: FontWeight.bold))),
-                      DataCell(Text(po.supplierId ?? '-')),
-                      DataCell(Text('${po.createdAt?.year}-${po.createdAt?.month.toString().padLeft(2, '0')}-${po.createdAt?.day.toString().padLeft(2, '0')}')),
-                      DataCell(
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: po.status == 'received' ? Colors.green.withValues(alpha: 0.1) : Colors.orange.withValues(alpha: 0.1),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Text(
-                            po.status.toUpperCase(),
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: po.status == 'received' ? Colors.green[800] : Colors.orange[800],
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+          PageHeader(
+            title: 'Purchase Orders',
+            subtitle: 'Track incoming purchase orders and their receiving status.',
+            actions: [
+              OutlinedButton.icon(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => const POImportView(),
+                  );
+                },
+                icon: const Icon(Icons.file_upload),
+                label: const Text('Import CSV / EDI'),
+              ),
+              const SizedBox(width: 12),
+              FilledButton.icon(
+                onPressed: () {},
+                icon: const Icon(Icons.add),
+                label: const Text('Create PO'),
+              ),
+            ],
+          ),
+          Expanded(
+            child: AppDataTable(
+              columns: const [
+                AppDataColumn(label: 'PO Number', flex: 2),
+                AppDataColumn(label: 'Supplier', flex: 2),
+                AppDataColumn(label: 'Status', flex: 2),
+                AppDataColumn(label: 'Blind Receiving', flex: 2),
+                AppDataColumn(label: 'Date Created', flex: 2),
+                AppDataColumn(label: 'Actions', flex: 2),
+              ],
+              rows: _pos.map((po) {
+                return AppDataRow(
+                  id: po.id,
+                  cells: [
+                    Text(po.poNumber, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
+                    Text(po.supplierId ?? '-', style: const TextStyle(fontSize: 14)),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: po.status == 'pending' ? Colors.orange.withValues(alpha: 0.1) : Colors.green.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        po.status.toUpperCase(),
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: po.status == 'pending' ? Colors.orange[800] : Colors.green[800],
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
-                      DataCell(Icon(
-                        po.blindReceiving ? Icons.visibility_off : Icons.visibility,
-                        size: 20,
-                        color: po.blindReceiving ? Colors.blue : Colors.grey,
-                      )),
-                      DataCell(Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.remove_red_eye_outlined, size: 20),
-                            tooltip: 'View Details',
-                            onPressed: () {},
-                          ),
-                        ],
-                      )),
-                    ],
-                  );
-                }).toList(),
-              ),
+                    ),
+                    Text(po.blindReceiving ? 'Yes' : 'No', style: const TextStyle(fontSize: 14)),
+                    Text('${po.createdAt?.toLocal() ?? '-'}'.split(' ')[0], style: const TextStyle(fontSize: 14)),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        FilledButton.tonal(
+                          onPressed: () {},
+                          child: const Text('Process'),
+                        ),
+                        const SizedBox(width: 8),
+                        IconButton(
+                          icon: Icon(Icons.more_vert, size: 20, color: Colors.grey[600]),
+                          onPressed: () {},
+                        ),
+                      ],
+                    ),
+                  ],
+                );
+              }).toList(),
             ),
           ),
         ],

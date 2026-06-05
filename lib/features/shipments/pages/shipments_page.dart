@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:inbound_ms/features/shipments/models/shipment.dart';
+import 'package:inbound_ms/core/widgets/page_header.dart';
+import 'package:inbound_ms/core/widgets/app_data_table.dart';
 
 @RoutePage()
 class ShipmentsPage extends StatefulWidget {
@@ -19,72 +21,73 @@ class _ShipmentsPageState extends State<ShipmentsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Inbound Shipments'),
-        actions: [
-          FilledButton.icon(
-            onPressed: () {},
-            icon: const Icon(Icons.add),
-            label: const Text('Schedule Shipment'),
-          ),
-          const SizedBox(width: 16),
-        ],
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
+      backgroundColor: Colors.transparent,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Card(
-            clipBehavior: Clip.antiAlias,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: DataTable(
-                columns: const [
-                  DataColumn(label: Text('Tracking / ASN')),
-                  DataColumn(label: Text('PO Number')),
-                  DataColumn(label: Text('Carrier')),
-                  DataColumn(label: Text('ETA / Arrival')),
-                  DataColumn(label: Text('Dock Door')),
-                  DataColumn(label: Text('Status')),
-                  DataColumn(label: Text('Actions')),
-                ],
-                rows: _shipments.map((ship) {
-                  return DataRow(
-                    cells: [
-                      DataCell(Text(ship.trackingNumber ?? '-', style: const TextStyle(fontWeight: FontWeight.bold))),
-                      DataCell(Text(ship.poId)),
-                      DataCell(Text(ship.carrierName ?? '-')),
-                      DataCell(Text(ship.arrivalTime != null ? '${ship.arrivalTime!.hour}:${ship.arrivalTime!.minute.toString().padLeft(2, '0')}' : '-')),
-                      DataCell(Text(ship.dockDoor ?? '-')),
-                      DataCell(
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: ship.status == 'arrived' ? Colors.blue.withValues(alpha: 0.1) : Colors.grey.withValues(alpha: 0.1),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Text(
-                            ship.status.toUpperCase(),
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: ship.status == 'arrived' ? Colors.blue[800] : Colors.grey[800],
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+          PageHeader(
+            title: 'Inbound Shipments',
+            subtitle: 'Track incoming deliveries, ASNs, and dock schedules.',
+            actions: [
+              FilledButton.icon(
+                onPressed: () {},
+                icon: const Icon(Icons.add),
+                label: const Text('Schedule Shipment'),
+              ),
+            ],
+          ),
+          Expanded(
+            child: AppDataTable(
+              columns: const [
+                AppDataColumn(label: 'Tracking', flex: 2),
+                AppDataColumn(label: 'Carrier', flex: 2),
+                AppDataColumn(label: 'PO / ASN', flex: 2),
+                AppDataColumn(label: 'Status', flex: 2),
+                AppDataColumn(label: 'ETA', flex: 2),
+                AppDataColumn(label: 'Dock Door', flex: 2),
+                AppDataColumn(label: 'Actions', flex: 2),
+              ],
+              rows: _shipments.map((s) {
+                return AppDataRow(
+                  id: s.id,
+                  cells: [
+                    Text(s.trackingNumber ?? '-', style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
+                    Text(s.carrierName ?? '-', style: const TextStyle(fontSize: 14)),
+                    Text(s.poId, style: TextStyle(color: Colors.grey[600], fontSize: 14)),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: s.status == 'in_transit' ? Colors.blue.withValues(alpha: 0.1) : Colors.purple.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        s.status.toUpperCase(),
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: s.status == 'in_transit' ? Colors.blue[800] : Colors.purple[800],
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
-                      DataCell(Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          FilledButton.tonal(
-                            onPressed: () {},
-                            child: const Text('Receive'),
-                          ),
-                        ],
-                      )),
-                    ],
-                  );
-                }).toList(),
-              ),
+                    ),
+                    Text('${s.arrivalTime?.toLocal() ?? '-'}'.split(' ')[0], style: const TextStyle(fontSize: 14)),
+                    Text(s.dockDoor ?? '-', style: const TextStyle(fontSize: 14)),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        FilledButton.tonal(
+                          onPressed: () {},
+                          child: const Text('Process'),
+                        ),
+                        const SizedBox(width: 8),
+                        IconButton(
+                          icon: Icon(Icons.more_vert, size: 20, color: Colors.grey[600]),
+                          onPressed: () {},
+                        ),
+                      ],
+                    ),
+                  ],
+                );
+              }).toList(),
             ),
           ),
         ],

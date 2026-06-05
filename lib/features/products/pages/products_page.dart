@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:inbound_ms/features/products/models/product.dart';
+import 'package:inbound_ms/core/widgets/page_header.dart';
+import 'package:inbound_ms/core/widgets/app_data_table.dart';
 
 @RoutePage()
 class ProductsPage extends StatefulWidget {
@@ -20,68 +22,80 @@ class _ProductsPageState extends State<ProductsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Products Master'),
-        actions: [
-          OutlinedButton.icon(
-            onPressed: () {},
-            icon: const Icon(Icons.upload_file),
-            label: const Text('Import CSV'),
-          ),
-          const SizedBox(width: 8),
-          FilledButton.icon(
-            onPressed: () {},
-            icon: const Icon(Icons.add),
-            label: const Text('Add Product'),
-          ),
-          const SizedBox(width: 16),
-        ],
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
+      backgroundColor: Colors.transparent,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Card(
-            clipBehavior: Clip.antiAlias,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: DataTable(
-                columns: const [
-                  DataColumn(label: Text('SKU')),
-                  DataColumn(label: Text('Name')),
-                  DataColumn(label: Text('Category')),
-                  DataColumn(label: Text('Tracking')),
-                  DataColumn(label: Text('Actions')),
-                ],
-                rows: _products.map((p) {
-                  final tracking = [
-                    if (p.requiresLot) 'Lot',
-                    if (p.requiresSerial) 'Serial',
-                    if (p.requiresExpiry) 'Expiry'
-                  ].join(', ');
-                  
-                  return DataRow(
-                    cells: [
-                      DataCell(Text(p.sku)),
-                      DataCell(Text(p.name)),
-                      DataCell(Text(p.category ?? '-')),
-                      DataCell(Text(tracking.isEmpty ? 'None' : tracking)),
-                      DataCell(Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.edit_outlined, size: 20),
-                            onPressed: () {},
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.delete_outline, size: 20, color: Colors.red),
-                            onPressed: () {},
-                          ),
-                        ],
-                      )),
-                    ],
-                  );
-                }).toList(),
+          PageHeader(
+            title: 'Products Master',
+            subtitle: 'Manage your product catalog and tracking requirements.',
+            actions: [
+              OutlinedButton.icon(
+                onPressed: () {},
+                icon: const Icon(Icons.upload_file),
+                label: const Text('Import CSV'),
               ),
+              const SizedBox(width: 12),
+              FilledButton.icon(
+                onPressed: () {},
+                icon: const Icon(Icons.add),
+                label: const Text('Add Product'),
+              ),
+            ],
+          ),
+          Expanded(
+            child: AppDataTable(
+              columns: const [
+                AppDataColumn(label: 'SKU', flex: 2),
+                AppDataColumn(label: 'Name', flex: 3),
+                AppDataColumn(label: 'Category', flex: 2),
+                AppDataColumn(label: 'Tracking', flex: 2),
+                AppDataColumn(label: 'Actions', flex: 1),
+              ],
+              rows: _products.map((p) {
+                final tracking = [
+                  if (p.requiresLot) 'Lot',
+                  if (p.requiresSerial) 'Serial',
+                  if (p.requiresExpiry) 'Expiry'
+                ].join(', ');
+                
+                return AppDataRow(
+                  id: p.id,
+                  cells: [
+                    Text(p.sku, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
+                    Text(p.name, style: const TextStyle(fontSize: 14)),
+                    Text(p.category ?? '-', style: const TextStyle(fontSize: 14)),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: tracking.isEmpty ? Colors.grey.withValues(alpha: 0.1) : Colors.blue.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        tracking.isEmpty ? 'None' : tracking,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: tracking.isEmpty ? Colors.grey[700] : Colors.blue[700],
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.edit_outlined, size: 20, color: Colors.grey[600]),
+                          onPressed: () {},
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.delete_outline, size: 20, color: Colors.red),
+                          onPressed: () {},
+                        ),
+                      ],
+                    ),
+                  ],
+                );
+              }).toList(),
             ),
           ),
         ],

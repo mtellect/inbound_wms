@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:inbound_ms/features/discrepancies/models/discrepancy.dart';
+import 'package:inbound_ms/core/widgets/page_header.dart';
+import 'package:inbound_ms/core/widgets/app_data_table.dart';
 
 @RoutePage()
 class DiscrepancyTriagePage extends StatefulWidget {
@@ -19,87 +21,77 @@ class _DiscrepancyTriagePageState extends State<DiscrepancyTriagePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Discrepancy Triage'),
-        actions: [
-          OutlinedButton.icon(
-            onPressed: () {},
-            icon: const Icon(Icons.filter_list),
-            label: const Text('Filter'),
-          ),
-          const SizedBox(width: 16),
-        ],
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
+      backgroundColor: Colors.transparent,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Card(
-            clipBehavior: Clip.antiAlias,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: DataTable(
-                columns: const [
-                  DataColumn(label: Text('PO / SKU')),
-                  DataColumn(label: Text('Expected')),
-                  DataColumn(label: Text('Actual')),
-                  DataColumn(label: Text('Variance')),
-                  DataColumn(label: Text('Reason')),
-                  DataColumn(label: Text('Status')),
-                  DataColumn(label: Text('Actions')),
-                ],
-                rows: _discrepancies.map((disc) {
-                  final variance = disc.actualQty - disc.expectedQty;
-                  
-                  return DataRow(
-                    cells: [
-                      DataCell(Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(disc.poId, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-                          Text(disc.productId, style: TextStyle(color: Colors.grey[600], fontSize: 12)),
-                        ],
-                      )),
-                      DataCell(Text(disc.expectedQty.toString())),
-                      DataCell(Text(disc.actualQty.toString(), style: const TextStyle(fontWeight: FontWeight.bold))),
-                      DataCell(Text(
-                        '${variance > 0 ? '+' : ''}$variance',
+          PageHeader(
+            title: 'Discrepancy Triage',
+            subtitle: 'Resolve overages, shortages, and damages from inbound shipments.',
+            actions: [
+              OutlinedButton.icon(
+                onPressed: () {},
+                icon: const Icon(Icons.filter_list),
+                label: const Text('Filter'),
+              ),
+            ],
+          ),
+          Expanded(
+            child: AppDataTable(
+              columns: const [
+                AppDataColumn(label: 'PO / Ref', flex: 2),
+                AppDataColumn(label: 'SKU', flex: 2),
+                AppDataColumn(label: 'Variance', flex: 1),
+                AppDataColumn(label: 'Reason', flex: 2),
+                AppDataColumn(label: 'Status', flex: 2),
+                AppDataColumn(label: 'Actions', flex: 2),
+              ],
+              rows: _discrepancies.map((d) {
+                return AppDataRow(
+                  id: d.id,
+                  cells: [
+                    Text(d.poId, style: TextStyle(color: Colors.grey[600], fontSize: 14, fontWeight: FontWeight.w600)),
+                    Text(d.productId, style: const TextStyle(fontSize: 14)),
+                    Text(
+                      '${d.actualQty - d.expectedQty}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: (d.actualQty - d.expectedQty) > 0 ? Colors.green[700] : Colors.red[700],
+                      ),
+                    ),
+                    Text(d.reason, style: const TextStyle(fontSize: 14)),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: d.status == 'unresolved' ? Colors.red.withValues(alpha: 0.1) : Colors.blue.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        d.status.toUpperCase(),
                         style: TextStyle(
-                          color: variance > 0 ? Colors.blue : Colors.red,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      )),
-                      DataCell(Text(disc.reason)),
-                      DataCell(
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: disc.status == 'open' ? Colors.red.withValues(alpha: 0.1) : Colors.orange.withValues(alpha: 0.1),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Text(
-                            disc.status.toUpperCase(),
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: disc.status == 'open' ? Colors.red[800] : Colors.orange[800],
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          fontSize: 12,
+                          color: d.status == 'unresolved' ? Colors.red[800] : Colors.blue[800],
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
-                      DataCell(Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          FilledButton.tonal(
-                            onPressed: () {},
-                            child: const Text('Resolve'),
-                          ),
-                        ],
-                      )),
-                    ],
-                  );
-                }).toList(),
-              ),
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        FilledButton.tonal(
+                          onPressed: () {},
+                          child: const Text('Triage'),
+                        ),
+                        const SizedBox(width: 8),
+                        IconButton(
+                          icon: Icon(Icons.more_vert, size: 20, color: Colors.grey[600]),
+                          onPressed: () {},
+                        ),
+                      ],
+                    ),
+                  ],
+                );
+              }).toList(),
             ),
           ),
         ],

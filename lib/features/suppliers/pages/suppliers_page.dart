@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:inbound_ms/features/suppliers/models/supplier.dart';
+import 'package:inbound_ms/core/widgets/page_header.dart';
+import 'package:inbound_ms/core/widgets/app_data_table.dart';
 
 @RoutePage()
 class SuppliersPage extends StatefulWidget {
@@ -19,58 +21,54 @@ class _SuppliersPageState extends State<SuppliersPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Suppliers Master'),
-        actions: [
-          FilledButton.icon(
-            onPressed: () {},
-            icon: const Icon(Icons.add),
-            label: const Text('Add Supplier'),
-          ),
-          const SizedBox(width: 16),
-        ],
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
+      backgroundColor: Colors.transparent,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Card(
-            clipBehavior: Clip.antiAlias,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: DataTable(
-                columns: const [
-                  DataColumn(label: Text('Code')),
-                  DataColumn(label: Text('Name')),
-                  DataColumn(label: Text('Contact')),
-                  DataColumn(label: Text('Email')),
-                  DataColumn(label: Text('Phone')),
-                  DataColumn(label: Text('Actions')),
-                ],
-                rows: _suppliers.map((s) {
-                  return DataRow(
-                    cells: [
-                      DataCell(Text(s.code)),
-                      DataCell(Text(s.name)),
-                      DataCell(Text(s.contactName ?? '-')),
-                      DataCell(Text(s.email ?? '-')),
-                      DataCell(Text(s.phone ?? '-')),
-                      DataCell(Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.edit_outlined, size: 20),
-                            onPressed: () {},
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.delete_outline, size: 20, color: Colors.red),
-                            onPressed: () {},
-                          ),
-                        ],
-                      )),
-                    ],
-                  );
-                }).toList(),
+          PageHeader(
+            title: 'Suppliers Master',
+            subtitle: 'Manage your vendors and supplier contacts.',
+            actions: [
+              FilledButton.icon(
+                onPressed: () {},
+                icon: const Icon(Icons.add),
+                label: const Text('Add Supplier'),
               ),
+            ],
+          ),
+          Expanded(
+            child: AppDataTable(
+              columns: const [
+                AppDataColumn(label: 'Code', flex: 1),
+                AppDataColumn(label: 'Name', flex: 2),
+                AppDataColumn(label: 'Contact', flex: 2),
+                AppDataColumn(label: 'Email', flex: 3),
+                AppDataColumn(label: 'Actions', flex: 1),
+              ],
+              rows: _suppliers.map((s) {
+                return AppDataRow(
+                  id: s.id,
+                  cells: [
+                    Text(s.code, style: TextStyle(color: Colors.grey[600], fontSize: 13)),
+                    Text(s.name, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
+                    Text(s.contactName ?? '-', style: const TextStyle(fontSize: 14)),
+                    Text(s.email ?? '-', style: const TextStyle(fontSize: 14)),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.edit_outlined, size: 20, color: Colors.grey[600]),
+                          onPressed: () {},
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.delete_outline, size: 20, color: Colors.red),
+                          onPressed: () {},
+                        ),
+                      ],
+                    ),
+                  ],
+                );
+              }).toList(),
             ),
           ),
         ],
