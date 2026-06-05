@@ -8,9 +8,9 @@ import 'package:provider/provider.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 
 class UserDetailsModal extends StatefulWidget {
-  final AppUser user;
+  final AppUser? user;
 
-  const UserDetailsModal({super.key, required this.user});
+  const UserDetailsModal({super.key, this.user});
 
   @override
   State<UserDetailsModal> createState() => _UserDetailsModalState();
@@ -19,21 +19,42 @@ class UserDetailsModal extends StatefulWidget {
 class _UserDetailsModalState extends State<UserDetailsModal> {
   late UserRole _selectedRole;
   late String _selectedStatus;
+  late final TextEditingController _emailController;
+  late final TextEditingController _nameController;
 
   @override
   void initState() {
     super.initState();
-    _selectedRole = widget.user.role;
-    _selectedStatus = widget.user.status;
+    _selectedRole = widget.user?.role ?? UserRole.worker;
+    _selectedStatus = widget.user?.status ?? 'active';
+    _emailController = TextEditingController(text: widget.user?.email ?? '');
+    _nameController = TextEditingController(text: widget.user?.displayName ?? '');
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _nameController.dispose();
+    super.dispose();
   }
 
   void _save() {
     final provider = context.read<UserProvider>();
-    if (_selectedRole != widget.user.role) {
-      provider.updateUserRole(widget.user.id, _selectedRole.name);
-    }
-    if (_selectedStatus != widget.user.status) {
-      provider.updateUserStatus(widget.user.id, _selectedStatus);
+    if (widget.user == null) {
+      provider.createUser(
+        email: _emailController.text,
+        displayName: _nameController.text,
+        role: _selectedRole.name,
+        status: _selectedStatus,
+      );
+    } else {
+      if (_selectedRole != widget.user!.role) {
+        provider.updateUserRole(widget.user!.id, _selectedRole.name);
+      }
+      if (_selectedStatus != widget.user!.status) {
+        provider.updateUserStatus(widget.user!.id, _selectedStatus);
+      }
+      // Also potentially update display name if changed
     }
     Navigator.of(context).pop();
   }
@@ -58,8 +79,8 @@ class _UserDetailsModalState extends State<UserDetailsModal> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('User Details',
-                      style: TextStyle(
+                  Text(widget.user == null ? 'Add User' : 'User Details',
+                      style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.w900,
                           color: AppColors.textPrimaryLight)),
@@ -70,9 +91,28 @@ class _UserDetailsModalState extends State<UserDetailsModal> {
                 ],
               ),
               const SizedBox(height: 24),
-              Text('Display Name: ${widget.user.displayName}', style: const TextStyle(fontSize: 16)),
+              const Text('Display Name', style: TextStyle(fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
-              Text('Email: ${widget.user.email}', style: const TextStyle(fontSize: 16)),
+              TextFormField(
+                controller: _nameController,
+                decoration: InputDecoration(
+                  hintText: 'Enter full name',
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                ),
+              ),
+              const SizedBox(height: 16),
+              const Text('Email Address', style: TextStyle(fontWeight: FontWeight.bold)),
+              const SizedBox(height: 8),
+              TextFormField(
+                controller: _emailController,
+                enabled: widget.user == null,
+                decoration: InputDecoration(
+                  hintText: 'Enter email address',
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                ),
+              ),
               const SizedBox(height: 24),
               const Text('Role', style: TextStyle(fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),

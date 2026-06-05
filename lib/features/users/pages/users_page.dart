@@ -29,10 +29,19 @@ class _UsersPageState extends State<UsersPage> {
     tableName: 'Team Management',
     subtitle: 'Manage staff accounts, roles, and system access.',
     headerActions: [
-      OutlinedButton.icon(
-        onPressed: () {},
-        icon: const Icon(Icons.add),
-        label: const Text('Add User'),
+      Builder(
+        builder: (context) {
+          return OutlinedButton.icon(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) => const UserDetailsModal(),
+              );
+            },
+            icon: const Icon(Icons.add),
+            label: const Text('Add User'),
+          );
+        },
       ),
     ],
     columns: const [

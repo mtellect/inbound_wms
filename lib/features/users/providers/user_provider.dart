@@ -51,4 +51,26 @@ class UserProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<void> createUser({
+    required String email,
+    required String displayName,
+    required String role,
+    required String status,
+  }) async {
+    try {
+      await _userApiService.createUser(
+        email: email,
+        displayName: displayName,
+        role: role,
+        status: status,
+      );
+      await fetchUsers();
+    } catch (e) {
+      _error = e.toString();
+      notifyListeners();
+      // We might want to rethrow to show a Toast in the UI
+      rethrow;
+    }
+  }
 }
