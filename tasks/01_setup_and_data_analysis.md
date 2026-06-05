@@ -3,9 +3,14 @@
 **Goal:** Finalize the enterprise database schema and initialize the Supabase backend.
 
 ## Sub-tasks
-- [ ] **Data Mapping:**
+- [x] **Data Mapping:**
   - Read `/po_samples/PO-SPAE-003382127 - Bella FOC.xlsx`.
-  - Extract PO, Supplier, and Product catalog data to help seed the `products` and `suppliers` tables.
+  - **Methodology:** Utilized `npx xlsx-cli` to extract column headers. A permanent, reusable CLI wrapper is saved at `scripts/preview_excel.sh` for future reference.
+  - **Extracted Mapping:** 
+    - `PO Number (FOC)` -> `purchase_orders.po_number`
+    - `Search name` -> `products.sku` (The primary scannable identifier)
+    - `Product name` -> `products.name`
+    - `Quantity` -> `po_items.expected_quantity`
 - [ ] **Supabase Initialization:**
   - Create the Supabase project.
   - Setup Authentication with `manager`, `supervisor`, and `worker` roles.

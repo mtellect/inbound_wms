@@ -3,10 +3,10 @@
 **Goal:** Initialize the unified Flutter project using your preferred feature-first architecture (`core/` & `features/`).
 
 ## Sub-tasks
-- [ ] **Initialize App:**
+- [x] **Initialize App:**
   - Create the Flutter project directly in the `inbound_ms/` root.
   - Configure dependencies: `supabase_flutter`, `freezed`, `auto_route`, `provider`, and `get_it`.
-- [ ] **Scaffold Directory Structure:**
+- [x] **Scaffold Directory Structure:**
   - Create the `lib/core/` directory with standard subfolders (`api`, `constants`, `di`, `enums`, `extensions`, `local_db`, `navigation`, `providers`, `services`, `startup`, `theme`, `utils`, `widgets`).
   - Create the `lib/features/` directory with the following initial domain folders:
     - `auth`
