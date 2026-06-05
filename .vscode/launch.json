@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Inbound MS (Web Dashboard)",
+            "name": "Inbound Web (Staging)",
             "request": "launch",
             "type": "dart",
             "program": "lib/main.dart",
@@ -13,16 +13,44 @@
                 "3000"
             ],
             "toolArgs": [
-                "--dart-define-from-file=.dart_define.json"
+                "--dart-define-from-file=.dart_define.staging.json",
+                "--dart-define=FLAVOR=webStaging"
             ]
         },
         {
-            "name": "Inbound MS (Mobile App)",
+            "name": "Inbound Web (Production)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "args": [
+                "-d",
+                "chrome",
+                "--web-port",
+                "3000"
+            ],
+            "toolArgs": [
+                "--dart-define-from-file=.dart_define.production.json",
+                "--dart-define=FLAVOR=webProd"
+            ]
+        },
+        {
+            "name": "Inbound Mobile (Staging)",
             "request": "launch",
             "type": "dart",
             "program": "lib/main.dart",
             "toolArgs": [
-                "--dart-define-from-file=.dart_define.json"
+                "--dart-define-from-file=.dart_define.staging.json",
+                "--dart-define=FLAVOR=mobileStaging"
+            ]
+        },
+        {
+            "name": "Inbound Mobile (Production)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "toolArgs": [
+                "--dart-define-from-file=.dart_define.production.json",
+                "--dart-define=FLAVOR=mobileProd"
             ]
         }
     ]

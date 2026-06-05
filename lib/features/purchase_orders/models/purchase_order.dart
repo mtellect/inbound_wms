@@ -4,7 +4,7 @@ part 'purchase_order.freezed.dart';
 part 'purchase_order.g.dart';
 
 @freezed
-class PurchaseOrder with _$PurchaseOrder {
+abstract class PurchaseOrder with _$PurchaseOrder {
   const factory PurchaseOrder({
     required String id,
     @JsonKey(name: 'po_number') required String poNumber,
