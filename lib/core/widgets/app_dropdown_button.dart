@@ -103,6 +103,7 @@ class _AppDropDownButtonState<T> extends State<AppDropDownButton<T>> {
             ),
         buttonStyleData: widget.buttonStyleData ??
             ButtonStyleData(
+              width: double.infinity,
               height: 48,
               padding: const EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(
@@ -142,7 +143,10 @@ class _AppDropDownButtonState<T> extends State<AppDropDownButton<T>> {
                   ),
                 ),
                 searchMatchFn: (item, searchValue) {
-                  return item.value.toString().toLowerCase().contains(searchValue.toLowerCase());
+                  return item.value
+                      .toString()
+                      .toLowerCase()
+                      .contains(searchValue.toLowerCase());
                 },
               )
             : null,
