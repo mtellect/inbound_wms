@@ -14,6 +14,7 @@ class AppDropDownButton<T> extends StatefulWidget {
   final Widget? icon;
   final bool isSearchable;
   final String? searchHint;
+  final bool Function(DropdownItem<T>, String)? searchMatchFn;
 
   const AppDropDownButton({
     super.key,
@@ -28,6 +29,7 @@ class AppDropDownButton<T> extends StatefulWidget {
     this.icon,
     this.isSearchable = false,
     this.searchHint,
+    this.searchMatchFn,
   });
 
   @override
@@ -142,12 +144,13 @@ class _AppDropDownButtonState<T> extends State<AppDropDownButton<T>> {
                     ),
                   ),
                 ),
-                searchMatchFn: (item, searchValue) {
-                  return item.value
-                      .toString()
-                      .toLowerCase()
-                      .contains(searchValue.toLowerCase());
-                },
+                searchMatchFn: widget.searchMatchFn ??
+                    (item, searchValue) {
+                      return item.value
+                          .toString()
+                          .toLowerCase()
+                          .contains(searchValue.toLowerCase());
+                    },
               )
             : null,
         onMenuStateChange: (isOpen) {

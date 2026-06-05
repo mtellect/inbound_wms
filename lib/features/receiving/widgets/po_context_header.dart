@@ -49,6 +49,14 @@ class PoContextHeader extends StatelessWidget {
                     ),
                     isSearchable: true,
                     searchHint: 'Search PO...',
+                    searchMatchFn: (item, searchValue) {
+                      final po = provider.activeOrders.firstWhere(
+                        (p) => p.id == item.value,
+                      );
+                      return po.poNumber
+                          .toLowerCase()
+                          .contains(searchValue.toLowerCase());
+                    },
                     items: provider.activeOrders
                         .map((po) => DropdownItem<String>(
                               value: po.id,
