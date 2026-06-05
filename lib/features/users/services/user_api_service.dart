@@ -4,10 +4,16 @@ import 'package:inbound_ms/features/users/services/dto/app_user_dto.dart';
 import 'package:inbound_ms/features/users/services/mappers/app_user_mapper.dart';
 import 'i_user_api_service.dart';
 
+import 'package:inbound_ms/core/api/base_api.dart';
+
 class UserApiService implements IUserApiService {
   final SupabaseClient _supabaseClient;
+  final ApiClient _apiClient;
 
-  UserApiService({required this._supabaseClient});
+  UserApiService({
+    required this._supabaseClient,
+    required this._apiClient,
+  });
 
   @override
   Future<List<AppUser>> fetchAllUsers() async {
@@ -38,24 +44,41 @@ class UserApiService implements IUserApiService {
     required String status,
     required bool requiresPasswordReset,
   }) async {
-    // Invoke the Supabase Edge Function to securely create the user via admin API
+    // We use ApiClient to hit the Supabase Admin Auth API directly with the service_role key
     try {
-      final response = await _supabaseClient.functions.invoke(
-        'create-user',
+      final env = EnvConfigurationsModel.instance;
+      
+      final response = await _apiClient.postApi(
+        url: '${env.supabaseUrl}/auth/v1/admin/users',
+        headers: {
+          'apikey': env.supabaseServiceRoleKey,
+          'Authorization': 'Bearer ${env.supabaseServiceRoleKey}',
+          'Content-Type': 'application/json',
+        },
         body: {
           'email': email,
           'password': password,
-          'displayName': displayName,
-          'role': role,
-          'status': status,
-          'requiresPasswordReset': requiresPasswordReset,
+          'email_confirm': true,
         },
       );
-      if (response.status != 200) {
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final userId = response.data['id'];
+        
+        // Insert the user into public.user_roles
+        await _supabaseClient.from('user_roles').insert({
+          'id': userId,
+          'email': email,
+          'display_name': displayName,
+          'role': role,
+          'status': status,
+          'requires_password_reset': requiresPasswordReset,
+        });
+      } else {
         throw Exception('Failed to create user: ${response.data}');
       }
     } catch(e) {
-      throw Exception('Failed to create user. Please deploy the create-user Edge Function. Error: $e');
+      throw Exception('Failed to create user via HTTP request. Error: $e');
     }
   }
 }

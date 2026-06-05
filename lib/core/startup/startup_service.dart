@@ -5,6 +5,7 @@ import 'package:inbound_ms/core/enums/api_environment_enum.dart';
 import 'package:inbound_ms/core/services/i_environment_service.dart';
 import 'package:inbound_ms/core/services/environment_service.dart';
 import 'package:inbound_ms/core/api/base_api.dart';
+import 'package:inbound_ms/features/local_db/base_local_db.dart';
 
 import 'package:inbound_ms/features/auth/services/i_authentication_api_service.dart';
 import 'package:inbound_ms/features/auth/services/authentication_api_service.dart';
@@ -61,13 +62,30 @@ class StartUpService implements IStartUpService {
       () => EnvironmentService(environment: environment),
     );
 
+    // Register LocaldbService (required by ApiClient interceptors)
+    if (!getIt.isRegistered<LocaldbService>()) {
+      getIt.registerLazySingleton<LocaldbService>(() => LocaldbService());
+    }
+
     // Register Feature Services
     getIt.registerLazySingleton<IAuthenticationApiService>(
       () => AuthenticationApiService(supabaseClient: getIt.get<SupabaseClient>()),
     );
 
+    // Register ApiClient
+    if (!getIt.isRegistered<ApiClient>()) {
+      getIt.registerLazySingleton<ApiClient>(
+        () => ApiClient.init(
+          onLogout: () {},
+        ),
+      );
+    }
+
     getIt.registerLazySingleton<IUserApiService>(
-      () => UserApiService(supabaseClient: getIt.get<SupabaseClient>()),
+      () => UserApiService(
+        supabaseClient: getIt.get<SupabaseClient>(),
+        apiClient: getIt.get<ApiClient>(),
+      ),
     );
 
     getIt.registerLazySingleton<ISessionApiService>(
