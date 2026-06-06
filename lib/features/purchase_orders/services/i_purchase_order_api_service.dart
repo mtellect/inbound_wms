@@ -9,4 +9,5 @@ abstract interface class IPurchaseOrderApiService {
   Future<void> updatePurchaseOrderStatus(String id, String status);
   Future<void> updatePoItemsReceivedQuantities(List<PoItem> items);
   Future<void> deletePurchaseOrder(String id);
+  Future<List<Map<String, dynamic>>> fetchSessionsForPo(String poId);
 }

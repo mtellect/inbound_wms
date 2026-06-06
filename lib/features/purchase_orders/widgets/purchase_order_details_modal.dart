@@ -3,6 +3,9 @@ import 'package:inbound_ms/core/resources/app_colors.dart';
 import 'package:inbound_ms/features/purchase_orders/models/purchase_order.dart';
 import 'package:inbound_ms/features/receiving/widgets/meta_field.dart';
 import 'package:inbound_ms/features/receiving/widgets/session_manifest_table.dart';
+import 'package:provider/provider.dart';
+import 'package:inbound_ms/features/purchase_orders/providers/purchase_order_provider.dart';
+import 'package:inbound_ms/core/utils/toast_utils.dart';
 
 class PurchaseOrderDetailsModal extends StatelessWidget {
   final PurchaseOrder po;
@@ -79,9 +82,29 @@ class PurchaseOrderDetailsModal extends StatelessWidget {
                       ),
                     ],
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.close, color: AppColors.textSecondaryLight),
-                    onPressed: () => Navigator.of(context).pop(),
+                  Row(
+                    children: [
+                      OutlinedButton.icon(
+                        icon: const Icon(Icons.download, size: 16),
+                        label: const Text('Export CSV'),
+                        onPressed: () {
+                          context.read<PurchaseOrderProvider>().exportPoToCsv(
+                            po: po,
+                            onSuccess: () {
+                              ToastUtils.showSuccess(context, message: 'CSV Exported successfully.');
+                            },
+                            onError: (err) {
+                              ToastUtils.showError(context, message: err);
+                            },
+                          );
+                        },
+                      ),
+                      const SizedBox(width: 16),
+                      IconButton(
+                        icon: const Icon(Icons.close, color: AppColors.textSecondaryLight),
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -92,8 +115,8 @@ class PurchaseOrderDetailsModal extends StatelessWidget {
                 children: [
                   Expanded(
                     child: MetaField(
-                      label: 'SUPPLIER ID',
-                      value: po.supplierId ?? '---',
+                      label: 'SUPPLIER',
+                      value: po.supplierName ?? po.supplierId ?? 'Unknown',
                     ),
                   ),
                   const SizedBox(width: 16),

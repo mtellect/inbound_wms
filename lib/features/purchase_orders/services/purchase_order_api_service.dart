@@ -9,14 +9,13 @@ import 'i_purchase_order_api_service.dart';
 class PurchaseOrderApiService implements IPurchaseOrderApiService {
   final SupabaseClient _supabaseClient;
 
-  PurchaseOrderApiService({required SupabaseClient supabaseClient})
-      : _supabaseClient = supabaseClient;
+  PurchaseOrderApiService({required this._supabaseClient});
 
   @override
   Future<List<PurchaseOrder>> fetchActivePurchaseOrders() async {
     final response = await _supabaseClient
         .from('purchase_orders')
-        .select('*, po_items(*, products(*))')
+        .select('*, suppliers(name), po_items(*, products(*))')
         .neq('status', 'completed');
     
     return (response as List).map((e) {
@@ -29,7 +28,7 @@ class PurchaseOrderApiService implements IPurchaseOrderApiService {
   Future<PurchaseOrder> fetchPurchaseOrderById(String id) async {
     final response = await _supabaseClient
         .from('purchase_orders')
-        .select('*, po_items(*, products(*))')
+        .select('*, suppliers(name), po_items(*, products(*))')
         .eq('id', id)
         .single();
         
@@ -146,5 +145,14 @@ class PurchaseOrderApiService implements IPurchaseOrderApiService {
     if (upserts.isNotEmpty) {
       await _supabaseClient.from('po_items').upsert(upserts);
     }
+  }
+
+  @override
+  Future<List<Map<String, dynamic>>> fetchSessionsForPo(String poId) async {
+    final response = await _supabaseClient
+        .from('receiving_sessions')
+        .select('session_number, status, operator:user_roles!operator_id(email, display_name)')
+        .eq('po_id', poId);
+    return List<Map<String, dynamic>>.from(response);
   }
 }

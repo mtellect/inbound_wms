@@ -11,7 +11,7 @@ class PurchaseOrderMapper {
       id: dto.id,
       poNumber: dto.poNumber,
       supplierId: dto.supplierId,
-      supplierName: null, // Fetched differently or ignored after import
+      supplierName: dto.suppliersMap?['name'] as String?,
       status: dto.status,
       blindReceiving: dto.blindReceiving,
       createdAt: dto.createdAt,
@@ -28,6 +28,7 @@ class PurchaseOrderMapper {
       blindReceiving: model.blindReceiving,
       createdAt: model.createdAt,
       items: model.items.map((i) => PoItemMapper.toDto(i)).toList(),
+      suppliersMap: model.supplierName != null ? {'name': model.supplierName} : null,
     );
   }
 }

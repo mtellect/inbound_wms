@@ -1,4 +1,7 @@
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:csv/csv.dart';
+import 'package:cross_file/cross_file.dart';
 import 'package:inbound_ms/features/purchase_orders/models/purchase_order.dart';
 import 'package:inbound_ms/core/startup/startup_service.dart';
 import 'package:inbound_ms/features/purchase_orders/services/i_purchase_order_api_service.dart';
@@ -194,6 +197,64 @@ class PurchaseOrderProvider extends ChangeNotifier {
       // Deliberately skipping loadActiveOrders() to prevent blocking UI/spinners during background save
     } catch (e) {
       debugPrint("Error auto-saving session: $e");
+    }
+  }
+
+  Future<void> exportPoToCsv({
+    required PurchaseOrder po,
+    required VoidCallback onSuccess,
+    required Function(String) onError,
+  }) async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      final sessions = await _purchaseOrderApiService.fetchSessionsForPo(po.id);
+      
+      // Extract unique operators who scanned
+      final operatorEmails = sessions
+          .map((s) {
+            final op = s['operator'];
+            if (op == null) return 'Unknown';
+            // handle single operator map
+            return op['email']?.toString() ?? 'Unknown';
+          })
+          .where((e) => e != 'Unknown')
+          .toSet()
+          .join(', ');
+
+      List<List<dynamic>> rows = [];
+      // Header
+      rows.add(['SKU', 'Product Name', 'Expected Qty', 'Scanned Qty', 'Who Scanned']);
+      
+      for (var item in po.items) {
+        if (item.product == null) continue;
+        rows.add([
+          item.product!.sku,
+          item.product!.name,
+          item.expectedQuantity,
+          item.receivedQuantity,
+          operatorEmails.isEmpty ? 'N/A' : operatorEmails,
+        ]);
+      }
+      
+      String csvString = Csv().encode(rows);
+      
+      final fileName = 'PO_${po.poNumber}_Export.csv';
+      final file = XFile.fromData(
+        Uint8List.fromList(utf8.encode(csvString)), 
+        mimeType: 'text/csv', 
+        name: fileName,
+      );
+      
+      await file.saveTo(fileName);
+      onSuccess();
+    } catch (e) {
+      debugPrint("Export failed: $e");
+      onError("Failed to export PO: $e");
+    } finally {
+      _isLoading = false;
+      notifyListeners();
     }
   }
 }

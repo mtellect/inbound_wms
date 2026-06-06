@@ -14,6 +14,7 @@ abstract class PurchaseOrderDto with _$PurchaseOrderDto {
     @Default(false) @JsonKey(name: 'blind_receiving') bool blindReceiving,
     @JsonKey(name: 'created_at') DateTime? createdAt,
     @Default([]) @JsonKey(name: 'po_items') List<PoItemDto> items,
+    @JsonKey(name: 'suppliers') Map<String, dynamic>? suppliersMap,
   }) = _PurchaseOrderDto;
 
   factory PurchaseOrderDto.fromJson(Map<String, dynamic> json) => _$PurchaseOrderDtoFromJson(json);

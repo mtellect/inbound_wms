@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$PurchaseOrderDto {
 
- String get id;@JsonKey(name: 'po_number') String get poNumber;@JsonKey(name: 'supplier_id') String? get supplierId; String get status;@JsonKey(name: 'blind_receiving') bool get blindReceiving;@JsonKey(name: 'created_at') DateTime? get createdAt;@JsonKey(name: 'po_items') List<PoItemDto> get items;
+ String get id;@JsonKey(name: 'po_number') String get poNumber;@JsonKey(name: 'supplier_id') String? get supplierId; String get status;@JsonKey(name: 'blind_receiving') bool get blindReceiving;@JsonKey(name: 'created_at') DateTime? get createdAt;@JsonKey(name: 'po_items') List<PoItemDto> get items;@JsonKey(name: 'suppliers') Map<String, dynamic>? get suppliersMap;
 /// Create a copy of PurchaseOrderDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $PurchaseOrderDtoCopyWith<PurchaseOrderDto> get copyWith => _$PurchaseOrderDtoCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PurchaseOrderDto&&(identical(other.id, id) || other.id == id)&&(identical(other.poNumber, poNumber) || other.poNumber == poNumber)&&(identical(other.supplierId, supplierId) || other.supplierId == supplierId)&&(identical(other.status, status) || other.status == status)&&(identical(other.blindReceiving, blindReceiving) || other.blindReceiving == blindReceiving)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&const DeepCollectionEquality().equals(other.items, items));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PurchaseOrderDto&&(identical(other.id, id) || other.id == id)&&(identical(other.poNumber, poNumber) || other.poNumber == poNumber)&&(identical(other.supplierId, supplierId) || other.supplierId == supplierId)&&(identical(other.status, status) || other.status == status)&&(identical(other.blindReceiving, blindReceiving) || other.blindReceiving == blindReceiving)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&const DeepCollectionEquality().equals(other.items, items)&&const DeepCollectionEquality().equals(other.suppliersMap, suppliersMap));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,poNumber,supplierId,status,blindReceiving,createdAt,const DeepCollectionEquality().hash(items));
+int get hashCode => Object.hash(runtimeType,id,poNumber,supplierId,status,blindReceiving,createdAt,const DeepCollectionEquality().hash(items),const DeepCollectionEquality().hash(suppliersMap));
 
 @override
 String toString() {
-  return 'PurchaseOrderDto(id: $id, poNumber: $poNumber, supplierId: $supplierId, status: $status, blindReceiving: $blindReceiving, createdAt: $createdAt, items: $items)';
+  return 'PurchaseOrderDto(id: $id, poNumber: $poNumber, supplierId: $supplierId, status: $status, blindReceiving: $blindReceiving, createdAt: $createdAt, items: $items, suppliersMap: $suppliersMap)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $PurchaseOrderDtoCopyWith<$Res>  {
   factory $PurchaseOrderDtoCopyWith(PurchaseOrderDto value, $Res Function(PurchaseOrderDto) _then) = _$PurchaseOrderDtoCopyWithImpl;
 @useResult
 $Res call({
- String id,@JsonKey(name: 'po_number') String poNumber,@JsonKey(name: 'supplier_id') String? supplierId, String status,@JsonKey(name: 'blind_receiving') bool blindReceiving,@JsonKey(name: 'created_at') DateTime? createdAt,@JsonKey(name: 'po_items') List<PoItemDto> items
+ String id,@JsonKey(name: 'po_number') String poNumber,@JsonKey(name: 'supplier_id') String? supplierId, String status,@JsonKey(name: 'blind_receiving') bool blindReceiving,@JsonKey(name: 'created_at') DateTime? createdAt,@JsonKey(name: 'po_items') List<PoItemDto> items,@JsonKey(name: 'suppliers') Map<String, dynamic>? suppliersMap
 });
 
 
@@ -65,7 +65,7 @@ class _$PurchaseOrderDtoCopyWithImpl<$Res>
 
 /// Create a copy of PurchaseOrderDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? poNumber = null,Object? supplierId = freezed,Object? status = null,Object? blindReceiving = null,Object? createdAt = freezed,Object? items = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? poNumber = null,Object? supplierId = freezed,Object? status = null,Object? blindReceiving = null,Object? createdAt = freezed,Object? items = null,Object? suppliersMap = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,poNumber: null == poNumber ? _self.poNumber : poNumber // ignore: cast_nullable_to_non_nullable
@@ -74,7 +74,8 @@ as String?,status: null == status ? _self.status : status // ignore: cast_nullab
 as String,blindReceiving: null == blindReceiving ? _self.blindReceiving : blindReceiving // ignore: cast_nullable_to_non_nullable
 as bool,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,items: null == items ? _self.items : items // ignore: cast_nullable_to_non_nullable
-as List<PoItemDto>,
+as List<PoItemDto>,suppliersMap: freezed == suppliersMap ? _self.suppliersMap : suppliersMap // ignore: cast_nullable_to_non_nullable
+as Map<String, dynamic>?,
   ));
 }
 
@@ -159,10 +160,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'po_number')  String poNumber, @JsonKey(name: 'supplier_id')  String? supplierId,  String status, @JsonKey(name: 'blind_receiving')  bool blindReceiving, @JsonKey(name: 'created_at')  DateTime? createdAt, @JsonKey(name: 'po_items')  List<PoItemDto> items)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'po_number')  String poNumber, @JsonKey(name: 'supplier_id')  String? supplierId,  String status, @JsonKey(name: 'blind_receiving')  bool blindReceiving, @JsonKey(name: 'created_at')  DateTime? createdAt, @JsonKey(name: 'po_items')  List<PoItemDto> items, @JsonKey(name: 'suppliers')  Map<String, dynamic>? suppliersMap)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PurchaseOrderDto() when $default != null:
-return $default(_that.id,_that.poNumber,_that.supplierId,_that.status,_that.blindReceiving,_that.createdAt,_that.items);case _:
+return $default(_that.id,_that.poNumber,_that.supplierId,_that.status,_that.blindReceiving,_that.createdAt,_that.items,_that.suppliersMap);case _:
   return orElse();
 
 }
@@ -180,10 +181,10 @@ return $default(_that.id,_that.poNumber,_that.supplierId,_that.status,_that.blin
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'po_number')  String poNumber, @JsonKey(name: 'supplier_id')  String? supplierId,  String status, @JsonKey(name: 'blind_receiving')  bool blindReceiving, @JsonKey(name: 'created_at')  DateTime? createdAt, @JsonKey(name: 'po_items')  List<PoItemDto> items)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id, @JsonKey(name: 'po_number')  String poNumber, @JsonKey(name: 'supplier_id')  String? supplierId,  String status, @JsonKey(name: 'blind_receiving')  bool blindReceiving, @JsonKey(name: 'created_at')  DateTime? createdAt, @JsonKey(name: 'po_items')  List<PoItemDto> items, @JsonKey(name: 'suppliers')  Map<String, dynamic>? suppliersMap)  $default,) {final _that = this;
 switch (_that) {
 case _PurchaseOrderDto():
-return $default(_that.id,_that.poNumber,_that.supplierId,_that.status,_that.blindReceiving,_that.createdAt,_that.items);case _:
+return $default(_that.id,_that.poNumber,_that.supplierId,_that.status,_that.blindReceiving,_that.createdAt,_that.items,_that.suppliersMap);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -200,10 +201,10 @@ return $default(_that.id,_that.poNumber,_that.supplierId,_that.status,_that.blin
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id, @JsonKey(name: 'po_number')  String poNumber, @JsonKey(name: 'supplier_id')  String? supplierId,  String status, @JsonKey(name: 'blind_receiving')  bool blindReceiving, @JsonKey(name: 'created_at')  DateTime? createdAt, @JsonKey(name: 'po_items')  List<PoItemDto> items)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id, @JsonKey(name: 'po_number')  String poNumber, @JsonKey(name: 'supplier_id')  String? supplierId,  String status, @JsonKey(name: 'blind_receiving')  bool blindReceiving, @JsonKey(name: 'created_at')  DateTime? createdAt, @JsonKey(name: 'po_items')  List<PoItemDto> items, @JsonKey(name: 'suppliers')  Map<String, dynamic>? suppliersMap)?  $default,) {final _that = this;
 switch (_that) {
 case _PurchaseOrderDto() when $default != null:
-return $default(_that.id,_that.poNumber,_that.supplierId,_that.status,_that.blindReceiving,_that.createdAt,_that.items);case _:
+return $default(_that.id,_that.poNumber,_that.supplierId,_that.status,_that.blindReceiving,_that.createdAt,_that.items,_that.suppliersMap);case _:
   return null;
 
 }
@@ -215,7 +216,7 @@ return $default(_that.id,_that.poNumber,_that.supplierId,_that.status,_that.blin
 @JsonSerializable()
 
 class _PurchaseOrderDto implements PurchaseOrderDto {
-  const _PurchaseOrderDto({required this.id, @JsonKey(name: 'po_number') required this.poNumber, @JsonKey(name: 'supplier_id') this.supplierId, this.status = 'pending', @JsonKey(name: 'blind_receiving') this.blindReceiving = false, @JsonKey(name: 'created_at') this.createdAt, @JsonKey(name: 'po_items') final  List<PoItemDto> items = const []}): _items = items;
+  const _PurchaseOrderDto({required this.id, @JsonKey(name: 'po_number') required this.poNumber, @JsonKey(name: 'supplier_id') this.supplierId, this.status = 'pending', @JsonKey(name: 'blind_receiving') this.blindReceiving = false, @JsonKey(name: 'created_at') this.createdAt, @JsonKey(name: 'po_items') final  List<PoItemDto> items = const [], @JsonKey(name: 'suppliers') final  Map<String, dynamic>? suppliersMap}): _items = items,_suppliersMap = suppliersMap;
   factory _PurchaseOrderDto.fromJson(Map<String, dynamic> json) => _$PurchaseOrderDtoFromJson(json);
 
 @override final  String id;
@@ -229,6 +230,15 @@ class _PurchaseOrderDto implements PurchaseOrderDto {
   if (_items is EqualUnmodifiableListView) return _items;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_items);
+}
+
+ final  Map<String, dynamic>? _suppliersMap;
+@override@JsonKey(name: 'suppliers') Map<String, dynamic>? get suppliersMap {
+  final value = _suppliersMap;
+  if (value == null) return null;
+  if (_suppliersMap is EqualUnmodifiableMapView) return _suppliersMap;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableMapView(value);
 }
 
 
@@ -245,16 +255,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PurchaseOrderDto&&(identical(other.id, id) || other.id == id)&&(identical(other.poNumber, poNumber) || other.poNumber == poNumber)&&(identical(other.supplierId, supplierId) || other.supplierId == supplierId)&&(identical(other.status, status) || other.status == status)&&(identical(other.blindReceiving, blindReceiving) || other.blindReceiving == blindReceiving)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&const DeepCollectionEquality().equals(other._items, _items));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PurchaseOrderDto&&(identical(other.id, id) || other.id == id)&&(identical(other.poNumber, poNumber) || other.poNumber == poNumber)&&(identical(other.supplierId, supplierId) || other.supplierId == supplierId)&&(identical(other.status, status) || other.status == status)&&(identical(other.blindReceiving, blindReceiving) || other.blindReceiving == blindReceiving)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&const DeepCollectionEquality().equals(other._items, _items)&&const DeepCollectionEquality().equals(other._suppliersMap, _suppliersMap));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,poNumber,supplierId,status,blindReceiving,createdAt,const DeepCollectionEquality().hash(_items));
+int get hashCode => Object.hash(runtimeType,id,poNumber,supplierId,status,blindReceiving,createdAt,const DeepCollectionEquality().hash(_items),const DeepCollectionEquality().hash(_suppliersMap));
 
 @override
 String toString() {
-  return 'PurchaseOrderDto(id: $id, poNumber: $poNumber, supplierId: $supplierId, status: $status, blindReceiving: $blindReceiving, createdAt: $createdAt, items: $items)';
+  return 'PurchaseOrderDto(id: $id, poNumber: $poNumber, supplierId: $supplierId, status: $status, blindReceiving: $blindReceiving, createdAt: $createdAt, items: $items, suppliersMap: $suppliersMap)';
 }
 
 
@@ -265,7 +275,7 @@ abstract mixin class _$PurchaseOrderDtoCopyWith<$Res> implements $PurchaseOrderD
   factory _$PurchaseOrderDtoCopyWith(_PurchaseOrderDto value, $Res Function(_PurchaseOrderDto) _then) = __$PurchaseOrderDtoCopyWithImpl;
 @override @useResult
 $Res call({
- String id,@JsonKey(name: 'po_number') String poNumber,@JsonKey(name: 'supplier_id') String? supplierId, String status,@JsonKey(name: 'blind_receiving') bool blindReceiving,@JsonKey(name: 'created_at') DateTime? createdAt,@JsonKey(name: 'po_items') List<PoItemDto> items
+ String id,@JsonKey(name: 'po_number') String poNumber,@JsonKey(name: 'supplier_id') String? supplierId, String status,@JsonKey(name: 'blind_receiving') bool blindReceiving,@JsonKey(name: 'created_at') DateTime? createdAt,@JsonKey(name: 'po_items') List<PoItemDto> items,@JsonKey(name: 'suppliers') Map<String, dynamic>? suppliersMap
 });
 
 
@@ -282,7 +292,7 @@ class __$PurchaseOrderDtoCopyWithImpl<$Res>
 
 /// Create a copy of PurchaseOrderDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? poNumber = null,Object? supplierId = freezed,Object? status = null,Object? blindReceiving = null,Object? createdAt = freezed,Object? items = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? poNumber = null,Object? supplierId = freezed,Object? status = null,Object? blindReceiving = null,Object? createdAt = freezed,Object? items = null,Object? suppliersMap = freezed,}) {
   return _then(_PurchaseOrderDto(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,poNumber: null == poNumber ? _self.poNumber : poNumber // ignore: cast_nullable_to_non_nullable
@@ -291,7 +301,8 @@ as String?,status: null == status ? _self.status : status // ignore: cast_nullab
 as String,blindReceiving: null == blindReceiving ? _self.blindReceiving : blindReceiving // ignore: cast_nullable_to_non_nullable
 as bool,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,items: null == items ? _self._items : items // ignore: cast_nullable_to_non_nullable
-as List<PoItemDto>,
+as List<PoItemDto>,suppliersMap: freezed == suppliersMap ? _self._suppliersMap : suppliersMap // ignore: cast_nullable_to_non_nullable
+as Map<String, dynamic>?,
   ));
 }
 
