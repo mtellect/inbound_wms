@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:inbound_ms/core/resources/app_colors.dart';
 import 'package:inbound_ms/features/purchase_orders/models/po_item.dart';
 import 'package:inbound_ms/features/purchase_orders/models/purchase_order.dart';
+import 'package:inbound_ms/core/utils/toast_utils.dart';
+import 'package:inbound_ms/core/utils/dialog_utils.dart';
+import 'package:inbound_ms/features/receiving/widgets/manual_entry_dialog.dart';
+import 'package:inbound_ms/core/widgets/confirmation_dialog.dart';
 
 class SessionManifestTable extends StatelessWidget {
   final PurchaseOrder? selectedPo;
@@ -56,7 +60,18 @@ class SessionManifestTable extends StatelessWidget {
                         ),
                         const SizedBox(width: 8),
                         ElevatedButton.icon(
-                          onPressed: selectedPo != null ? onComplete : null,
+                          onPressed: selectedPo != null
+                              ? () {
+                                  ConfirmationDialog.show(
+                                    context,
+                                    title: 'Complete Receiving',
+                                    message: 'Are you sure you want to complete this receiving session? Once completed, the session cannot be resumed.',
+                                    confirmLabel: 'Complete',
+                                    isDestructive: false,
+                                    onConfirm: onComplete!,
+                                  );
+                                }
+                              : null,
                           icon: const Icon(Icons.check_circle),
                           label: const Text('Complete Receiving'),
                           style: ElevatedButton.styleFrom(
@@ -172,10 +187,31 @@ class SessionManifestTable extends StatelessWidget {
                                   IconButton(
                                     icon: const Icon(Icons.add_circle_outline,
                                         color: AppColors.textSecondaryLight),
+                                    tooltip: 'Increment',
+                                    onPressed: scanned < item.expectedQuantity
+                                        ? () {
+                                            onUpdateQuantity?.call(
+                                                item.product!.sku.toUpperCase(), scanned + 1);
+                                          }
+                                        : () {
+                                            ToastUtils.showError(context, message: 'Cannot exceed expected quantity');
+                                          },
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.edit,
+                                        color: AppColors.textSecondaryLight, size: 20),
                                     tooltip: 'Manual entry',
                                     onPressed: () {
-                                      onUpdateQuantity?.call(
-                                          item.product!.sku.toUpperCase(), scanned + 1);
+                                      DialogUtils.showDialog(
+                                        context: context,
+                                        builder: (context) => ManualEntryDialog(
+                                          item: item,
+                                          currentScanned: scanned,
+                                          onUpdateQuantity: (sku, newQuantity) {
+                                            onUpdateQuantity?.call(sku, newQuantity);
+                                          },
+                                        ),
+                                      );
                                     },
                                   ),
                                 ],

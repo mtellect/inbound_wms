@@ -125,10 +125,19 @@ class _ScanPoModalState extends State<ScanPoModal> {
   void _processItemScan(String barcode) {
     setState(() {
       if (_scannedQuantities.containsKey(barcode)) {
-        _scannedQuantities[barcode] = (_scannedQuantities[barcode] ?? 0) + 1;
-        _triggerAutoSave();
-        debugPrint("Success: Incremented quantity for $barcode");
-        ToastUtils.showSuccess(context, message: 'Scanned 1x $barcode');
+        final expected = _currentManifest
+            .firstWhere((item) => item.product?.sku.toUpperCase() == barcode)
+            .expectedQuantity;
+        final scanned = _scannedQuantities[barcode] ?? 0;
+        
+        if (scanned < expected) {
+          _scannedQuantities[barcode] = scanned + 1;
+          _triggerAutoSave();
+          debugPrint("Success: Incremented quantity for $barcode");
+          ToastUtils.showSuccess(context, message: 'Scanned 1x $barcode');
+        } else {
+          ToastUtils.showError(context, message: 'Over scan prevented: $barcode already at max ($expected)');
+        }
       } else {
         _unexpectedScans++;
         _triggerAutoSave();

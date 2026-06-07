@@ -2,40 +2,47 @@ import 'package:flutter/material.dart';
 import 'package:inbound_ms/core/resources/app_colors.dart';
 import 'package:inbound_ms/core/widgets/app_button.dart';
 
-class DeleteConfirmationDialog extends StatelessWidget {
+class ConfirmationDialog extends StatelessWidget {
   final String title;
   final String message;
-  final String deleteLabel;
-  final VoidCallback onDelete;
+  final String confirmLabel;
+  final VoidCallback onConfirm;
+  final bool isDestructive;
 
-  const DeleteConfirmationDialog({
+  const ConfirmationDialog({
     super.key,
     required this.title,
     required this.message,
-    this.deleteLabel = 'Delete',
-    required this.onDelete,
+    this.confirmLabel = 'Confirm',
+    required this.onConfirm,
+    this.isDestructive = false,
   });
 
   static Future<void> show(
     BuildContext context, {
     required String title,
     required String message,
-    String deleteLabel = 'Delete',
-    required VoidCallback onDelete,
+    String confirmLabel = 'Confirm',
+    required VoidCallback onConfirm,
+    bool isDestructive = false,
   }) {
     return showDialog(
       context: context,
-      builder: (context) => DeleteConfirmationDialog(
+      builder: (context) => ConfirmationDialog(
         title: title,
         message: message,
-        deleteLabel: deleteLabel,
-        onDelete: onDelete,
+        confirmLabel: confirmLabel,
+        onConfirm: onConfirm,
+        isDestructive: isDestructive,
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final color = isDestructive ? Colors.redAccent : AppColors.primary;
+    final iconData = isDestructive ? Icons.delete_outline : Icons.help_outline;
+
     return Dialog(
       backgroundColor: Colors.transparent,
       child: Container(
@@ -53,10 +60,10 @@ class DeleteConfirmationDialog extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.redAccent.withValues(alpha: 0.1),
+                  color: color.withValues(alpha: 0.1),
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(Icons.delete_outline, color: Colors.redAccent, size: 32),
+                child: Icon(iconData, color: color, size: 32),
               ),
               const SizedBox(height: 24),
               Text(
@@ -83,11 +90,11 @@ class DeleteConfirmationDialog extends StatelessWidget {
                   const SizedBox(width: 16),
                   Expanded(
                     child: AppButton(
-                      label: deleteLabel,
-                      backgroundColor: Colors.redAccent,
+                      label: confirmLabel,
+                      backgroundColor: color,
                       onPressed: () {
                         Navigator.pop(context);
-                        onDelete();
+                        onConfirm();
                       },
                     ),
                   ),

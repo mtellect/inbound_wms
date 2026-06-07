@@ -8,7 +8,7 @@ import 'package:inbound_ms/features/purchase_orders/widgets/purchase_order_detai
 import 'package:inbound_ms/core/utils/dialog_utils.dart';
 import 'package:inbound_ms/features/dashboard/providers/dashboard_provider.dart';
 import 'package:inbound_ms/core/utils/toast_utils.dart';
-import 'package:inbound_ms/core/widgets/delete_confirmation_dialog.dart';
+import 'package:inbound_ms/core/widgets/confirmation_dialog.dart';
 
 @RoutePage()
 class PurchaseOrdersPage extends StatefulWidget {
@@ -83,12 +83,14 @@ class _PurchaseOrdersPageState extends State<PurchaseOrdersPage> {
                     onAdd: () {},
                     onEdit: (record) {},
                     onDelete: (record) {
-                      DeleteConfirmationDialog.show(
+                      ConfirmationDialog.show(
                         context,
                         title: 'Delete Purchase Order',
                         message:
                             'Are you sure you want to delete this purchase order? This action cannot be undone and will delete all associated line items.',
-                        onDelete: () {
+                        confirmLabel: 'Delete',
+                        isDestructive: true,
+                        onConfirm: () {
                           context.read<PurchaseOrderProvider>().deleteOrder(
                                 id: record.id,
                                 onSuccess: () {

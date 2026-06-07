@@ -15,10 +15,10 @@ class DashboardShellPage extends StatelessWidget {
         PurchaseOrdersRoute(),
         ShipmentsRoute(),
         DiscrepancyTriageRoute(),
-        ProductsRoute(),
-        SuppliersRoute(),
         UsersRoute(),
         SessionsRoute(),
+        ProductsRoute(),
+        SuppliersRoute(),
       ],
       builder: (context, child) {
         final tabsRouter = AutoTabsRouter.of(context);
