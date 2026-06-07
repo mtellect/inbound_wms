@@ -1,11 +1,11 @@
 {
-    "name": "inbound_ms",
-    "short_name": "inbound_ms",
+    "name": "Inbound MS",
+    "short_name": "Inbound MS",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Inbound MS: A robust warehouse receiving and purchase order management system.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
