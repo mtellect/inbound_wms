@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:inbound_ms/core/widgets/app_button.dart';
 import 'package:inbound_ms/features/purchase_orders/providers/purchase_order_provider.dart';
 
 class PurchaseOrderFiltersModal extends StatefulWidget {
@@ -83,15 +84,12 @@ class _PurchaseOrderFiltersModalState extends State<PurchaseOrderFiltersModal> {
               ),
             ),
             const SizedBox(height: 32),
-            ElevatedButton(
+            AppButton(
+              label: 'Apply Filters',
               onPressed: () {
                 context.read<PurchaseOrderProvider>().setStatusFilter(_selectedStatus);
                 Navigator.of(context).pop();
               },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-              ),
-              child: const Text('Apply Filters'),
             ),
           ],
         ),
