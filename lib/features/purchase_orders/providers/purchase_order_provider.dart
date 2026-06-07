@@ -45,6 +45,22 @@ class PurchaseOrderProvider extends ChangeNotifier {
     }
   }
 
+  Future<PurchaseOrder?> getPurchaseOrderByNumber(String poNumber) async {
+    try {
+      return _activeOrders.firstWhere((po) => po.poNumber == poNumber);
+    } catch (_) {
+      _isLoading = true;
+      notifyListeners();
+      try {
+        final po = await _purchaseOrderApiService.fetchPurchaseOrderByNumber(poNumber);
+        return po;
+      } finally {
+        _isLoading = false;
+        notifyListeners();
+      }
+    }
+  }
+
   Future<void> createOrder({
     required String poNumber,
     String? supplierId,

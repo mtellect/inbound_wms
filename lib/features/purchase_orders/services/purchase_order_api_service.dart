@@ -44,6 +44,23 @@ class PurchaseOrderApiService implements IPurchaseOrderApiService {
   }
 
   @override
+  Future<PurchaseOrder?> fetchPurchaseOrderByNumber(String poNumber) async {
+    try {
+      final response = await _supabaseClient
+          .from('purchase_orders')
+          .select('*, suppliers(name), po_items(*, products(*))')
+          .eq('po_number', poNumber)
+          .maybeSingle();
+      if (response == null) return null;
+          
+      final dto = PurchaseOrderDto.fromJson(response);
+      return PurchaseOrderMapper.fromDto(dto);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  @override
   Future<void> createPurchaseOrder(PurchaseOrder order) async {
     final dto = PurchaseOrderMapper.toDto(order);
     final json = dto.toJson();

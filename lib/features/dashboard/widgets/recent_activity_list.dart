@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:inbound_ms/core/utils/toast_utils.dart';
 import 'package:inbound_ms/features/dashboard/providers/dashboard_provider.dart';
 import 'package:inbound_ms/features/dashboard/widgets/section_card.dart';
-import 'package:inbound_ms/features/purchase_orders/models/purchase_order.dart';
 import 'package:inbound_ms/features/purchase_orders/providers/purchase_order_provider.dart';
 import 'package:inbound_ms/features/purchase_orders/widgets/purchase_order_details_modal.dart';
 import 'package:provider/provider.dart';
@@ -27,19 +26,17 @@ class RecentActivityList extends StatelessWidget {
                     color: Colors.transparent,
                     child: InkWell(
                       borderRadius: BorderRadius.circular(12),
-                      onTap: () {
+                      onTap: () async {
                         if (activity.poNumber != null) {
                           final poProvider = context.read<PurchaseOrderProvider>();
-                          final matchedPo = poProvider.activeOrders.cast<PurchaseOrder?>().firstWhere(
-                            (po) => po?.poNumber == activity.poNumber,
-                            orElse: () => null,
-                          );
-                          if (matchedPo != null) {
+                          final matchedPo = await poProvider.getPurchaseOrderByNumber(activity.poNumber!);
+                          
+                          if (context.mounted && matchedPo != null) {
                             showDialog(
                               context: context,
                               builder: (context) => PurchaseOrderDetailsModal(po: matchedPo),
                             );
-                          } else {
+                          } else if (context.mounted) {
                             ToastUtils.showInfo(context, message: 'PO details are not currently loaded.');
                           }
                         }
