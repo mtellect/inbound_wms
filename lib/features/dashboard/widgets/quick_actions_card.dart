@@ -7,7 +7,6 @@ import 'package:inbound_ms/features/purchase_orders/widgets/import_orders_modal.
 import 'package:inbound_ms/features/receiving/widgets/scan_po_modal.dart';
 import 'package:inbound_ms/core/utils/dialog_utils.dart';
 
-
 class QuickActionsCard extends StatelessWidget {
   const QuickActionsCard({super.key});
 
@@ -43,16 +42,16 @@ class QuickActionsCard extends StatelessWidget {
               ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800, color: Colors.white),
             ),
             const SizedBox(height: 24),
-            if (isManager) ...[
-              _buildActionTile(context, 'Create PO', Icons.add, () {
-                DialogUtils.showDialog(context: context, builder: (_) => const CreatePoModal());
-              }),
-              const SizedBox(height: 12),
-              _buildActionTile(context, 'Import CSV/Excel', Icons.file_upload, () {
-                DialogUtils.showDialog(context: context, builder: (_) => const ImportOrdersModal());
-              }),
-              const SizedBox(height: 12),
-            ],
+            // if (isManager) ...[
+            // _buildActionTile(context, 'Create PO', Icons.add, () {
+            //   DialogUtils.showDialog(context: context, builder: (_) => const CreatePoModal());
+            // }),
+            // const SizedBox(height: 12),
+            _buildActionTile(context, 'Import CSV/Excel', Icons.file_upload, () {
+              DialogUtils.showDialog(context: context, builder: (_) => const ImportOrdersModal());
+            }),
+            const SizedBox(height: 12),
+            // ],
             _buildActionTile(context, 'Scan Label', Icons.document_scanner, () {
               DialogUtils.showDialog(
                 context: context,
