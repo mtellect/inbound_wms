@@ -59,6 +59,7 @@ dependencies:
   path_drawing: ^1.0.1
   shimmer: ^3.0.0
   image: ^4.3.0
+  timeago: ^3.7.1
 
 dev_dependencies:
   flutter_test:

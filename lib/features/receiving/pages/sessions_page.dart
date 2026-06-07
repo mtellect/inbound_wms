@@ -5,6 +5,7 @@ import 'package:inbound_ms/core/widgets/table/table_resource.dart';
 import 'package:inbound_ms/features/receiving/providers/session_provider.dart';
 import 'package:inbound_ms/features/receiving/widgets/session_details_modal.dart';
 import 'package:provider/provider.dart';
+import 'package:inbound_ms/features/receiving/utils/time_utils.dart';
 
 @RoutePage()
 class SessionsPage extends StatefulWidget {
@@ -31,6 +32,7 @@ class _SessionsPageState extends State<SessionsPage> {
       subtitle: 'View active and historical receiving sessions.',
       columns: const [
         AdminColumn(key: 'session', label: 'SESSION ID', type: AdminColumnType.text, flex: 2),
+        AdminColumn(key: 'started', label: 'STARTED', type: AdminColumnType.text, flex: 2),
         AdminColumn(key: 'shipment', label: 'SHIPMENT', type: AdminColumnType.imageText, flex: 3),
         AdminColumn(key: 'operator', label: 'OPERATOR', type: AdminColumnType.text, flex: 2),
         AdminColumn(key: 'progress', label: 'PROGRESS', type: AdminColumnType.text, flex: 2),
@@ -49,6 +51,7 @@ class _SessionsPageState extends State<SessionsPage> {
               uid: s.id,
               cells: {
                 'session': TableCellData(value: s.sessionNumber),
+                'started': TableCellData(value: formatSessionTime(s.startTime)),
                 'shipment': TableCellData(value: s.shipmentId ?? 'N/A', subValue: s.supplierName),
                 'operator': TableCellData(value: '@${s.operatorName}'),
                 'progress': TableCellData(value: '${s.totalScanned} / ${s.totalExpected}'),

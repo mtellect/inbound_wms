@@ -19,6 +19,23 @@ Inbound MS is a robust, cross-platform Flutter application designed to streamlin
 - **Blind Receiving:** Support for workflows where expected quantities are hidden from floor workers.
 - **Discrepancy Engine:** Automatically highlight overages, shortages, and unexpected items.
 
+## 📸 Screenshots
+
+<details>
+<summary>Click to view Application Screenshots</summary>
+
+| Dashboard & Overview | Purchase Orders |
+| :---: | :---: |
+| <img src="screenshots/1.png" width="400" /> | <img src="screenshots/2.png" width="400" /> |
+| <img src="screenshots/3.png" width="400" /> | <img src="screenshots/4.png" width="400" /> |
+
+| Receiving & Scanning | Sessions |
+| :---: | :---: |
+| <img src="screenshots/5.png" width="400" /> | <img src="screenshots/6.png" width="400" /> |
+| <img src="screenshots/7.png" width="400" /> | <img src="screenshots/8.png" width="400" /> |
+
+</details>
+
 ## 🛠️ Technology Stack
 
 - **Framework:** [Flutter](https://flutter.dev/) (Multi-platform)
