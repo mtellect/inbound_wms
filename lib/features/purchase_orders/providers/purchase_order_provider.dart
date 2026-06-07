@@ -23,12 +23,20 @@ class PurchaseOrderProvider extends ChangeNotifier {
   List<PurchaseOrder> _activeOrders = [];
   List<PurchaseOrder> get activeOrders => _activeOrders;
 
+  String? _statusFilter;
+  String? get statusFilter => _statusFilter;
+
+  void setStatusFilter(String? status) {
+    _statusFilter = status;
+    loadActiveOrders();
+  }
+
   Future<void> loadActiveOrders() async {
     _isLoading = true;
     notifyListeners();
 
     try {
-      _activeOrders = await _purchaseOrderApiService.fetchActivePurchaseOrders();
+      _activeOrders = await _purchaseOrderApiService.fetchActivePurchaseOrders(statusFilter: _statusFilter);
     } catch (e) {
       debugPrint("Error loading orders: $e");
     } finally {

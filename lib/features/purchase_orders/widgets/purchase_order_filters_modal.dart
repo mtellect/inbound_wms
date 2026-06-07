@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:inbound_ms/features/purchase_orders/providers/purchase_order_provider.dart';
 
 class PurchaseOrderFiltersModal extends StatefulWidget {
   const PurchaseOrderFiltersModal({super.key});
@@ -9,6 +11,12 @@ class PurchaseOrderFiltersModal extends StatefulWidget {
 
 class _PurchaseOrderFiltersModalState extends State<PurchaseOrderFiltersModal> {
   String? _selectedStatus;
+  
+  @override
+  void initState() {
+    super.initState();
+    _selectedStatus = context.read<PurchaseOrderProvider>().statusFilter;
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -77,7 +85,7 @@ class _PurchaseOrderFiltersModalState extends State<PurchaseOrderFiltersModal> {
             const SizedBox(height: 32),
             ElevatedButton(
               onPressed: () {
-                // TODO: Pass filters to provider
+                context.read<PurchaseOrderProvider>().setStatusFilter(_selectedStatus);
                 Navigator.of(context).pop();
               },
               style: ElevatedButton.styleFrom(

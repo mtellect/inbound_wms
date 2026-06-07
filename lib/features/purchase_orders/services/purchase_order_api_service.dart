@@ -12,11 +12,18 @@ class PurchaseOrderApiService implements IPurchaseOrderApiService {
   PurchaseOrderApiService({required this._supabaseClient});
 
   @override
-  Future<List<PurchaseOrder>> fetchActivePurchaseOrders() async {
-    final response = await _supabaseClient
+  Future<List<PurchaseOrder>> fetchActivePurchaseOrders({String? statusFilter}) async {
+    var query = _supabaseClient
         .from('purchase_orders')
-        .select('*, suppliers(name), po_items(*, products(*))')
-        .neq('status', 'completed');
+        .select('*, suppliers(name), po_items(*, products(*))');
+        
+    if (statusFilter != null) {
+      query = query.eq('status', statusFilter);
+    } else {
+      query = query.neq('status', 'completed');
+    }
+    
+    final response = await query;
     
     return (response as List).map((e) {
       final dto = PurchaseOrderDto.fromJson(e);
