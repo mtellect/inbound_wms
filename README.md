@@ -1,6 +1,6 @@
-# Inbound MS (Inbound Management System)
+# Inbound WMS (Inbound Warehouse Management System)
 
-Inbound MS is a robust, cross-platform Flutter application designed to streamline and modernize warehouse receiving operations. By digitizing Purchase Orders, automating inbound scans, and tracking discrepancies, it bridges the gap between procurement and warehousing.
+Inbound WMS is a robust, cross-platform Flutter application designed to streamline and modernize warehouse receiving operations. By digitizing Purchase Orders, automating inbound scans, and tracking discrepancies, it bridges the gap between procurement and warehousing.
 
 ## 📸 Screenshots
 
