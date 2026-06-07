@@ -21,14 +21,14 @@ class AppRouter extends RootStackRouter {
       path: AppRoutePathEnum.dashboard.path,
       guards: [AuthGuard(authProvider: authProvider)],
       children: [
-        AutoRoute(page: DashboardOverviewRoute.page, initial: true),
-        AutoRoute(page: PurchaseOrdersRoute.page),
-        AutoRoute(page: ShipmentsRoute.page),
-        AutoRoute(page: DiscrepancyTriageRoute.page),
-        AutoRoute(page: ProductsRoute.page),
-        AutoRoute(page: SuppliersRoute.page),
-        AutoRoute(page: UsersRoute.page),
-        AutoRoute(page: SessionsRoute.page),
+        AutoRoute(page: DashboardOverviewRoute.page, initial: true, path: AppRoutePathEnum.overview.path),
+        AutoRoute(page: PurchaseOrdersRoute.page, path: AppRoutePathEnum.purchaseOrders.path),
+        AutoRoute(page: ShipmentsRoute.page, path: AppRoutePathEnum.shipments.path),
+        AutoRoute(page: DiscrepancyTriageRoute.page, path: AppRoutePathEnum.triage.path),
+        AutoRoute(page: UsersRoute.page, path: AppRoutePathEnum.users.path),
+        AutoRoute(page: SessionsRoute.page, path: AppRoutePathEnum.sessions.path),
+        AutoRoute(page: ProductsRoute.page, path: AppRoutePathEnum.products.path),
+        AutoRoute(page: SuppliersRoute.page, path: AppRoutePathEnum.suppliers.path),
       ]
     ),
   ];
