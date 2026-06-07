@@ -2,6 +2,18 @@
 
 Inbound MS is a robust, cross-platform Flutter application designed to streamline and modernize warehouse receiving operations. By digitizing Purchase Orders, automating inbound scans, and tracking discrepancies, it bridges the gap between procurement and warehousing.
 
+## 📸 Screenshots
+
+| Dashboard & Overview | Purchase Orders |
+| :---: | :---: |
+| <img src="screenshots/1.png" width="400" /> | <img src="screenshots/2.png" width="400" /> |
+| <img src="screenshots/3.png" width="400" /> | <img src="screenshots/4.png" width="400" /> |
+
+| Receiving & Scanning | Sessions |
+| :---: | :---: |
+| <img src="screenshots/5.png" width="400" /> | <img src="screenshots/6.png" width="400" /> |
+| <img src="screenshots/7.png" width="400" /> | <img src="screenshots/8.png" width="400" /> |
+
 ## 📦 Features
 
 ### Authentication & Role Management
@@ -18,23 +30,6 @@ Inbound MS is a robust, cross-platform Flutter application designed to streamlin
 - **Barcode Scanning Support:** Quickly increment received counts by scanning product barcodes or SKUs.
 - **Blind Receiving:** Support for workflows where expected quantities are hidden from floor workers.
 - **Discrepancy Engine:** Automatically highlight overages, shortages, and unexpected items.
-
-## 📸 Screenshots
-
-<details>
-<summary>Click to view Application Screenshots</summary>
-
-| Dashboard & Overview | Purchase Orders |
-| :---: | :---: |
-| <img src="screenshots/1.png" width="400" /> | <img src="screenshots/2.png" width="400" /> |
-| <img src="screenshots/3.png" width="400" /> | <img src="screenshots/4.png" width="400" /> |
-
-| Receiving & Scanning | Sessions |
-| :---: | :---: |
-| <img src="screenshots/5.png" width="400" /> | <img src="screenshots/6.png" width="400" /> |
-| <img src="screenshots/7.png" width="400" /> | <img src="screenshots/8.png" width="400" /> |
-
-</details>
 
 ## 🛠️ Technology Stack
 
