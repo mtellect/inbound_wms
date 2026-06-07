@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:inbound_ms/features/auth/providers/auth_provider.dart';
 import 'package:inbound_ms/core/navigation/app_router.dart';
 import 'package:inbound_ms/core/extensions/base_extension.dart';
+import 'package:inbound_ms/features/dashboard/widgets/dashboard_logo.dart';
 
 class DashboardSideNavigation extends StatelessWidget {
   final int activeIndex;
@@ -28,32 +29,9 @@ class DashboardSideNavigation extends StatelessWidget {
       child: Column(
         children: [
           // Logo Area
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 32.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Icon(Icons.warehouse, color: Theme.of(context).primaryColor, size: isDesktop ? 28 : 24),
-                ),
-                if (isDesktop) ...[
-                  const SizedBox(width: 12),
-                  const Text(
-                    'Inbound MS',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: -0.5,
-                    ),
-                  ),
-                ],
-              ],
-            ),
+          DashboardLogo(
+            isDesktop: isDesktop,
+            onTap: () => onDestinationSelected(0),
           ),
           
           // Navigation Items
