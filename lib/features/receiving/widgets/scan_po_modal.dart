@@ -15,7 +15,9 @@ import 'package:inbound_ms/features/receiving/widgets/scan_metrics_row.dart';
 import 'package:inbound_ms/features/receiving/widgets/session_manifest_table.dart';
 
 class ScanPoModal extends StatefulWidget {
-  const ScanPoModal({super.key});
+  final PurchaseOrder? initialPo;
+
+  const ScanPoModal({super.key, this.initialPo});
 
   @override
   State<ScanPoModal> createState() => _ScanPoModalState();
@@ -34,8 +36,11 @@ class _ScanPoModalState extends State<ScanPoModal> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<PurchaseOrderProvider>().loadActiveOrders();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await context.read<PurchaseOrderProvider>().loadActiveOrders();
+      if (widget.initialPo != null && mounted) {
+        _onPoSelected(widget.initialPo!.id);
+      }
     });
   }
 

@@ -3,6 +3,7 @@ import 'package:inbound_ms/core/resources/app_colors.dart';
 import 'package:inbound_ms/features/purchase_orders/models/purchase_order.dart';
 import 'package:inbound_ms/features/receiving/widgets/meta_field.dart';
 import 'package:inbound_ms/features/receiving/widgets/session_manifest_table.dart';
+import 'package:inbound_ms/features/receiving/widgets/scan_po_modal.dart';
 import 'package:provider/provider.dart';
 import 'package:inbound_ms/features/purchase_orders/providers/purchase_order_provider.dart';
 import 'package:inbound_ms/core/utils/toast_utils.dart';
@@ -85,6 +86,23 @@ class PurchaseOrderDetailsModal extends StatelessWidget {
                   ),
                   Row(
                     children: [
+                      ElevatedButton.icon(
+                        icon: const Icon(Icons.qr_code_scanner, size: 16),
+                        label: const Text('Receive PO'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primary,
+                          foregroundColor: AppColors.textPrimaryDark,
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop(); // close details modal
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (context) => ScanPoModal(initialPo: po),
+                          );
+                        },
+                      ),
+                      const SizedBox(width: 16),
                       OutlinedButton.icon(
                         icon: const Icon(Icons.download, size: 16),
                         label: const Text('Export CSV'),
