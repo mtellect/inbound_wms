@@ -10,6 +10,8 @@ import 'package:inbound_ms/core/utils/dialog_utils.dart';
 import 'package:inbound_ms/features/dashboard/providers/dashboard_provider.dart';
 import 'package:inbound_ms/core/utils/toast_utils.dart';
 import 'package:inbound_ms/core/widgets/confirmation_dialog.dart';
+import 'package:inbound_ms/features/purchase_orders/widgets/import_orders_modal.dart';
+import 'package:inbound_ms/features/purchase_orders/widgets/purchase_order_filters_modal.dart';
 
 @RoutePage()
 class PurchaseOrdersPage extends StatefulWidget {
@@ -42,7 +44,9 @@ class _PurchaseOrdersPageState extends State<PurchaseOrdersPage> {
       ],
       headerActions: [
         OutlinedButton.icon(
-          onPressed: () {},
+          onPressed: () {
+            DialogUtils.showDialog(context: context, builder: (_) => const PurchaseOrderFiltersModal());
+          },
           icon: const Icon(Icons.filter_list),
           label: const Text('Filters'),
         ),
@@ -81,7 +85,9 @@ class _PurchaseOrdersPageState extends State<PurchaseOrdersPage> {
                     isLoading: provider.isLoading,
                     loadingRecordIds: provider.loadingOrderIds,
                     totalRecords: records.length,
-                    onAdd: () {},
+                    onAdd: () {
+                      DialogUtils.showDialog(context: context, builder: (_) => const ImportOrdersModal());
+                    },
                     onEdit: (record) {},
                     onDelete: (record) {
                       ConfirmationDialog.show(
