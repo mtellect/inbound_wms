@@ -13,11 +13,7 @@ class ShipmentsPage extends StatefulWidget {
 }
 
 class _ShipmentsPageState extends State<ShipmentsPage> {
-  final List<Shipment> _shipments = [
-    Shipment(id: '1', trackingNumber: 'SHP-998811', poId: 'PO-2024-001', carrierName: 'FedEx', status: 'in_transit', arrivalTime: DateTime.now().add(const Duration(days: 1))),
-    Shipment(id: '2', trackingNumber: 'SHP-998822', poId: 'PO-2024-002', carrierName: 'UPS', status: 'arrived', arrivalTime: DateTime.now()),
-    Shipment(id: '3', trackingNumber: 'SHP-998833', poId: 'PO-2024-003', carrierName: 'DHL', status: 'receiving', arrivalTime: DateTime.now().subtract(const Duration(hours: 2))),
-  ];
+  final List<Shipment> _shipments = [];
 
   late final AdminResource _resource;
 

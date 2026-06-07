@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:recase/recase.dart';
 import 'package:flutter/material.dart';
 import 'package:inbound_ms/core/widgets/table/app_table_view.dart';
 import 'package:inbound_ms/core/widgets/table/table_resource.dart';
@@ -63,7 +64,7 @@ class _PurchaseOrdersPageState extends State<PurchaseOrdersPage> {
                 'poNumber': TableCellData(value: o.poNumber),
                 'supplier': TableCellData(value: o.supplierId ?? '-'),
                 'date': TableCellData(value: o.createdAt?.toIso8601String().split('T')[0] ?? '-'),
-                'status': TableCellData(value: o.status, type: AdminColumnType.pill),
+                'status': TableCellData(value: o.status.titleCase, type: AdminColumnType.pill),
               },
             );
           }).toList();

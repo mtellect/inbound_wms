@@ -13,10 +13,7 @@ class DiscrepancyTriagePage extends StatefulWidget {
 }
 
 class _DiscrepancyTriagePageState extends State<DiscrepancyTriagePage> {
-  final List<Discrepancy> _discrepancies = [
-    Discrepancy(id: '1', poId: 'PO-2024-001', productId: 'SKU-001', expectedQty: 100, actualQty: 95, reason: 'Shortage', status: 'open', createdAt: DateTime.now().subtract(const Duration(hours: 2))),
-    Discrepancy(id: '2', poId: 'PO-2024-002', productId: 'SKU-002', expectedQty: 50, actualQty: 52, reason: 'Overage', status: 'investigating', createdAt: DateTime.now().subtract(const Duration(days: 1))),
-  ];
+  final List<Discrepancy> _discrepancies = [];
 
   late final AdminResource _resource;
 

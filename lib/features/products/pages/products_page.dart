@@ -13,18 +13,7 @@ class ProductsPage extends StatefulWidget {
 }
 
 class _ProductsPageState extends State<ProductsPage> {
-  final List<Product> _products = [
-    const Product(id: '1', sku: 'SKU-001', name: 'Premium Wireless Headphones', category: 'Electronics', requiresLot: false, requiresSerial: true),
-    const Product(id: '2', sku: 'SKU-002', name: 'Ergonomic Office Chair', category: 'Furniture', requiresLot: false, requiresSerial: false),
-    const Product(id: '3', sku: 'SKU-003', name: 'Organic Arabica Coffee Beans', category: 'Food & Bev', requiresLot: true, requiresExpiry: true),
-    const Product(id: '4', sku: 'SKU-004', name: 'Mechanical Keyboard Switch Set', category: 'Electronics', requiresLot: true),
-    const Product(id: '5', sku: 'SKU-005', name: 'Vitamin C Supplement', category: 'Health', requiresLot: true, requiresExpiry: true),
-    const Product(id: '6', sku: 'SKU-006', name: 'Stainless Steel Water Bottle', category: 'Accessories'),
-    const Product(id: '7', sku: 'SKU-007', name: 'Gaming Laptop RTX 4070', category: 'Electronics', requiresSerial: true),
-    const Product(id: '8', sku: 'SKU-008', name: 'LED Desk Lamp', category: 'Furniture'),
-    const Product(id: '9', sku: 'SKU-009', name: 'Protein Powder Vanilla', category: 'Health', requiresLot: true, requiresExpiry: true),
-    const Product(id: '10', sku: 'SKU-010', name: 'Bluetooth Speaker Portable', category: 'Electronics', requiresSerial: true),
-  ];
+  final List<Product> _products = [];
 
   late final AdminResource _resource;
 
