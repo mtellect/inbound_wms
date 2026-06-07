@@ -24,6 +24,9 @@ class AuthenticationApiService implements IAuthenticationApiService {
   String? get currentUserId => _supabaseClient.auth.currentUser?.id;
 
   @override
+  String? get currentUserEmail => _supabaseClient.auth.currentUser?.email;
+
+  @override
   UserRole? get currentUserRole {
     // Assuming role is stored in user metadata or a separate users table
     final user = _supabaseClient.auth.currentUser;

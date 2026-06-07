@@ -6,4 +6,5 @@ abstract class IAuthenticationApiService {
   bool get isAuthenticated;
   UserRole? get currentUserRole;
   String? get currentUserId;
+  String? get currentUserEmail;
 }

@@ -27,6 +27,14 @@ class _ImportOrdersModalState extends State<ImportOrdersModal> {
   XFile? _selectedFile;
 
   @override
+  void initState() {
+    super.initState();
+    _vendorController.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
   void dispose() {
     _vendorController.dispose();
     super.dispose();
@@ -63,18 +71,16 @@ class _ImportOrdersModalState extends State<ImportOrdersModal> {
       final ext = _selectedFile!.name.split('.').last;
 
       final vendorName = _vendorController.text.trim();
-      String fallbackVendorName = vendorName;
-      if (fallbackVendorName.isEmpty) {
-        final lastDotIndex = _selectedFile!.name.lastIndexOf('.');
-        fallbackVendorName = lastDotIndex != -1
-            ? _selectedFile!.name.substring(0, lastDotIndex)
-            : _selectedFile!.name;
+      if (vendorName.isEmpty) {
+        ToastUtils.showError(context, message: 'Vendor Name is required.');
+        setState(() => _isParsing = false);
+        return;
       }
 
       final orders = ImportOrdersService.parseOrdersBytes(
         bytes: bytes,
         extension: ext,
-        defaultSupplierId: fallbackVendorName,
+        defaultSupplierId: vendorName,
       );
 
       if (mounted) {
@@ -132,8 +138,8 @@ class _ImportOrdersModalState extends State<ImportOrdersModal> {
               const SizedBox(height: 24),
               AppInputField(
                 controller: _vendorController,
-                labelText: 'Vendor Name (Optional)',
-                hintText: 'Will be used to generate Supplier ID if missing',
+                labelText: 'Vendor Name (Required)',
+                hintText: 'Enter the supplier or vendor name',
               ),
               const SizedBox(height: 24),
               DropTarget(
@@ -210,7 +216,7 @@ class _ImportOrdersModalState extends State<ImportOrdersModal> {
                     width: 140,
                     child: AppButton(
                       label: 'Import',
-                      onPressed: _selectedFile == null ? null : _processImport,
+                      onPressed: (_selectedFile == null || _vendorController.text.trim().isEmpty) ? null : _processImport,
                       isLoading: _isParsing,
                     ),
                   ),
