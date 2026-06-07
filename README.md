@@ -33,6 +33,12 @@ Inbound MS is a robust, cross-platform Flutter application designed to streamlin
 - [Flutter SDK](https://docs.flutter.dev/get-started/install) (latest stable)
 - A Supabase Project
 
+### Database Setup
+
+1. In your Supabase project dashboard, navigate to the **SQL Editor**.
+2. Open the `schema.sql` file located in the root of this repository.
+3. Copy and execute the contents of `schema.sql` to provision all necessary tables, types, and Row Level Security (RLS) policies.
+
 ### Environment Setup
 
 1. Clone the repository and navigate to the project directory:
