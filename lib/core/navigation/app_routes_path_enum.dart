@@ -1,6 +1,6 @@
 enum AppRoutePathEnum {
   login('/login'),
-  dashboard('/dashboard'),
+  dashboard('/'),
   scanner('/scanner'),
   overview(''),
   purchaseOrders('purchase-orders'),

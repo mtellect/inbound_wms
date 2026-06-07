@@ -14,12 +14,12 @@ class AppRouter extends RootStackRouter {
     TransitionRoute.fadeIn(
       page: SignInRoute.page, 
       path: AppRoutePathEnum.login.path,
-      initial: true,
     ),
     TransitionRoute.fadeIn(
       page: DashboardShellRoute.page,
       path: AppRoutePathEnum.dashboard.path,
       guards: [AuthGuard(authProvider: authProvider)],
+      initial: true,
       children: [
         AutoRoute(page: DashboardOverviewRoute.page, initial: true, path: AppRoutePathEnum.overview.path),
         AutoRoute(page: PurchaseOrdersRoute.page, path: AppRoutePathEnum.purchaseOrders.path),
