@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:auto_route/auto_route.dart';
-import 'package:inbound_ms/features/auth/providers/auth_provider.dart';
-import 'package:inbound_ms/core/navigation/app_router.dart';
 import 'package:inbound_ms/core/extensions/base_extension.dart';
 import 'package:inbound_ms/features/dashboard/widgets/dashboard_logo.dart';
 import 'package:inbound_ms/features/dashboard/widgets/dashboard_nav_item.dart';

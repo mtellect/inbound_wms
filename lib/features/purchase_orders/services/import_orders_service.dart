@@ -9,8 +9,11 @@ import 'package:inbound_ms/features/purchase_orders/models/product.dart';
 import 'package:inbound_ms/core/utils/uuid_utils.dart';
 
 class ImportOrdersService {
-  static List<PurchaseOrder> parseOrdersBytes(
-      {required Uint8List bytes, required String extension, String? defaultSupplierId}) {
+  static List<PurchaseOrder> parseOrdersBytes({
+    required Uint8List bytes,
+    required String extension,
+    required String defaultSupplierName,
+  }) {
     try {
       List<List<dynamic>> fields = [];
 
@@ -77,7 +80,9 @@ class ImportOrdersService {
         if (poNumber.isEmpty) continue;
 
         // Extract PO Level info
-        String? supplierId = defaultSupplierId;
+        String? supplierName = defaultSupplierName;
+        String? supplierId;
+
         if (supplierIdIndex != -1 && supplierIdIndex < row.length) {
           final rowSupplierId = row[supplierIdIndex].toString().trim();
           if (rowSupplierId.isNotEmpty) {
@@ -85,11 +90,11 @@ class ImportOrdersService {
           }
         }
 
-        // Ensure supplierId is a valid UUID, otherwise generate one from the string
-        String? originalSupplierStr = supplierId;
-        supplierId = UuidUtils.ensureValidOrGenerate(supplierId);
-        String? supplierName = (supplierId != null && originalSupplierStr != supplierId) ? originalSupplierStr : 'Unknown Supplier';
-        if (originalSupplierStr == null || originalSupplierStr.isEmpty) supplierName = null;
+        if (supplierId == null || supplierId.isEmpty) {
+          supplierId = UuidUtils.ensureValidOrGenerate(supplierName);
+        } else {
+          supplierId = UuidUtils.ensureValidOrGenerate(supplierId);
+        }
 
         bool blindReceiving = false;
         if (blindReceivingIndex != -1 && blindReceivingIndex < row.length) {

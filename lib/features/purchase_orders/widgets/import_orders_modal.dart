@@ -80,7 +80,7 @@ class _ImportOrdersModalState extends State<ImportOrdersModal> {
       final orders = ImportOrdersService.parseOrdersBytes(
         bytes: bytes,
         extension: ext,
-        defaultSupplierId: vendorName,
+        defaultSupplierName: vendorName,
       );
 
       if (mounted) {
