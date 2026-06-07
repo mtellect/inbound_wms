@@ -43,7 +43,7 @@ class App extends StatelessWidget {
           builder: (context, themeProvider, child) {
             return ToastificationWrapper(
               child: MaterialApp.router(
-                title: 'Inbound MS',
+                title: 'Inbound WMS',
                 theme: themeProvider.currentThemeLight,
                 darkTheme: themeProvider.currentThemeDark,
                 themeMode: themeProvider.themeMode,

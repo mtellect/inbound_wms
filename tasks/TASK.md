@@ -1,6 +1,6 @@
-# Inbound MS - Universal Project Rebuild Blueprint
+# Inbound WMS - Universal Project Rebuild Blueprint
 
-This document serves as a comprehensive, framework-agnostic template outlining the architecture, folder structure, core modules, and detailed features required to recreate the "Inbound MS" (Inbound Management System) project from scratch.
+This document serves as a comprehensive, framework-agnostic template outlining the architecture, folder structure, core modules, and detailed features required to recreate the "Inbound WMS" (Inbound Warehouse Management System) project from scratch.
 
 ## 1. Project Scaffolding & Setup
 - `[x]` Initialize project repository and package manager.

@@ -33,7 +33,7 @@ class _DashboardOverviewPageState extends State<DashboardOverviewPage> {
         children: [
           const PageHeader(
             title: 'Overview',
-            subtitle: 'Welcome to Inbound MS. Here is what is happening today.',
+            subtitle: 'Welcome to Inbound WMS. Here is what is happening today.',
           ),
           Expanded(
             child: Consumer<DashboardProvider>(

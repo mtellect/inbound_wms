@@ -95,7 +95,7 @@ class _SignInPageState extends State<SignInPage> {
                         ),
                         const SizedBox(height: 40),
                         Text(
-                          'Inbound MS',
+                          'Inbound WMS',
                           style: Theme.of(context).textTheme.displayMedium?.copyWith(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -214,7 +214,7 @@ class _SignInPageState extends State<SignInPage> {
                         const SizedBox(height: 32),
                         Center(
                           child: Text(
-                            '© 2026 Inbound MS. All rights reserved.',
+                            '© 2026 Inbound WMS. All rights reserved.',
                             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                   color: Colors.grey[500],
                                 ),
